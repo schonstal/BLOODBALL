@@ -25,6 +25,8 @@ namespace Dodgeball {
 
     protected override void Initialize() {
       //TODO: BUTTER YO SHIT
+      G.camera = new Camera();
+      G.camera.Initialize(spriteBatch);
       base.Initialize();
     }
 

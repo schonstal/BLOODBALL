@@ -11,21 +11,26 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 namespace Dodgeball.Engine {
-  public abstract class Camera {
-    //I'm just going to assume we'll never need
-    //To do anything fancy with spriteBatching.
-    SpriteBatch spriteBatch;
+  public class Camera : GameObject {
+    SpriteBatch spriteBatch = null;
+    BlendState currentBlendState = null;
 
     public Camera() {
     }
 
-    public void Initialize() {
+    public void Initialize(SpriteBatch spriteBatch) {
+      this.spriteBatch = spriteBatch;
     }
 
-    public void Update() {
-    }
-
-    public void Draw() {
+    public void Render(BlendState blendState, Action<SpriteBatch> draw) {
+      if(blendState == currentBlendState) {
+        draw(spriteBatch);
+      } else {
+        currentBlendState = blendState;
+        spriteBatch.Begin(SpriteSortMode.Deferred, blendState);
+        draw(spriteBatch);
+        spriteBatch.End();
+      }
     }
   }
 }

@@ -111,6 +111,7 @@
     <Compile Include="Engine\Assets.cs" />
     <Compile Include="Engine\Camera.cs" />
     <Compile Include="Engine\G.cs" />
+    <Compile Include="Engine\GameObject.cs" />
     <Compile Include="Engine\GameState.cs" />
     <Compile Include="Engine\Sprite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

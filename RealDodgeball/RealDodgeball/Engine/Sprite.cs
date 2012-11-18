@@ -11,27 +11,15 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 namespace Dodgeball.Engine {
-  public class Sprite {
+  public class Sprite : GameObject {
     String textureName;
     String animationIndex = "__default__";
 
-    public Vector2 position = new Vector2(0, 0);
-    public int width;
-    public int height;
-
+    public BlendState blend = BlendState.Opaque;
+    public Color color = Color.White;
     public bool visible = true;
 
     private Dictionary<String, Animation> animations;
-
-    public float X {
-      get { return position.X; }
-      set { position.X = value; }
-    }
-
-    public float Y {
-      get { return position.Y; }
-      set { position.Y = value; }
-    }
 
     public bool Finished {
       get { return CurrentAnimation.Finished; }
@@ -42,8 +30,8 @@ namespace Dodgeball.Engine {
     }
 
     public Sprite(String texture, int x, int y, int width, int height) {
-      position.X = x;
-      position.Y = y;
+      this.x = x;
+      this.y = y;
       this.width = width;
       this.height = height;
       this.textureName = texture;
@@ -52,8 +40,8 @@ namespace Dodgeball.Engine {
       addAnimation("__default__", new List<int>() { 0 });
     }
 
-    public void play(String animation, GameTime gameTime) {
-      animations[animation].play(gameTime);
+    public void play(String animation) {
+      animations[animation].play();
       animationIndex = animation;
     }
 
@@ -61,12 +49,14 @@ namespace Dodgeball.Engine {
       animations.Add(name, new Animation(frames, fps, looped));
     }
 
-    public void Draw(GameTime gameTime, SpriteBatch spriteBatch) {
+    public void Draw() {
       if(visible) {
-        spriteBatch.Draw(Assets.getTexture(textureName),
-          position,
-          new Rectangle(CurrentAnimation.getFrame() * width, 0, width, height),
-          Color.White);
+        G.camera.Render(blend, (spriteBatch) => {
+          spriteBatch.Draw(Assets.getTexture(textureName),
+            new Vector2(G.camera.x + x, G.camera.y + y),
+            new Rectangle(CurrentAnimation.getFrame() * width, 0, width, height),
+            color);
+        });
       }
     }
   }

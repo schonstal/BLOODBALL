@@ -10,10 +10,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-namespace Dodgeball {
+namespace Dodgeball.Engine {
   public class Animation {
     public List<int> frames;
-    public int fps;
+    public int frameDelay;
     bool looped;
 
     bool hasPlayed = false;
@@ -23,9 +23,14 @@ namespace Dodgeball {
 
     public int currentFrame = 0;
 
+    public float FPS {
+      set { frameDelay = (int)((1 / value) * 1000); }
+      get { return 60000 / (float)frameDelay; }
+    }
+
     public Animation(List<int> frames, int fps, bool looped) {
       this.frames = frames;
-      this.fps = fps;
+      this.frameDelay = (int)((1 / (float)fps) * 1000);
       this.looped = looped;
     }
 
@@ -33,9 +38,9 @@ namespace Dodgeball {
       get { return finished; }
     }
 
-    public void play(GameTime gameTime) {
-      elapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
-      if(!hasPlayed && elapsed > (1 / (float)fps)) {
+    public void play() {
+      elapsed += G.timeElapsed;
+      if(!hasPlayed && elapsed > frameDelay) {
         if(currentFrame < frames.Count - 1) {
           currentFrame++;
           finished = false;

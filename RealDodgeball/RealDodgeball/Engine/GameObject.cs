@@ -11,8 +11,20 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 namespace Dodgeball.Engine {
-  public class GameState {
-    public void Initialize() {
+  public class GameObject {
+    public float x;
+    public float y;
+    public int width;
+    public int height;
+
+    public Vector2 velocity = new Vector2();
+    public Vector2 acceleration = new Vector2();
+
+    public void Initialize(float x, float y, int width, int height) {
+      this.x = x;
+      this.y = y;
+      this.width = width;
+      this.height = height;
     }
 
     public void Update() {

@@ -21,6 +21,7 @@ namespace Dodgeball.Engine {
         if (instance == null) {
           instance = new Assets();
           instance.sprites = new Dictionary<string, Texture2D>();
+          instance.sounds = new Dictionary<string, SoundEffect>();
         }
         return instance;
       }
