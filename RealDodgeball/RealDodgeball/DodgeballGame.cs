@@ -15,10 +15,25 @@ namespace Dodgeball {
   public class DodgeballGame : Microsoft.Xna.Framework.Game {
     GraphicsDeviceManager graphics;
     SpriteBatch spriteBatch;
+    SpriteBatch targetBatch;
+    RenderTarget2D renderTarget;
 
     public DodgeballGame() {
       graphics = new GraphicsDeviceManager(this);
       Content.RootDirectory = "Content";
+      Window.AllowUserResizing = true;
+
+      //Enable this for prod
+      //graphics.IsFullScreen = true;
+      //graphics.PreferredBackBufferWidth = 
+      //  GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+      //graphics.PreferredBackBufferHeight = 
+      //  GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+
+      //720p for debugging (and xbox?)
+      graphics.PreferredBackBufferHeight = 720;
+      graphics.PreferredBackBufferWidth = 1280;
+
     }
 
     protected override void Initialize() {
@@ -29,6 +44,10 @@ namespace Dodgeball {
 
     protected override void LoadContent() {
       spriteBatch = new SpriteBatch(GraphicsDevice);
+      targetBatch = new SpriteBatch(GraphicsDevice);
+      renderTarget = new RenderTarget2D(GraphicsDevice,
+        GraphicsDevice.Viewport.Width/2,
+        GraphicsDevice.Viewport.Height/2);
       G.camera.Initialize(spriteBatch);
 
       //Debugging
@@ -55,11 +74,10 @@ namespace Dodgeball {
     }
 
     protected override void Draw(GameTime gameTime) {
-      SpriteBatch targetBatch = new SpriteBatch(GraphicsDevice);
       //Make the dimensions based on the screen
-      RenderTarget2D target = new RenderTarget2D(GraphicsDevice, 320, 240);
-      GraphicsDevice.SetRenderTarget(target);
+      GraphicsDevice.SetRenderTarget(renderTarget);
 
+      //Draw game
       GraphicsDevice.Clear(Color.Black);
       spriteBatch.Begin();
       G.state.Draw();
@@ -71,7 +89,7 @@ namespace Dodgeball {
 
       //render target to back buffer
       targetBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone); 
-      targetBatch.Draw(target, new Rectangle(0, 0, GraphicsDevice.DisplayMode.Width, GraphicsDevice.DisplayMode.Height), Color.White);
+      targetBatch.Draw(renderTarget, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
       targetBatch.End();
     }
   }

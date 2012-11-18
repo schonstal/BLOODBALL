@@ -17,19 +17,20 @@ namespace Dodgeball.Game {
     public override void Create() {
       Sprite dot;
 
-      for(int i = 0; i < 2000; i += 20) {
-        for(int j = 0; j < 2000; j += 20) {
+      for(int i = 0; i < 640; i += 20) {
+        for(int j = 0; j < 360; j += 20) {
           dot = new Sprite(i, j);
           dot.loadGraphic("Dot", 10, 10);
+          dot.color = Color.Magenta;
           add(dot);
         }
       }
     }
 
     public override void Update() {
-      //sinAmt += G.timeElapsed;
-      //G.camera.x = (float)Math.Sin(sinAmt) * 5;
-      //G.camera.y = (float)Math.Cos(sinAmt) * 5;
+      sinAmt += G.timeElapsed;
+      G.camera.x = (float)Math.Sin(sinAmt/100) * 50;
+      G.camera.y = (float)Math.Cos(sinAmt/100) * 50;
       base.Update();
     }
 

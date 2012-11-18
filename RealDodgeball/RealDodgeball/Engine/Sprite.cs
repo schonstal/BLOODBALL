@@ -37,7 +37,6 @@ namespace Dodgeball.Engine {
 
     public Sprite(float x = 0f, float y = 0f, int width = 0, int height = 0) :
         base(x, y, width, height) {
-
       animations = new Dictionary<string, Animation>();
       addAnimation(DEFAULT_ANIMATION, new List<int>() { 0 });
     }
