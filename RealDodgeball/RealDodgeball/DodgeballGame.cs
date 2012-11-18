@@ -44,6 +44,7 @@ namespace Dodgeball {
 
     protected override void Update(GameTime gameTime) {
       G.updateTimeElapsed(gameTime);
+      G.state.Update();
       
       if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
         this.Exit();
@@ -54,11 +55,24 @@ namespace Dodgeball {
     }
 
     protected override void Draw(GameTime gameTime) {
+      SpriteBatch targetBatch = new SpriteBatch(GraphicsDevice);
+      //Make the dimensions based on the screen
+      RenderTarget2D target = new RenderTarget2D(GraphicsDevice, 320, 240);
+      GraphicsDevice.SetRenderTarget(target);
+
       GraphicsDevice.Clear(Color.Black);
       spriteBatch.Begin();
       G.state.Draw();
       spriteBatch.End();
       base.Draw(gameTime);
+
+      //set rendering back to the back buffer
+      GraphicsDevice.SetRenderTarget(null);
+
+      //render target to back buffer
+      targetBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone); 
+      targetBatch.Draw(target, new Rectangle(0, 0, GraphicsDevice.DisplayMode.Width, GraphicsDevice.DisplayMode.Height), Color.White);
+      targetBatch.End();
     }
   }
 }

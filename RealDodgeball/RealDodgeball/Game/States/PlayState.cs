@@ -13,6 +13,7 @@ using Dodgeball.Engine;
 
 namespace Dodgeball.Game {
   public class PlayState : GameState {
+    float sinAmt = 0f;
     public override void Create() {
       Sprite dot;
 
@@ -26,6 +27,9 @@ namespace Dodgeball.Game {
     }
 
     public override void Update() {
+      //sinAmt += G.timeElapsed;
+      //G.camera.x = (float)Math.Sin(sinAmt) * 5;
+      //G.camera.y = (float)Math.Cos(sinAmt) * 5;
       base.Update();
     }
 
