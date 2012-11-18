@@ -51,11 +51,6 @@ namespace Dodgeball.Engine {
 			float delta;
 			float velocityDelta;
 
-			/*velocityDelta = Util.computeVelocity(angularVelocity,angularAcceleration,angularDrag,maxAngular) - angularVelocity)/2;
-			angularVelocity += velocityDelta; 
-			angle += angularVelocity*G.elapsed;
-			angularVelocity += velocityDelta;*/
-
 			velocityDelta = (
           Util.computeVelocity(velocity.X, acceleration.X, drag.X, maxVelocity.X) -
           velocity.X
