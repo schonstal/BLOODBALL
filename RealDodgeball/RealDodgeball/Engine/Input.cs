@@ -40,6 +40,14 @@ namespace Dodgeball.Engine {
       return currentState[index].IsButtonDown(buttons);
     }
 
+    public GamePadTriggers Triggers(PlayerIndex index) {
+      return currentState[index].Triggers;
+    }
+
+    public GamePadThumbSticks ThumbSticks(PlayerIndex index) {
+      return currentState[index].ThumbSticks;
+    }
+
     public void ForEachInput(Action<PlayerIndex> action) {
       for(PlayerIndex index = PlayerIndex.One; index <= PlayerIndex.Four; index++) {
         action(index);

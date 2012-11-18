@@ -48,6 +48,9 @@ namespace Dodgeball {
         GraphicsDevice.Viewport.Width/2,
         GraphicsDevice.Viewport.Height/2);
       G.camera.Initialize(spriteBatch);
+      //Actually put it in the right place...
+      G.camera.x = 64;
+      G.camera.y = 36;
 
       //Debugging
       Texture2D dot = new Texture2D(GraphicsDevice, 1, 1);
