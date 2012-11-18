@@ -38,7 +38,6 @@ namespace Dodgeball {
 
     protected override void Initialize() {
       //TODO: BUTTER YO SHIT
-      G.camera = new Camera();
       base.Initialize();
     }
 
@@ -62,8 +61,7 @@ namespace Dodgeball {
     }
 
     protected override void Update(GameTime gameTime) {
-      G.updateTimeElapsed(gameTime);
-      G.state.Update();
+      G.update(gameTime);
       
       if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
         this.Exit();

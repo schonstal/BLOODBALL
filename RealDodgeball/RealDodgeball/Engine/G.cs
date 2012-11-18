@@ -17,6 +17,7 @@ namespace Dodgeball.Engine {
     public int _timeElapsed;
     public GameState _state;
     public Camera _camera;
+    public Input _input;
 
     private static G instance {
       get {
@@ -40,8 +41,19 @@ namespace Dodgeball.Engine {
       get { return instance._timeElapsed; }
     }
 
-    public static void updateTimeElapsed(GameTime gameTime) {
+    public static Input input {
+      get { return instance._input; }
+    }
+
+    public G() {
+      _input = new Input();
+      _camera = new Camera();
+    }
+
+    public static void update(GameTime gameTime) {
       instance._timeElapsed = gameTime.ElapsedGameTime.Milliseconds;
+      instance._state.Update();
+      instance._input.Update();
     }
 
     public static void switchState(GameState state) {

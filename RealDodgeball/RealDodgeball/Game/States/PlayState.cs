@@ -28,9 +28,11 @@ namespace Dodgeball.Game {
     }
 
     public override void Update() {
-      sinAmt += G.timeElapsed;
-      G.camera.x = (float)Math.Sin(sinAmt/100) * 50;
-      G.camera.y = (float)Math.Cos(sinAmt/100) * 50;
+      if(G.input.JustPressed(PlayerIndex.One, Buttons.A)) {
+        sinAmt += G.timeElapsed;
+        G.camera.x = (float)Math.Sin(sinAmt / 100) * 50;
+        G.camera.y = (float)Math.Cos(sinAmt / 100) * 50;
+      }
       base.Update();
     }
 
