@@ -9,11 +9,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Dodgeball.Engine;
+using Dodgeball.Game;
 
 namespace Dodgeball {
-  /// <summary>
-  /// This is the main type for your game
-  /// </summary>
   public class DodgeballGame : Microsoft.Xna.Framework.Game {
     GraphicsDeviceManager graphics;
     SpriteBatch spriteBatch;
@@ -26,29 +24,24 @@ namespace Dodgeball {
     protected override void Initialize() {
       //TODO: BUTTER YO SHIT
       G.camera = new Camera();
-      G.camera.Initialize(spriteBatch);
       base.Initialize();
     }
 
     protected override void LoadContent() {
       spriteBatch = new SpriteBatch(GraphicsDevice);
+      G.camera.Initialize(spriteBatch);
 
       //Debugging
       Texture2D dot = new Texture2D(GraphicsDevice, 1, 1);
       dot.SetData(new Color[] { Color.White });
       Assets.addTexture("Dot", dot);
-      // TODO: use this.Content to load your game content here
+
+      G.switchState(new PlayState());
     }
 
     protected override void UnloadContent() {
-      // TODO: Unload any non ContentManager content here
     }
 
-    /// <summary>
-    /// Allows the game to run logic such as updating the world,
-    /// checking for collisions, gathering input, and playing audio.
-    /// </summary>
-    /// <param name="gameTime">Provides a snapshot of timing values.</param>
     protected override void Update(GameTime gameTime) {
       G.updateTimeElapsed(gameTime);
       
@@ -60,12 +53,9 @@ namespace Dodgeball {
       base.Update(gameTime);
     }
 
-    /// <summary>
-    /// This is called when the game should draw itself.
-    /// </summary>
-    /// <param name="gameTime">Provides a snapshot of timing values.</param>
     protected override void Draw(GameTime gameTime) {
       GraphicsDevice.Clear(Color.CornflowerBlue);
+      G.state.Draw();
 
       // TODO: Add your drawing code here
 

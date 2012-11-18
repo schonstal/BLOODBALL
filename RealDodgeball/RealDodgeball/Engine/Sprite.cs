@@ -12,49 +12,58 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Dodgeball.Engine {
   public class Sprite : GameObject {
+    const string DEFAULT_ANIMATION = "__default__";
+
     String textureName;
-    String animationIndex = "__default__";
+    String currentAnimation = DEFAULT_ANIMATION;
+    Dictionary<String, Animation> animations;
+    Texture2D atlas;
 
     public BlendState blend = BlendState.Opaque;
     public Color color = Color.White;
     public bool visible = true;
+    public Vector2 offset = new Vector2();
 
-    private Dictionary<String, Animation> animations;
-
-    public bool Finished {
-      get { return CurrentAnimation.Finished; }
+    public bool finished {
+      get { return animations[currentAnimation].Finished; }
     }
 
-    public Animation CurrentAnimation {
-      get { return animations[animationIndex]; }
+    public Animation animation {
+      get { return animations[currentAnimation]; }
     }
 
-    public Sprite(String texture, int x, int y, int width, int height) {
-      this.x = x;
-      this.y = y;
-      this.width = width;
-      this.height = height;
-      this.textureName = texture;
+    public Sprite(float x = 0f, float y = 0f, int width = 0, int height = 0) :
+        base(x, y, width, height) {
 
       animations = new Dictionary<string, Animation>();
-      addAnimation("__default__", new List<int>() { 0 });
+      addAnimation(DEFAULT_ANIMATION, new List<int>() { 0 });
+    }
+
+    public void loadGraphic(String textureName, int width = 0, int height = 0) {
+      atlas = Assets.getTexture(textureName);
+      if(width > 0) this.width = width;
+      if(height > 0) this.height = height;
     }
 
     public void play(String animation) {
-      animations[animation].play();
-      animationIndex = animation;
+      currentAnimation = animation;
     }
 
     public void addAnimation(String name, List<int> frames, int fps = 15, bool looped = false) {
       animations.Add(name, new Animation(frames, fps, looped));
     }
 
-    public void Draw() {
+    public override void Update() {
+      animation.play();
+      base.Update();
+    }
+
+    public override void Draw() {
       if(visible) {
         G.camera.Render(blend, (spriteBatch) => {
-          spriteBatch.Draw(Assets.getTexture(textureName),
-            new Vector2(G.camera.x + x, G.camera.y + y),
-            new Rectangle(CurrentAnimation.getFrame() * width, 0, width, height),
+          spriteBatch.Draw(atlas,
+            new Vector2(G.camera.x + offset.X + x, G.camera.y + offset.Y + y),
+            new Rectangle(animation.getFrame() * width, 0, width, height),
             color);
         });
       }

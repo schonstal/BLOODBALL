@@ -110,6 +110,8 @@
     <Compile Include="Engine\Animation.cs" />
     <Compile Include="Engine\Assets.cs" />
     <Compile Include="Engine\Camera.cs" />
+    <Compile Include="Game\States\BoilerState.cs" />
+    <Compile Include="Game\States\PlayState.cs" />
     <Compile Include="Engine\G.cs" />
     <Compile Include="Engine\GameObject.cs" />
     <Compile Include="Engine\GameState.cs" />

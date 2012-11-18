@@ -23,13 +23,14 @@ namespace Dodgeball.Engine {
     }
 
     public void Render(BlendState blendState, Action<SpriteBatch> draw) {
+      if(blendState == null) return;
       if(blendState == currentBlendState) {
         draw(spriteBatch);
       } else {
+        if(currentBlendState != null) spriteBatch.End();
         currentBlendState = blendState;
         spriteBatch.Begin(SpriteSortMode.Deferred, blendState);
         draw(spriteBatch);
-        spriteBatch.End();
       }
     }
   }

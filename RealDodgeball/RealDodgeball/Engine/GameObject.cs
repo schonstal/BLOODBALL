@@ -20,17 +20,23 @@ namespace Dodgeball.Engine {
     public Vector2 velocity = new Vector2();
     public Vector2 acceleration = new Vector2();
 
-    public void Initialize(float x, float y, int width, int height) {
+    public GameObject(float x = 0f, float y = 0f, int width = 0, int height = 0) {
       this.x = x;
       this.y = y;
       this.width = width;
       this.height = height;
     }
 
-    public void Update() {
+    public virtual void preUpdate() {
     }
 
-    public void Draw() {
+    public virtual void Update() {
+    }
+
+    public virtual void postUpdate() {
+    }
+
+    public virtual void Draw() {
     }
   }
 }

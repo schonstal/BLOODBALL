@@ -47,6 +47,7 @@ namespace Dodgeball.Engine {
     public static void switchState(GameState state) {
       //Maybe we'll do some destruction logic here later
       instance._state = state;
+      instance._state.Create();
     }
   }
 }

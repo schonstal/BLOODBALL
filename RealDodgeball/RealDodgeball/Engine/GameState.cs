@@ -12,13 +12,26 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Dodgeball.Engine {
   public class GameState {
-    public void Initialize() {
+    List<GameObject> gameObjects = new List<GameObject>();
+
+    public virtual void Create() {
     }
 
-    public void Update() {
+    public virtual void Update() {
+      //gameObjects.ForEach((o) => { o.Update(); });
+      foreach(GameObject gameObject in gameObjects) {
+        gameObject.Update();
+      }
     }
 
-    public void Draw() {
+    public virtual void Draw() {
+      foreach(GameObject gameObject in gameObjects) {
+        gameObject.Draw();
+      }
+    }
+
+    public void add(GameObject gameObject) {
+      gameObjects.Add(gameObject);
     }
   }
 }
