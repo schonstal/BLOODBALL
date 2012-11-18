@@ -38,5 +38,8 @@ namespace Dodgeball.Engine {
 
     public virtual void Draw() {
     }
+
+    public virtual void Render(SpriteBatch spriteBatch) {
+    }
   }
 }

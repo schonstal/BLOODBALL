@@ -18,6 +18,9 @@ namespace Dodgeball.Engine {
     String currentAnimation = DEFAULT_ANIMATION;
     Dictionary<String, Animation> animations;
     Texture2D atlas;
+    Vector2 screenPosition = new Vector2();
+    Rectangle renderTarget = new Rectangle();
+
 
     public BlendState blend = BlendState.Opaque;
     public Color color = Color.White;
@@ -60,11 +63,16 @@ namespace Dodgeball.Engine {
 
     public override void Draw() {
       if(visible) {
+        screenPosition.X = G.camera.x + offset.X + x;
+        screenPosition.Y = G.camera.y + offset.Y + y;
+
+        renderTarget.X = animation.getFrame() * width;
+        renderTarget.Y = 0;
+        renderTarget.Width = width;
+        renderTarget.Height = height;
+
         G.camera.Render(blend, (spriteBatch) => {
-          spriteBatch.Draw(atlas,
-            new Vector2(G.camera.x + offset.X + x, G.camera.y + offset.Y + y),
-            new Rectangle(animation.getFrame() * width, 0, width, height),
-            color);
+          spriteBatch.Draw(atlas, screenPosition, renderTarget, color);
         });
       }
     }

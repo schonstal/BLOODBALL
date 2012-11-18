@@ -16,8 +16,8 @@ namespace Dodgeball.Game {
     public override void Create() {
       Sprite dot;
 
-      for(int i = 0; i < 200; i += 2) {
-        for(int j = 0; j < 200; j += 2) {
+      for(int i = 0; i < 2000; i += 20) {
+        for(int j = 0; j < 2000; j += 20) {
           dot = new Sprite(i, j);
           dot.loadGraphic("Dot", 10, 10);
           add(dot);

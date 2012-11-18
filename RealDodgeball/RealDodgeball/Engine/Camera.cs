@@ -27,7 +27,7 @@ namespace Dodgeball.Engine {
       if(blendState == currentBlendState) {
         draw(spriteBatch);
       } else {
-        if(currentBlendState != null) spriteBatch.End();
+        spriteBatch.End();
         currentBlendState = blendState;
         spriteBatch.Begin(SpriteSortMode.Deferred, blendState);
         draw(spriteBatch);
