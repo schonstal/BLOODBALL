@@ -21,7 +21,7 @@ namespace Dodgeball {
     public DodgeballGame() {
       graphics = new GraphicsDeviceManager(this);
       Content.RootDirectory = "Content";
-      Window.AllowUserResizing = true;
+      Window.AllowUserResizing = false;
 
       //Enable this for prod
       //graphics.IsFullScreen = true;

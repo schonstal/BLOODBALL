@@ -14,6 +14,7 @@ using Dodgeball.Engine;
 namespace Dodgeball.Game {
   public class PlayState : GameState {
     Sprite dot;
+    Sprite box;
 
     public override void Create() {
       dot = new Sprite(0,0);
@@ -21,13 +22,18 @@ namespace Dodgeball.Game {
       dot.color = Color.DarkCyan;
       add(dot);
 
+      box = new Sprite(0,0);
+      box.loadGraphic("Dot", 24, 24);
+      box.color = Color.DarkMagenta;
+      //box.acceleration.Y = 10f;
+      add(box);
     }
 
     public override void Update() {
       if(G.input.Held(PlayerIndex.One, Buttons.A)) {
-        G.camera.x += G.timeElapsed * G.input.ThumbSticks(PlayerIndex.One).Left.X;
-        G.camera.y -= G.timeElapsed * G.input.ThumbSticks(PlayerIndex.One).Left.Y;
       }
+//      dot.velocity.X = G.input.ThumbSticks(PlayerIndex.One).Left.X;
+//      dot.velocity.Y = -G.input.ThumbSticks(PlayerIndex.One).Left.Y;
       base.Update();
     }
 

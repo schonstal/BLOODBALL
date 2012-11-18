@@ -20,7 +20,13 @@ namespace Dodgeball.Engine {
     public virtual void Update() {
       //gameObjects.ForEach((o) => { o.Update(); });
       foreach(GameObject gameObject in gameObjects) {
+        gameObject.preUpdate();
+      }
+      foreach(GameObject gameObject in gameObjects) {
         gameObject.Update();
+      }
+      foreach(GameObject gameObject in gameObjects) {
+        gameObject.postUpdate();
       }
     }
 

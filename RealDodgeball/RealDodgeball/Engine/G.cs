@@ -14,7 +14,7 @@ namespace Dodgeball.Engine {
   //I <3 ANTIPATTERNS
   class G {
     private static G _instance;
-    public int _timeElapsed;
+    public float _timeElapsed;
     public GameState _state;
     public Camera _camera;
     public Input _input;
@@ -37,7 +37,7 @@ namespace Dodgeball.Engine {
       get { return instance._state; }
     }
 
-    public static int timeElapsed {
+    public static float elapsed {
       get { return instance._timeElapsed; }
     }
 
@@ -51,7 +51,7 @@ namespace Dodgeball.Engine {
     }
 
     public static void update(GameTime gameTime) {
-      instance._timeElapsed = gameTime.ElapsedGameTime.Milliseconds;
+      instance._timeElapsed = gameTime.ElapsedGameTime.Milliseconds/1000f;
       instance._state.Update();
       instance._input.Update();
     }

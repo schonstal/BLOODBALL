@@ -39,7 +39,7 @@ namespace Dodgeball.Engine {
     }
 
     public void play() {
-      elapsed += G.timeElapsed;
+      elapsed += G.elapsed;
       if(!hasPlayed && elapsed > frameDelay) {
         if(currentFrame < frames.Count - 1) {
           currentFrame++;

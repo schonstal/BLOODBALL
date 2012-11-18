@@ -21,7 +21,6 @@ namespace Dodgeball.Engine {
     Vector2 screenPosition = new Vector2();
     Rectangle renderSlice = new Rectangle();
 
-
     public BlendState blend = BlendState.Opaque;
     public Color color = Color.White;
     public bool visible = true;
