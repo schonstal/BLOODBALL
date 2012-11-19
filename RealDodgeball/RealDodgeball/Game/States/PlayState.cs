@@ -13,20 +13,26 @@ using Dodgeball.Engine;
 
 namespace Dodgeball.Game {
   public class PlayState : GameState {
+    public const int ARENA_WIDTH = 512;
+    public const int ARENA_HEIGHT = 288;
     Sprite dot;
     Sprite box;
 
+    Player player;
+
     public override void Create() {
       dot = new Sprite(0,0);
-      dot.loadGraphic("Dot", 512, 288);
+      dot.loadGraphic("Dot", ARENA_WIDTH, ARENA_HEIGHT);
       dot.color = Color.DarkCyan;
       add(dot);
 
-      box = new Sprite(0,0);
-      box.loadGraphic("Dot", 24, 24);
-      box.color = Color.DarkMagenta;
-      //box.acceleration.Y = 10f;
-      add(box);
+      Ball ball = new Ball();
+      ball.x = 40;
+      ball.y = 40;
+      add(ball);
+
+      player = new Player(PlayerIndex.One, Team.Left);
+      add(player);
     }
 
     public override void Update() {

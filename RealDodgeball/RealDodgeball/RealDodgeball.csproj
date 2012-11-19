@@ -110,8 +110,11 @@
     <Compile Include="Engine\Animation.cs" />
     <Compile Include="Engine\Assets.cs" />
     <Compile Include="Engine\Camera.cs" />
+    <Compile Include="Engine\Group.cs" />
     <Compile Include="Engine\Util.cs" />
     <Compile Include="Engine\Input.cs" />
+    <Compile Include="Game\Sprites\Ball.cs" />
+    <Compile Include="Game\Sprites\Player.cs" />
     <Compile Include="Game\States\BoilerState.cs" />
     <Compile Include="Game\States\PlayState.cs" />
     <Compile Include="Engine\G.cs" />
@@ -160,9 +163,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Game\Sprites\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--

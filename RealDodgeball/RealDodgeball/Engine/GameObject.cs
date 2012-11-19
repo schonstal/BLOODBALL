@@ -20,6 +20,8 @@ namespace Dodgeball.Engine {
     public Vector2 velocity = new Vector2(0,0);
     public Vector2 acceleration = new Vector2(0,0);
     public Vector2 drag = new Vector2(0,0);
+ 
+    public float maxSpeed = 0f;
     public Vector2 maxVelocity = new Vector2(0,0);
 
     public bool moves = true;
@@ -35,10 +37,10 @@ namespace Dodgeball.Engine {
     }
 
     public virtual void Update() {
+      if(moves) updateMotion();
     }
 
     public virtual void postUpdate() {
-      if(moves) updateMotion();
     }
 
     public virtual void Draw() {
@@ -51,7 +53,7 @@ namespace Dodgeball.Engine {
 			float delta;
 			float velocityDelta;
 
-			velocityDelta = (
+			/*velocityDelta = (
           Util.computeVelocity(velocity.X, acceleration.X, drag.X, maxVelocity.X) -
           velocity.X
         ) / 2;
@@ -67,7 +69,22 @@ namespace Dodgeball.Engine {
 			velocity.Y += velocityDelta;
 			delta = velocity.Y*G.elapsed;
 			velocity.Y += velocityDelta;
-			y += delta;
+			y += delta;*/
+
+      velocity.X += Util.computeVelocity(
+          velocity.X, acceleration.X, drag.X, maxVelocity.X
+        ) - velocity.X;
+
+      velocity.Y += Util.computeVelocity(
+          velocity.Y, acceleration.Y, drag.Y, maxVelocity.Y
+        ) - velocity.Y;
+
+      if(velocity.Length() > maxSpeed) {
+        velocity = Vector2.Normalize(velocity) * maxSpeed;
+      }
+
+      x += G.elapsed * velocity.X;
+      y += G.elapsed * velocity.Y;
 		}
   }
 }

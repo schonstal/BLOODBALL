@@ -21,6 +21,9 @@ namespace Dodgeball.Engine {
     Vector2 screenPosition = new Vector2();
     Rectangle renderSlice = new Rectangle();
 
+    int graphicWidth;
+    int graphicHeight;
+
     public BlendState blend = BlendState.Opaque;
     public Color color = Color.White;
     public bool visible = true;
@@ -44,6 +47,8 @@ namespace Dodgeball.Engine {
       atlas = Assets.getTexture(textureName);
       if(width > 0) this.width = width;
       if(height > 0) this.height = height;
+      graphicWidth = width;
+      graphicHeight = height;
     }
 
     public void play(String animation) {
@@ -64,10 +69,10 @@ namespace Dodgeball.Engine {
         screenPosition.X = G.camera.x + offset.X + x;
         screenPosition.Y = G.camera.y + offset.Y + y;
 
-        renderSlice.X = animation.getFrame() * width;
+        renderSlice.X = animation.getFrame() * graphicWidth;
         renderSlice.Y = 0;
-        renderSlice.Width = width;
-        renderSlice.Height = height;
+        renderSlice.Width = graphicWidth;
+        renderSlice.Height = graphicHeight;
 
         G.camera.Render(blend, (spriteBatch) => {
           spriteBatch.Draw(atlas, screenPosition, renderSlice, color);
