@@ -12,9 +12,11 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Dodgeball.Engine {
   public class GameState : Group {
-    List<GameObject> gameObjects = new List<GameObject>();
-
     public virtual void Create() {
+    }
+
+    public override void Draw() {
+      base.Draw();
     }
   }
 }

@@ -16,17 +16,24 @@ namespace Dodgeball.Game {
     public const int ARENA_WIDTH = 512;
     public const int ARENA_HEIGHT = 288;
     Sprite dot;
-    Sprite box;
+    Ball ball;
 
     Player player;
 
     public override void Create() {
+      G.visualDebug = true;
+
       dot = new Sprite(0,0);
       dot.loadGraphic("Dot", ARENA_WIDTH, ARENA_HEIGHT);
       dot.color = Color.DarkCyan;
       add(dot);
 
-      Ball ball = new Ball();
+      dot = new Sprite(1, 1);
+      dot.loadGraphic("Dot", ARENA_WIDTH-2, ARENA_HEIGHT-2);
+      dot.color = Color.Black;
+      add(dot);
+
+      ball = new Ball();
       ball.x = 40;
       ball.y = 40;
       add(ball);
@@ -37,6 +44,10 @@ namespace Dodgeball.Game {
 
     public override void Update() {
       if(G.input.Held(PlayerIndex.One, Buttons.A)) {
+      }
+
+      if(player.Hitbox.Intersects(ball.Hitbox)) {
+        remove(ball);
       }
 //      dot.velocity.X = G.input.ThumbSticks(PlayerIndex.One).Left.X;
 //      dot.velocity.Y = -G.input.ThumbSticks(PlayerIndex.One).Left.Y;

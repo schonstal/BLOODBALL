@@ -15,7 +15,7 @@ namespace Dodgeball.Game {
   class Ball : Sprite {
     public Ball() : base(0,0) {
       loadGraphic("Dot", 12, 12);
-      color = Color.DarkGoldenrod;
+      color = Color.DarkRed;
       height = 6;
       offset.Y = -2;
     }

@@ -21,27 +21,32 @@ namespace Dodgeball.Game {
       this.playerIndex = playerIndex;
       this.team = team;
       
-      maxSpeed = 350f;
+      maxSpeed = 250f;
       drag = new Vector2(2500,2500);
       
-      loadGraphic("Dot", 24, 24);
-      color = Color.DarkMagenta;
+      loadGraphic("player", 32, 32);
 
       height = 20;
       offset.Y = -4;
+      width = 20;
+      offset.X = -8;
     }
 
     public override void Update() {
       acceleration.X = G.input.ThumbSticks(playerIndex).Left.X * movementAccel;
+      if(Keyboard.GetState().IsKeyDown(Keys.A)) acceleration.X -= movementAccel;
+      if(Keyboard.GetState().IsKeyDown(Keys.D)) acceleration.X += movementAccel;
       if(Math.Sign(acceleration.X) != Math.Sign(velocity.X)) acceleration.X *= 15;
 
       acceleration.Y = G.input.ThumbSticks(playerIndex).Left.Y * -movementAccel;
+      if(Keyboard.GetState().IsKeyDown(Keys.W)) acceleration.Y -= movementAccel;
+      if(Keyboard.GetState().IsKeyDown(Keys.S)) acceleration.Y += movementAccel;
       if(Math.Sign(acceleration.Y) != Math.Sign(velocity.Y)) acceleration.Y *= 15;
 
       if(G.input.Triggers(playerIndex).Right > 0.3)
-        maxSpeed = 200f;
+        maxSpeed = 150f;
       else
-        maxSpeed = 350f;
+        maxSpeed = 250f;
 
       base.Update();
     }

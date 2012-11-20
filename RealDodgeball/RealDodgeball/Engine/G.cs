@@ -18,6 +18,7 @@ namespace Dodgeball.Engine {
     public GameState _state;
     public Camera _camera;
     public Input _input;
+    public bool _visualDebug = false;
 
     private static G instance {
       get {
@@ -43,6 +44,11 @@ namespace Dodgeball.Engine {
 
     public static Input input {
       get { return instance._input; }
+    }
+
+    public static bool visualDebug {
+      get { return instance._visualDebug; }
+      set { instance._visualDebug = value; }
     }
 
     public G() {
