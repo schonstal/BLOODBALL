@@ -18,7 +18,7 @@ namespace Dodgeball.Game {
     Sprite dot;
     Ball ball;
 
-    Player player;
+    Group players = new Group();
 
     public override void Create() {
       G.visualDebug = true;
@@ -38,17 +38,23 @@ namespace Dodgeball.Game {
       ball.y = 40;
       add(ball);
 
-      player = new Player(PlayerIndex.One, Team.Left);
-      add(player);
+      //probably want to let people pick their team later
+      players.add(new Player(PlayerIndex.One, Team.Left));
+      players.add(new Player(PlayerIndex.Two, Team.Right));
+      players.add(new Player(PlayerIndex.Three, Team.Left));
+      players.add(new Player(PlayerIndex.Four, Team.Right));
+      add(players);
     }
 
     public override void Update() {
       if(G.input.Held(PlayerIndex.One, Buttons.A)) {
       }
 
-      if(player.Hitbox.Intersects(ball.Hitbox)) {
-        remove(ball);
-      }
+      players.Each((player) => {
+        if(Util.Overlaps(player, ball)) {
+          ball.visible = false;
+        }
+      });
 //      dot.velocity.X = G.input.ThumbSticks(PlayerIndex.One).Left.X;
 //      dot.velocity.Y = -G.input.ThumbSticks(PlayerIndex.One).Left.Y;
       base.Update();
