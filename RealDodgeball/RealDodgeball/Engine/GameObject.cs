@@ -14,6 +14,7 @@ namespace Dodgeball.Engine {
   public class GameObject {
     public float x;
     public float y;
+    public float z = 0;
     public int width;
     public int height;
     Rectangle hitbox;

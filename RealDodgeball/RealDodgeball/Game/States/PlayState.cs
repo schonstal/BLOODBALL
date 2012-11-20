@@ -43,20 +43,18 @@ namespace Dodgeball.Game {
       players.add(new Player(PlayerIndex.Two, Team.Right));
       players.add(new Player(PlayerIndex.Three, Team.Left));
       players.add(new Player(PlayerIndex.Four, Team.Right));
-      add(players);
+      players.Each((player) => add(player));
     }
 
     public override void Update() {
-      if(G.input.Held(PlayerIndex.One, Buttons.A)) {
-      }
+      members = members.OrderBy((member) => member.z).ToList();
 
       players.Each((player) => {
         if(Util.Overlaps(player, ball)) {
-          ball.visible = false;
+          //ball.visible = false;
         }
       });
-//      dot.velocity.X = G.input.ThumbSticks(PlayerIndex.One).Left.X;
-//      dot.velocity.Y = -G.input.ThumbSticks(PlayerIndex.One).Left.Y;
+
       base.Update();
     }
 

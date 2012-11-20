@@ -25,6 +25,7 @@ namespace Dodgeball.Game {
     }
 
     public override void postUpdate() {
+      z = y;// +height;
       base.postUpdate();
     }
   }

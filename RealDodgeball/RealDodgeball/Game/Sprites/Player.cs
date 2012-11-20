@@ -28,7 +28,7 @@ namespace Dodgeball.Game {
 
       height = 20;
       offset.Y = -4;
-      width = 20;
+      width = 18;
       offset.X = -8;
     }
 
@@ -47,10 +47,10 @@ namespace Dodgeball.Game {
       //END DEBUG
       if(Math.Sign(acceleration.Y) != Math.Sign(velocity.Y)) acceleration.Y *= 15;
 
-      if(G.input.Triggers(playerIndex).Right > 0.3)
-        maxSpeed = 150f;
-      else
-        maxSpeed = 250f;
+//      if(G.input.Triggers(playerIndex).Right > 0.3)
+//        maxSpeed = 150f;
+//      else
+//        maxSpeed = 250f;
 
       base.Update();
     }
@@ -60,6 +60,7 @@ namespace Dodgeball.Game {
       if(y < 0) y = 0;
       if(y > PlayState.ARENA_HEIGHT - height) y = PlayState.ARENA_HEIGHT - height;
       if(x > PlayState.ARENA_WIDTH - width) x = PlayState.ARENA_WIDTH - width;
+      z = y;
       base.postUpdate();
     }
   }
