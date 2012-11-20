@@ -19,16 +19,9 @@ namespace Dodgeball.Engine {
     }
 
     public override void Update() {
-      //gameObjects.ForEach((o) => { o.Update(); });
-      foreach(GameObject gameObject in members) {
-        gameObject.preUpdate();
-      }
-      foreach(GameObject gameObject in members) {
-        gameObject.Update();
-      }
-      foreach(GameObject gameObject in members) {
-        gameObject.postUpdate();
-      }
+      members.ForEach((o) => o.preUpdate());
+      members.ForEach((o) => o.Update());
+      members.ForEach((o) => o.postUpdate());
     }
 
     public override void Draw() {

@@ -22,6 +22,7 @@ namespace Dodgeball.Engine {
     public Vector2 velocity = new Vector2(0,0);
     public Vector2 acceleration = new Vector2(0,0);
     public Vector2 drag = new Vector2(0,0);
+    public float linearDrag = 0f;
  
     public float maxSpeed = 0f;
     public Vector2 maxVelocity = new Vector2(0,0);
@@ -93,8 +94,12 @@ namespace Dodgeball.Engine {
           velocity.Y, acceleration.Y, drag.Y, maxVelocity.Y
         ) - velocity.Y;
 
-      if(velocity.Length() > maxSpeed) {
+      if(maxSpeed > 0 && velocity.Length() > maxSpeed) {
         velocity = Vector2.Normalize(velocity) * maxSpeed;
+      }
+
+      if(linearDrag > 0 && velocity.Length() > 0) {
+        velocity -= velocity * linearDrag;
       }
 
       x += G.elapsed * velocity.X;

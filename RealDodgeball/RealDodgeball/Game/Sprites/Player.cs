@@ -17,6 +17,16 @@ namespace Dodgeball.Game {
     Team team;
     float movementAccel = 5000.0f;
 
+    float charge = 0;
+    float chargeAmount = 1000.0f;
+    float maxCharge = 2000.0f;
+    float minCharge = 500.0f;
+
+    bool hasBall = false;
+    Ball ball = null;
+
+    bool triggerHeld = false;
+
     public Player(PlayerIndex playerIndex, Team team) : base(0,0) {
       this.playerIndex = playerIndex;
       this.team = team;
@@ -47,10 +57,24 @@ namespace Dodgeball.Game {
       //END DEBUG
       if(Math.Sign(acceleration.Y) != Math.Sign(velocity.Y)) acceleration.Y *= 15;
 
-//      if(G.input.Triggers(playerIndex).Right > 0.3)
-//        maxSpeed = 150f;
-//      else
-//        maxSpeed = 250f;
+      if(hasBall) {
+        ball.x = x + 5;
+        ball.y = y + 10;
+        if(G.input.Triggers(playerIndex).Right > 0.3) {
+          triggerHeld = true;
+          maxSpeed = 150f;
+          if(charge < maxCharge)
+            charge += chargeAmount * G.elapsed;
+          charge = MathHelper.Clamp(charge, minCharge, maxCharge);
+        } else {
+          if(triggerHeld) FlingBall();
+          triggerHeld = false;
+          maxSpeed = 250f;
+          charge = 0;
+        }
+      } else {
+        charge = 0;
+      }
 
       base.Update();
     }
@@ -62,6 +86,20 @@ namespace Dodgeball.Game {
       if(x > PlayState.ARENA_WIDTH - width) x = PlayState.ARENA_WIDTH - width;
       z = y;
       base.postUpdate();
+    }
+
+    private void FlingBall() {
+      Vector2 flingDirection = Vector2.Normalize(G.input.ThumbSticks(playerIndex).Right);
+      ball.Fling(flingDirection.X, -flingDirection.Y, charge);
+      hasBall = false;
+    }
+
+    public void PickUpBall(Ball ball) {
+      if(!ball.dangerous) {
+        hasBall = true;
+        this.ball = ball;
+        this.ball.pickedUp();
+      }
     }
   }
 

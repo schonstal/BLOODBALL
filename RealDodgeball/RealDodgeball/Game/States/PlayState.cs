@@ -21,16 +21,18 @@ namespace Dodgeball.Game {
     Group players = new Group();
 
     public override void Create() {
-      G.visualDebug = true;
+      //G.visualDebug = true;
 
       dot = new Sprite(0,0);
       dot.loadGraphic("Dot", ARENA_WIDTH, ARENA_HEIGHT);
-      dot.color = Color.DarkCyan;
+      dot.color = new Color(0x2c,0x2c,0x2c);
+      dot.z = -1;
       add(dot);
 
-      dot = new Sprite(1, 1);
-      dot.loadGraphic("Dot", ARENA_WIDTH-2, ARENA_HEIGHT-2);
+      dot = new Sprite(-100, ARENA_HEIGHT);
+      dot.loadGraphic("Dot", 1000, ARENA_HEIGHT);
       dot.color = Color.Black;
+      dot.z = 100000;
       add(dot);
 
       ball = new Ball();
@@ -40,9 +42,9 @@ namespace Dodgeball.Game {
 
       //probably want to let people pick their team later
       players.add(new Player(PlayerIndex.One, Team.Left));
-      players.add(new Player(PlayerIndex.Two, Team.Right));
-      players.add(new Player(PlayerIndex.Three, Team.Left));
-      players.add(new Player(PlayerIndex.Four, Team.Right));
+      //players.add(new Player(PlayerIndex.Two, Team.Right));
+      //players.add(new Player(PlayerIndex.Three, Team.Left));
+      //players.add(new Player(PlayerIndex.Four, Team.Right));
       players.Each((player) => add(player));
     }
 
@@ -51,6 +53,7 @@ namespace Dodgeball.Game {
 
       players.Each((player) => {
         if(Util.Overlaps(player, ball)) {
+          ((Player)player).PickUpBall(ball);
           //ball.visible = false;
         }
       });
