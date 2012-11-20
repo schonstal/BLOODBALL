@@ -21,7 +21,7 @@ namespace Dodgeball.Game {
       this.playerIndex = playerIndex;
       this.team = team;
       
-      maxSpeed = 400f;
+      maxSpeed = 350f;
       drag = new Vector2(2500,2500);
       
       loadGraphic("Dot", 24, 24);
@@ -41,7 +41,7 @@ namespace Dodgeball.Game {
       if(G.input.Triggers(playerIndex).Right > 0.3)
         maxSpeed = 200f;
       else
-        maxSpeed = 400f;
+        maxSpeed = 350f;
 
       base.Update();
     }

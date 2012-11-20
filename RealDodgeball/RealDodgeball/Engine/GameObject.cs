@@ -16,6 +16,7 @@ namespace Dodgeball.Engine {
     public float y;
     public int width;
     public int height;
+    Rectangle hitBox;
 
     public Vector2 velocity = new Vector2(0,0);
     public Vector2 acceleration = new Vector2(0,0);
@@ -26,11 +27,23 @@ namespace Dodgeball.Engine {
 
     public bool moves = true;
 
+    public Rectangle HitBox {
+      get {
+        hitBox.X = (int)x;
+        hitBox.Y = (int)y;
+        hitBox.Width = width;
+        hitBox.Height = height;
+        return hitBox;
+      }
+    }
+
     public GameObject(float x = 0f, float y = 0f, int width = 0, int height = 0) {
       this.x = x;
       this.y = y;
       this.width = width;
       this.height = height;
+
+      hitBox = new Rectangle((int)x, (int)y, width, height);
     }
 
     public virtual void preUpdate() {
