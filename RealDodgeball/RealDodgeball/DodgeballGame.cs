@@ -58,7 +58,7 @@ namespace Dodgeball {
       dot.SetData(new Color[] { Color.White });
       Assets.addTexture("Dot", dot);
 
-      Assets.addTexture("player", Content.Load<Texture2D>("playerTest01"));
+      Assets.addTexture("player", Content.Load<Texture2D>("playerTestRun"));
 
       G.switchState(new PlayState());
     }

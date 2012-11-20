@@ -13,24 +13,25 @@ using Microsoft.Xna.Framework.Media;
 namespace Dodgeball.Engine {
   public class Animation {
     public List<int> frames;
-    public int frameDelay;
+    public float frameDelay;
     bool looped;
 
     bool hasPlayed = false;
     bool finished = false;
+    bool paused = false;
 
     public float elapsed;
 
     public int currentFrame = 0;
 
     public float FPS {
-      set { frameDelay = (int)((1 / value) * 1000); }
-      get { return 60000 / (float)frameDelay; }
+      set { frameDelay = 1 / value; }
+      get { return frameDelay; }
     }
 
     public Animation(List<int> frames, int fps, bool looped) {
       this.frames = frames;
-      this.frameDelay = (int)((1 / (float)fps) * 1000);
+      this.FPS = fps;
       this.looped = looped;
     }
 
@@ -39,7 +40,7 @@ namespace Dodgeball.Engine {
     }
 
     public void play() {
-      elapsed += G.elapsed;
+      if(!paused) elapsed += G.elapsed;
       if(!hasPlayed && elapsed > frameDelay) {
         if(currentFrame < frames.Count - 1) {
           currentFrame++;
@@ -55,6 +56,14 @@ namespace Dodgeball.Engine {
         }
         elapsed = 0;
       }
+    }
+
+    public void stop() {
+      paused = true;
+    }
+
+    public void start() {
+      paused = false;
     }
 
     public int getFrame() {

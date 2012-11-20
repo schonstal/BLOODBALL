@@ -34,15 +34,21 @@ namespace Dodgeball.Game {
       maxSpeed = 250f;
       drag = new Vector2(2500,2500);
       
-      loadGraphic("player", 32, 32);
+      loadGraphic("player", 32, 33);
+      addAnimation("run", new List<int> { 0, 1, 2, 3 }, 15, true);
+      addAnimation("runReverse", new List<int> { 3, 2, 1, 0 }, 15, true);
 
       height = 20;
-      offset.Y = -4;
+      offset.Y = -5;
       width = 18;
       offset.X = -8;
     }
 
     public override void Update() {
+      if(velocity.X > 50) play("runReverse");
+      else if(velocity.X < -50) play("run");
+      else stop();
+
       acceleration.X = G.input.ThumbSticks(playerIndex).Left.X * movementAccel;
       //DEBUG - REMOVE
       if(Keyboard.GetState().IsKeyDown(Keys.A)) acceleration.X -= movementAccel;
@@ -60,7 +66,7 @@ namespace Dodgeball.Game {
       if(hasBall) {
         ball.x = x + 5;
         ball.y = y + 10;
-        if(G.input.Triggers(playerIndex).Right > 0.3) {
+        if(G.input.Triggers(playerIndex).Right > 0.3 || Keyboard.GetState().IsKeyDown(Keys.Space)) {
           triggerHeld = true;
           maxSpeed = 150f;
           if(charge < maxCharge)
@@ -90,7 +96,11 @@ namespace Dodgeball.Game {
 
     private void FlingBall() {
       Vector2 flingDirection = Vector2.Normalize(G.input.ThumbSticks(playerIndex).Right);
-      ball.Fling(flingDirection.X, -flingDirection.Y, charge);
+      if(float.IsNaN(flingDirection.X) || float.IsNaN(flingDirection.Y)) {
+        ball.Fling(-1, 0, charge);
+      } else {
+        ball.Fling(flingDirection.X, -flingDirection.Y, charge);
+      }
       hasBall = false;
     }
 

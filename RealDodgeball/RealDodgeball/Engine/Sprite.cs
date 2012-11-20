@@ -52,7 +52,12 @@ namespace Dodgeball.Engine {
     }
 
     public void play(String animation) {
+      this.animation.start();
       currentAnimation = animation;
+    }
+
+    public void stop() {
+      animation.stop();
     }
 
     public void addAnimation(String name, List<int> frames, int fps = 15, bool looped = false) {
