@@ -67,6 +67,12 @@ namespace Dodgeball.Engine {
       }
     }
 
+    public void Each(Action<GameObject> method) {
+      foreach(GameObject o in members) {
+        method(o);
+      }
+    }
+
     public void add(GameObject gameObject) {
       members.Add(gameObject);
     }

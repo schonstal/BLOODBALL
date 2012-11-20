@@ -35,11 +35,28 @@ namespace Dodgeball.Engine {
 			return velocity;
 		}
 
-    public static bool Overlaps(
-        GameObject objectOne,
-        GameObject objectTwo,
-        Action<GameObject, GameObject> callback=null) {
-      return false;
+    public static bool Overlaps(GameObject objectOne, GameObject objectTwo) {
+      //Do fancy collision later
+      /*bool end = true;
+      if(typeof(Group) == objectOne.GetType()) {
+        List<GameObject> group = ((Group)objectOne).Members;
+        foreach(GameObject o in group) {
+          group.Remove(o);
+          Overlaps(o, objectTwo, callback);
+        }
+        end = false;
+      }
+      if(typeof(Group) == objectOne.GetType()) {
+        ((Group)objectTwo).Members.ForEach((o) => Overlaps(o, objectTwo, callback));
+        end = false;
+      }
+      if(end)*/
+
+      if(objectOne.Hitbox.Intersects(objectTwo.Hitbox)) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 }

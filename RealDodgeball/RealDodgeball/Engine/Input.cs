@@ -48,7 +48,7 @@ namespace Dodgeball.Engine {
       return currentState[index].ThumbSticks;
     }
 
-    public void ForEachInput(Action<PlayerIndex> action) {
+    public static void ForEachInput(Action<PlayerIndex> action) {
       for(PlayerIndex index = PlayerIndex.One; index <= PlayerIndex.Four; index++) {
         action(index);
       }
