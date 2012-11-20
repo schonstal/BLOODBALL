@@ -66,8 +66,8 @@ namespace Dodgeball.Engine {
 
     public override void Draw() {
       if(visible) {
-        screenPosition.X = G.camera.x + offset.X + x;
-        screenPosition.Y = G.camera.y + offset.Y + y;
+        screenPosition.X = (int)(G.camera.x + offset.X + x);
+        screenPosition.Y = (int)(G.camera.y + offset.Y + y);
 
         renderSlice.X = animation.getFrame() * graphicWidth;
         renderSlice.Y = 0;

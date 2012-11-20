@@ -38,6 +38,7 @@ namespace Dodgeball {
 
     protected override void Initialize() {
       //TODO: BUTTER YO SHIT
+      GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
       base.Initialize();
     }
 
