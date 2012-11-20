@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Dodgeball.Engine {
   static class Util {
-    static public float computeVelocity(
+    public static float computeVelocity(
         float velocity, float acceleration=0, float drag=0, float max=9000) {
 			if(acceleration != 0)
 				velocity += acceleration * G.elapsed;
@@ -34,5 +34,12 @@ namespace Dodgeball.Engine {
       }
 			return velocity;
 		}
+
+    public static bool Overlaps(
+        GameObject objectOne,
+        GameObject objectTwo,
+        Action<GameObject, GameObject> callback=null) {
+      return false;
+    }
   }
 }
