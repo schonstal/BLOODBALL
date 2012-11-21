@@ -24,7 +24,7 @@ namespace Dodgeball.Engine {
     int graphicWidth;
     int graphicHeight;
 
-    public BlendState blend = BlendState.Opaque;
+    public BlendState blend = BlendState.AlphaBlend;
     public Color color = Color.White;
     public bool visible = true;
     public Vector2 offset = new Vector2();
@@ -74,8 +74,10 @@ namespace Dodgeball.Engine {
         screenPosition.X = (int)(G.camera.x + offset.X + x);
         screenPosition.Y = (int)(G.camera.y + offset.Y + y);
 
-        renderSlice.X = animation.getFrame() * graphicWidth;
-        renderSlice.Y = 0;
+        renderSlice.X = (animation.getFrame() * graphicWidth) % atlas.Width;
+        renderSlice.Y = (int)Math.Floor(
+            (double)((animation.getFrame() * graphicWidth) / atlas.Width)
+          ) * graphicHeight;
         renderSlice.Width = graphicWidth;
         renderSlice.Height = graphicHeight;
 
