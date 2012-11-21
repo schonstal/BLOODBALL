@@ -36,14 +36,18 @@ namespace Dodgeball.Game {
       maxSpeed = 250f;
       drag = new Vector2(2500,2500);
       
-      loadGraphic("player", 32, 33);
-      addAnimation("run", new List<int> { 0, 1, 2, 3 }, 15, true);
-      addAnimation("runReverse", new List<int> { 3, 2, 1, 0 }, 15, true);
+      loadGraphic("player", 34, 34);
+      addAnimation("idle", new List<int> { 0, 1, 2, 3 }, 15, true);
 
-      height = 18;
+      addAnimation("runForward", new List<int> { 0, 1, 2, 3 }, 15, true);
+      addAnimation("runBackward", new List<int> { 3, 2, 1, 0 }, 15, true);
+      addAnimation("runUp", new List<int> { 3, 2, 1, 0 }, 15, true);
+      addAnimation("runDown", new List<int> { 3, 2, 1, 0 }, 15, true);
+
+      height = 22;
       offset.Y = -5;
       width = 18;
-      offset.X = -8;
+      offset.X = -9;
 
       shadow = new Sprite(0, 0);
       shadow.loadGraphic("playerShadow", 13, 12);
@@ -53,8 +57,8 @@ namespace Dodgeball.Game {
     }
 
     public override void Update() {
-      if(velocity.X > 50) play("runReverse");
-      else if(velocity.X < -50) play("run");
+      if(velocity.X > 50) play("runBackward");
+      else if(velocity.X < -50) play("runForward");
       else stop();
 
       acceleration.X = G.input.ThumbSticks(playerIndex).Left.X * movementAccel;
