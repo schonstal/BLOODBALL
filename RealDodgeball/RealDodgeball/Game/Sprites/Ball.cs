@@ -15,10 +15,15 @@ namespace Dodgeball.Game {
   class Ball : Sprite {
     public const int FLOAT_HEIGHT = -4;
     public const int FLOOR_HEIGHT = 7;
+    
     public const float BOUNCE_AMOUNT = -1f;
     public const float BOUNCE_DECAY = 0.85f;
     public const float GRAVITY = 6;
+    
     public const float DANGER_SPEED = 750;
+
+    public const float WALL_SPEED = 200;
+    public const float WALL_DRAG = 0.02f;
 
     public bool dangerous = false;
     public Sprite shadow;
@@ -49,10 +54,12 @@ namespace Dodgeball.Game {
       offset.Y += bounceVelocity;
       if(bounceRate > -0.2f) {
         offset.Y = FLOOR_HEIGHT;
+        assertDanger();
       } else if(offset.Y >= FLOOR_HEIGHT) {
-        dangerous = dangerous && velocity.Length() > DANGER_SPEED;
+        assertDanger();
         bounceVelocity = bounceRate;
         bounceRate *= BOUNCE_DECAY;
+        //if(!dangerous) linearDrag = 0.02f;
       }
 
       if(dangerous) {
@@ -67,9 +74,7 @@ namespace Dodgeball.Game {
       if(x < 0) {
         x = 0;
         velocity.X = -velocity.X;
-        maxSpeed = 200f;
-        linearDrag = 0.02f;
-        dangerous = false;
+        hitWall();
       }
       if(y < 0) {
         y = 0;
@@ -82,9 +87,7 @@ namespace Dodgeball.Game {
       if(x > PlayState.ARENA_WIDTH - width) {
         x = PlayState.ARENA_WIDTH - width;
         velocity.X = -velocity.X;
-        maxSpeed = 200f;
-        linearDrag = 0.02f;
-        dangerous = false;
+        hitWall();
       }
 
       z = shadow.y;// y + offset.Y;
@@ -111,6 +114,16 @@ namespace Dodgeball.Game {
       bounceVelocity = -MathHelper.Clamp(charge/2000f,0,1);
       velocity.X = flingX * charge;
       velocity.Y = flingY * charge;
+    }
+
+    void assertDanger() {
+      dangerous = dangerous && velocity.Length() > DANGER_SPEED;
+    }
+
+    void hitWall() {
+      maxSpeed = WALL_SPEED;
+      linearDrag = WALL_DRAG;
+      dangerous = false;
     }
   }
 }

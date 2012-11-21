@@ -13,6 +13,7 @@ using Dodgeball.Engine;
 
 namespace Dodgeball.Game {
   class Player : Sprite {
+    public const float MIN_RUN_SPEED = 50;
     public Sprite shadow;
 
     PlayerIndex playerIndex;
@@ -29,7 +30,7 @@ namespace Dodgeball.Game {
 
     bool triggerHeld = false;
 
-    public Player(PlayerIndex playerIndex, Team team) : base(0,0) {
+    public Player(PlayerIndex playerIndex, Team team, float X=0f, float Y=0f) : base(X,Y) {
       this.playerIndex = playerIndex;
       this.team = team;
       
@@ -39,10 +40,12 @@ namespace Dodgeball.Game {
       loadGraphic("player", 34, 34);
       addAnimation("idle", new List<int> { 0, 1, 2, 3 }, 15, true);
 
-      addAnimation("runForward", new List<int> { 0, 1, 2, 3 }, 15, true);
-      addAnimation("runBackward", new List<int> { 3, 2, 1, 0 }, 15, true);
-      addAnimation("runUp", new List<int> { 3, 2, 1, 0 }, 15, true);
-      addAnimation("runDown", new List<int> { 3, 2, 1, 0 }, 15, true);
+      addAnimation("runForward", new List<int> { 12, 13, 14, 15 }, 15, true);
+      addAnimation("runBackward", new List<int> { 16, 17, 18, 19 }, 15, true);
+      addAnimation("runUpForward", new List<int> { 4, 5, 6, 7 }, 15, true);
+      addAnimation("runDownForward", new List<int> { 8, 9, 10, 11 }, 15, true);
+      addAnimation("runUpBackward", new List<int> { 11, 10, 9, 8 }, 15, true);
+      addAnimation("runDownBackward", new List<int> { 7, 6, 5, 4 }, 15, true);
 
       height = 22;
       offset.Y = -5;
@@ -57,9 +60,17 @@ namespace Dodgeball.Game {
     }
 
     public override void Update() {
-      if(velocity.X > 50) play("runBackward");
-      else if(velocity.X < -50) play("runForward");
-      else stop();
+      if(Math.Abs(velocity.X) > Math.Abs(velocity.Y)) {
+        if(velocity.X > MIN_RUN_SPEED) play("runBackward");
+        else if(velocity.X < -MIN_RUN_SPEED) play("runForward");
+        else play("idle");
+      } else {
+        if(velocity.Y > MIN_RUN_SPEED) {
+          play(velocity.X < 0 ? "runDownForward" : "runDownBackward");
+        } else if(velocity.Y < -MIN_RUN_SPEED) {
+          play(velocity.X < 0 ? "runUpForward" : "runUpBackward");
+        } else play("idle");
+      }
 
       acceleration.X = G.input.ThumbSticks(playerIndex).Left.X * movementAccel;
       //DEBUG - REMOVE
