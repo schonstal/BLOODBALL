@@ -13,30 +13,52 @@ using Dodgeball.Engine;
 
 namespace Dodgeball.Game {
   class Ball : Sprite {
+    public const int FLOAT_HEIGHT = -4;
+    public const int FLOOR_HEIGHT = 7;
+    public const float BOUNCE_AMOUNT = -1f;
+    public const float BOUNCE_DECAY = 0.85f;
+    public const float GRAVITY = 6;
+    public const float DANGER_SPEED = 750;
+
     public bool dangerous = false;
-    Sprite shadow;
+    public Sprite shadow;
+
+    float bounceVelocity = 0;
+    float bounceRate = BOUNCE_AMOUNT;
 
     public Ball() : base(0,0) {
-      loadGraphic("Dot", 12, 12);
-      color = Color.DarkRed;
+      loadGraphic("ball", 16, 16);
       height = 6;
-      offset.Y = 10;
+      offset.Y = 8;
+      offset.X = -3;
       //drag = new Vector2(750,750);
       linearDrag = 0.005f;
+      width = 9;
       //acceleration.X = 100;
       moves = true;
 
       shadow = new Sprite(0, 0);
-      shadow.loadGraphic("Dot", 12, 8);
+      shadow.loadGraphic("ballShadow", 10, 10);
       shadow.color = new Color(0x1c, 0x1c, 0x1c);
       shadow.z = 0;
       G.state.add(shadow);
     }
 
     public override void Update() {
-      x.ToString();
+      bounceVelocity += GRAVITY * G.elapsed;
+      offset.Y += bounceVelocity;
+      if(bounceRate > -0.2f) {
+        offset.Y = FLOOR_HEIGHT;
+      } else if(offset.Y >= FLOOR_HEIGHT) {
+        dangerous = dangerous && velocity.Length() > DANGER_SPEED;
+        bounceVelocity = bounceRate;
+        bounceRate *= BOUNCE_DECAY;
+      }
+
       if(dangerous) {
         color = Color.Red;
+      } else {
+        color = Color.White;
       }
       base.Update();
     }
@@ -45,6 +67,9 @@ namespace Dodgeball.Game {
       if(x < 0) {
         x = 0;
         velocity.X = -velocity.X;
+        maxSpeed = 200f;
+        linearDrag = 0.02f;
+        dangerous = false;
       }
       if(y < 0) {
         y = 0;
@@ -57,11 +82,14 @@ namespace Dodgeball.Game {
       if(x > PlayState.ARENA_WIDTH - width) {
         x = PlayState.ARENA_WIDTH - width;
         velocity.X = -velocity.X;
+        maxSpeed = 200f;
+        linearDrag = 0.02f;
+        dangerous = false;
       }
 
-      z = y;// +height;
+      z = shadow.y;// y + offset.Y;
       shadow.x = x;
-      shadow.y = y + 16;
+      shadow.y = y + 14;
 
       base.postUpdate();
     }
@@ -69,13 +97,18 @@ namespace Dodgeball.Game {
     public void pickedUp() {
       visible = false;
       shadow.visible = false;
+      bounceVelocity = 0;
+      bounceRate = BOUNCE_AMOUNT;
     }
 
     public void Fling(float flingX, float flingY, float charge) {
-      offset.Y = -2;
-      dangerous = true;
+      offset.Y = FLOAT_HEIGHT;
       visible = true;
+      dangerous = true;
       shadow.visible = true;
+      linearDrag = 0.005f;
+      maxSpeed = 0f;
+      bounceVelocity = -MathHelper.Clamp(charge/2000f,0,1);
       velocity.X = flingX * charge;
       velocity.Y = flingY * charge;
     }

@@ -13,14 +13,16 @@ using Dodgeball.Engine;
 
 namespace Dodgeball.Game {
   class Player : Sprite {
+    public Sprite shadow;
+
     PlayerIndex playerIndex;
     Team team;
     float movementAccel = 5000.0f;
 
     float charge = 0;
     float chargeAmount = 1000.0f;
-    float maxCharge = 2000.0f;
-    float minCharge = 500.0f;
+    float maxCharge = 2500.0f;
+    float minCharge = 700.0f;
 
     bool hasBall = false;
     Ball ball = null;
@@ -38,10 +40,16 @@ namespace Dodgeball.Game {
       addAnimation("run", new List<int> { 0, 1, 2, 3 }, 15, true);
       addAnimation("runReverse", new List<int> { 3, 2, 1, 0 }, 15, true);
 
-      height = 20;
+      height = 18;
       offset.Y = -5;
       width = 18;
       offset.X = -8;
+
+      shadow = new Sprite(0, 0);
+      shadow.loadGraphic("playerShadow", 13, 12);
+      shadow.color = new Color(0x1c, 0x1c, 0x1c);
+      shadow.z = 0;
+      G.state.add(shadow);
     }
 
     public override void Update() {
@@ -90,7 +98,10 @@ namespace Dodgeball.Game {
       if(y < 0) y = 0;
       if(y > PlayState.ARENA_HEIGHT - height) y = PlayState.ARENA_HEIGHT - height;
       if(x > PlayState.ARENA_WIDTH - width) x = PlayState.ARENA_WIDTH - width;
-      z = y;
+      z = shadow.y;
+      shadow.y = y + 18;
+      shadow.x = x + 4;
+
       base.postUpdate();
     }
 

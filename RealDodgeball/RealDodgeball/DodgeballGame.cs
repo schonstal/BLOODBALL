@@ -59,6 +59,9 @@ namespace Dodgeball {
       Assets.addTexture("Dot", dot);
 
       Assets.addTexture("player", Content.Load<Texture2D>("playerTestRun"));
+      Assets.addTexture("ball", Content.Load<Texture2D>("ball"));
+      Assets.addTexture("ballShadow", Content.Load<Texture2D>("ballShadow"));
+      Assets.addTexture("playerShadow", Content.Load<Texture2D>("playerShadow"));
 
       G.switchState(new PlayState());
     }

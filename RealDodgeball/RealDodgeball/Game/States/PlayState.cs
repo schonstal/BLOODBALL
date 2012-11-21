@@ -52,7 +52,7 @@ namespace Dodgeball.Game {
       members = members.OrderBy((member) => member.z).ToList();
 
       players.Each((player) => {
-        if(Util.Overlaps(player, ball)) {
+        if(Util.Overlaps(((Player)player).shadow, ((Ball)ball).shadow)) {
           ((Player)player).PickUpBall(ball);
           //ball.visible = false;
         }
