@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Media;
 namespace Dodgeball.Engine {
   public class Group : GameObject {
     protected List<GameObject> members = new List<GameObject>();
+    public bool visible = true;
 
     public List<GameObject> Members {
       get { return members; }
@@ -25,6 +26,8 @@ namespace Dodgeball.Engine {
     }
 
     public override void Draw() {
+      if(!visible) return;
+
       foreach(GameObject gameObject in members) {
         gameObject.Draw();
       }

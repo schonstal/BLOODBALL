@@ -19,6 +19,7 @@ namespace Dodgeball.Game {
     PlayerIndex playerIndex;
     Team team;
     float movementAccel = 5000.0f;
+    Retical retical;
 
     float charge = 0;
     float chargeAmount = 1000.0f;
@@ -57,6 +58,10 @@ namespace Dodgeball.Game {
       shadow.color = new Color(0x1c, 0x1c, 0x1c);
       shadow.z = 0;
       G.state.add(shadow);
+
+      retical = new Retical(playerIndex, team);
+      retical.visible = false;
+      G.state.add(retical);
     }
 
     public override void Update() {
@@ -88,14 +93,16 @@ namespace Dodgeball.Game {
 
       if(hasBall) {
         ball.x = x + 5;
-        ball.y = y + 10;
+        ball.y = y + 8;
         if(G.input.Triggers(playerIndex).Right > 0.3 || Keyboard.GetState().IsKeyDown(Keys.Space)) {
+          retical.visible = true;
           triggerHeld = true;
           maxSpeed = 150f;
           if(charge < maxCharge)
             charge += chargeAmount * G.elapsed;
           charge = MathHelper.Clamp(charge, minCharge, maxCharge);
         } else {
+          retical.visible = false;
           if(triggerHeld) FlingBall();
           triggerHeld = false;
           maxSpeed = 250f;
@@ -117,17 +124,23 @@ namespace Dodgeball.Game {
       shadow.y = y + 18;
       shadow.x = x + 4;
 
+      if(team == Team.Right) {
+        retical.X = x + 5;
+        retical.Y = y + 24;
+      } else {
+        retical.X = x + 15;
+        retical.Y = y + 24;
+      }
       base.postUpdate();
     }
 
     private void FlingBall() {
-      Vector2 flingDirection = Vector2.Normalize(G.input.ThumbSticks(playerIndex).Right);
+      Vector2 flingDirection = Vector2.Normalize(retical.Direction);
       if(float.IsNaN(flingDirection.X) || float.IsNaN(flingDirection.Y)) {
         ball.Fling(-1, 0, charge);
       } else {
-        ball.Fling(flingDirection.X, -flingDirection.Y, charge);
+        ball.Fling(flingDirection.X, flingDirection.Y, charge);
       }
-      hasBall = false;
     }
 
     public void PickUpBall(Ball ball) {

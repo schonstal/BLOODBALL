@@ -31,7 +31,7 @@ namespace Dodgeball.Game {
     float bounceVelocity = 0;
     float bounceRate = BOUNCE_AMOUNT;
 
-    public Ball() : base(0,0) {
+    public Ball(float X=0, float Y=0) : base(X,Y) {
       loadGraphic("ball", 16, 16);
       height = 6;
       offset.Y = 8;

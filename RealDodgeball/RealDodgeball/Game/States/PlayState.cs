@@ -18,6 +18,7 @@ namespace Dodgeball.Game {
     Sprite dot;
     Ball ball;
 
+    Group balls = new Group();
     Group players = new Group();
 
     public override void Create() {
@@ -35,14 +36,17 @@ namespace Dodgeball.Game {
       dot.z = 100000;
       add(dot);
 
-      ball = new Ball();
-      ball.x = 40;
-      ball.y = 40;
-      add(ball);
+      for(int i = 0; i < 512; i += 16) {
+        for(int j = 0; j < 228; j += 16) {
+          ball = new Ball(i,j);
+          add(ball);
+          balls.add(ball);
+        }
+      }
 
       //probably want to let people pick their team later
-      players.add(new Player(PlayerIndex.One, Team.Left));
-      //players.add(new Player(PlayerIndex.Two, Team.Right));
+      players.add(new Player(PlayerIndex.One, Team.Left, 40, 40));
+      players.add(new Player(PlayerIndex.Two, Team.Right, ARENA_WIDTH - 40, 40));
       //players.add(new Player(PlayerIndex.Three, Team.Left));
       //players.add(new Player(PlayerIndex.Four, Team.Right));
       players.Each((player) => add(player));
@@ -52,10 +56,12 @@ namespace Dodgeball.Game {
       members = members.OrderBy((member) => member.z).ToList();
 
       players.Each((player) => {
-        if(Util.Overlaps(((Player)player).shadow, ((Ball)ball).shadow)) {
-          ((Player)player).PickUpBall(ball);
-          //ball.visible = false;
-        }
+        balls.Each((ball) => {
+          if(Util.Overlaps(((Player)player).shadow, ((Ball)ball).shadow)) {
+            ((Player)player).PickUpBall((Ball)ball);
+            //ball.visible = false;
+          }
+        });
       });
 
       base.Update();

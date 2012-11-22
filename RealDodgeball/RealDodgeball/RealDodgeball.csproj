@@ -126,6 +126,7 @@
     <Compile Include="Engine\Group.cs" />
     <Compile Include="Engine\Util.cs" />
     <Compile Include="Engine\Input.cs" />
+    <Compile Include="Game\Groups\Retical.cs" />
     <Compile Include="Game\Sprites\Ball.cs" />
     <Compile Include="Game\Sprites\Player.cs" />
     <Compile Include="Game\States\BoilerState.cs" />
