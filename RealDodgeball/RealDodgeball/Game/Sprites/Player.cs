@@ -104,6 +104,8 @@ namespace Dodgeball.Game {
         charge = 0;
       }
 
+      retical.charge = charge / maxCharge;
+
       base.Update();
     }
 

@@ -19,6 +19,8 @@ namespace Dodgeball.Game {
     public const float ANGLE_LIMIT = 45f;
     public const float AIM_THRESHOLD = 0.6f;
 
+    public float charge = 0f;
+
     PlayerIndex playerIndex;
     Team team;
 
@@ -84,6 +86,11 @@ namespace Dodgeball.Game {
 
     public override void Update() {
       updateDirection();
+      if(charge > 0) {
+        for(int i = 0; i < DOT_COUNT; i++) {
+          dots[i].color = i < (int)(DOT_COUNT * charge) ? Color.Red : Color.MediumPurple;
+        }
+      }
       base.Update();
     }
 
