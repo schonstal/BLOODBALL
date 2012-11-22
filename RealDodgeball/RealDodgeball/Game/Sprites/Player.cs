@@ -14,6 +14,8 @@ using Dodgeball.Engine;
 namespace Dodgeball.Game {
   class Player : Sprite {
     public const float MIN_RUN_SPEED = 50;
+    public const float BALL_OFFSEET_X = 5f;
+    public const float BALL_OFFSEET_Y = 8f;
     public Sprite shadow;
 
     PlayerIndex playerIndex;
@@ -65,17 +67,7 @@ namespace Dodgeball.Game {
     }
 
     public override void Update() {
-      if(Math.Abs(velocity.X) > Math.Abs(velocity.Y)) {
-        if(velocity.X > MIN_RUN_SPEED) play("runBackward");
-        else if(velocity.X < -MIN_RUN_SPEED) play("runForward");
-        else play("idle");
-      } else {
-        if(velocity.Y > MIN_RUN_SPEED) {
-          play(velocity.X < 0 ? "runDownForward" : "runDownBackward");
-        } else if(velocity.Y < -MIN_RUN_SPEED) {
-          play(velocity.X < 0 ? "runUpForward" : "runUpBackward");
-        } else play("idle");
-      }
+      updateAnimation();
 
       acceleration.X = G.input.ThumbSticks(playerIndex).Left.X * movementAccel;
       //DEBUG - REMOVE
@@ -92,8 +84,8 @@ namespace Dodgeball.Game {
       if(Math.Sign(acceleration.Y) != Math.Sign(velocity.Y)) acceleration.Y *= 15;
 
       if(hasBall) {
-        ball.x = x + 5;
-        ball.y = y + 8;
+        ball.x = x + BALL_OFFSEET_X;
+        ball.y = y + BALL_OFFSEET_Y;
         if(G.input.Triggers(playerIndex).Right > 0.3 || Keyboard.GetState().IsKeyDown(Keys.Space)) {
           retical.visible = true;
           triggerHeld = true;
@@ -134,7 +126,7 @@ namespace Dodgeball.Game {
       base.postUpdate();
     }
 
-    private void FlingBall() {
+    void FlingBall() {
       Vector2 flingDirection = Vector2.Normalize(retical.Direction);
       if(float.IsNaN(flingDirection.X) || float.IsNaN(flingDirection.Y)) {
         ball.Fling(-1, 0, charge);
@@ -143,6 +135,20 @@ namespace Dodgeball.Game {
       }
       ball = null;
       hasBall = false;
+    }
+
+    void updateAnimation() {
+      if(Math.Abs(velocity.X) > Math.Abs(velocity.Y)) {
+        if(velocity.X > MIN_RUN_SPEED) play("runBackward");
+        else if(velocity.X < -MIN_RUN_SPEED) play("runForward");
+        else play("idle");
+      } else {
+        if(velocity.Y > MIN_RUN_SPEED) {
+          play(velocity.X < 0 ? "runDownForward" : "runDownBackward");
+        } else if(velocity.Y < -MIN_RUN_SPEED) {
+          play(velocity.X < 0 ? "runUpForward" : "runUpBackward");
+        } else play("idle");
+      }
     }
 
     public void PickUpBall(Ball ball) {

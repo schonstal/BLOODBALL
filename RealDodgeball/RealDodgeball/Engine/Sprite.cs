@@ -14,7 +14,6 @@ namespace Dodgeball.Engine {
   public class Sprite : GameObject {
     const string DEFAULT_ANIMATION = "__default__";
 
-    String textureName;
     String currentAnimation = DEFAULT_ANIMATION;
     Dictionary<String, Animation> animations;
     Texture2D atlas;

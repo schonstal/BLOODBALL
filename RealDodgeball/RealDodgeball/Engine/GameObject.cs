@@ -65,8 +65,8 @@ namespace Dodgeball.Engine {
     }
 
     protected void updateMotion() {
-			float delta;
-			float velocityDelta;
+			//float delta;
+			//float velocityDelta;
 
 			/*velocityDelta = (
           Util.computeVelocity(velocity.X, acceleration.X, drag.X, maxVelocity.X) -

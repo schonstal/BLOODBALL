@@ -14,14 +14,14 @@ using Dodgeball.Engine;
 namespace Dodgeball.Game {
   //Boilerplate for state
   public class BoilerState : GameState {
-    public void Create() {
+    public override void Create() {
     }
 
-    public void Update() {
+    public override void Update() {
       base.Update();
     }
 
-    public void Draw() {
+    public override void Draw() {
       base.Draw();
     }
   }
