@@ -152,8 +152,9 @@ namespace Dodgeball.Game {
     }
 
     public void PickUpBall(Ball ball) {
-      if(!ball.dangerous && !hasBall) {
+      if(!ball.dangerous && !hasBall && !ball.owned) {
         hasBall = true;
+        ball.owned = true;
         this.ball = ball;
         this.ball.pickedUp();
       }

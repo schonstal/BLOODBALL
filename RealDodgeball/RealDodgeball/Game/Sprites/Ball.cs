@@ -27,6 +27,7 @@ namespace Dodgeball.Game {
 
     public bool dangerous = false;
     public Sprite shadow;
+    public bool owned = false;
 
     float bounceVelocity = 0;
     float bounceRate = BOUNCE_AMOUNT;
@@ -50,16 +51,18 @@ namespace Dodgeball.Game {
     }
 
     public override void Update() {
-      bounceVelocity += GRAVITY * G.elapsed;
-      offset.Y += bounceVelocity;
-      if(bounceRate > -0.2f) {
-        offset.Y = FLOOR_HEIGHT;
-        assertDanger();
-      } else if(offset.Y >= FLOOR_HEIGHT) {
-        assertDanger();
-        bounceVelocity = bounceRate;
-        bounceRate *= BOUNCE_DECAY;
-        //if(!dangerous) linearDrag = 0.02f;
+      if(!owned) {
+        bounceVelocity += GRAVITY * G.elapsed;
+        offset.Y += bounceVelocity;
+        if(bounceRate > -0.2f) {
+          offset.Y = FLOOR_HEIGHT;
+          assertDanger();
+        } else if(offset.Y >= FLOOR_HEIGHT) {
+          assertDanger();
+          bounceVelocity = bounceRate;
+          bounceRate *= BOUNCE_DECAY;
+          //if(!dangerous) linearDrag = 0.02f;
+        }
       }
 
       if(dangerous) {
@@ -114,6 +117,7 @@ namespace Dodgeball.Game {
       bounceVelocity = -MathHelper.Clamp(charge/2000f,0,1);
       velocity.X = flingX * charge;
       velocity.Y = flingY * charge;
+      owned = false;
     }
 
     void assertDanger() {
