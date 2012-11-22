@@ -20,6 +20,8 @@ namespace Dodgeball.Game {
     Group balls = new Group();
     Group players = new Group();
 
+    bool started = false;
+
     public override void Create() {
       //G.visualDebug = true;
 
@@ -48,6 +50,10 @@ namespace Dodgeball.Game {
       add(ball);
       balls.add(ball);
 
+      balls.Each((b) => {
+        b.addOnMoveCallback(onBallMove);
+      });
+
 
       //probably want to let people pick their team later
       players.add(new Player(PlayerIndex.Two, Team.Left, 40, 40));
@@ -57,17 +63,20 @@ namespace Dodgeball.Game {
       players.Each((player) => add(player));
     }
 
-    public override void Update() {
-      base.Update();
-
-      players.Each((player) => {
-        balls.Each((ball) => {
+    void onBallMove(GameObject ball) {
+      if(started) {
+        players.Each((player) => {
           if(Util.Overlaps(((Player)player).shadow, ((Ball)ball).shadow)) {
             ((Player)player).PickUpBall((Ball)ball);
             //ball.visible = false;
           }
         });
-      });
+      }
+    }
+
+    public override void Update() {
+      base.Update();
+      started = true;
     }
 
     public override void Draw() {

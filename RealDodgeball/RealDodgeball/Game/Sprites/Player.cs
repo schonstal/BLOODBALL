@@ -50,6 +50,9 @@ namespace Dodgeball.Game {
       addAnimation("runUpBackward", new List<int> { 11, 10, 9, 8 }, 15, true);
       addAnimation("runDownBackward", new List<int> { 7, 6, 5, 4 }, 15, true);
 
+      //No actual hit yet, this should substitute for now
+      addAnimation("hit", new List<int> { 12, 13, 14, 15 }, 60, true);
+
       height = 22;
       offset.Y = -5;
       width = 18;

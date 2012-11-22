@@ -41,7 +41,6 @@ namespace Dodgeball.Game {
       linearDrag = 0.005f;
       width = 9;
       //acceleration.X = 100;
-      moves = true;
 
       shadow = new Sprite(0, 0);
       shadow.loadGraphic("ballShadow", 10, 10);

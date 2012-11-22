@@ -28,6 +28,8 @@ namespace Dodgeball.Engine {
     public Vector2 maxVelocity = new Vector2(0,0);
 
     public bool moves = true;
+    public int motionSteps = 1;
+    List<Action<GameObject>> onMoveCallbacks = new List<Action<GameObject>>();
 
     public Rectangle Hitbox {
       get {
@@ -52,7 +54,11 @@ namespace Dodgeball.Engine {
     }
 
     public virtual void Update() {
-      if(moves) updateMotion();
+      if(moves) {
+        for(int i = 0; i < motionSteps; i++) {
+          updateMotion(motionSteps);
+        }
+      }
     }
 
     public virtual void postUpdate() {
@@ -64,13 +70,17 @@ namespace Dodgeball.Engine {
     public virtual void Render(SpriteBatch spriteBatch) {
     }
 
-    protected void updateMotion() {
+    public void addOnMoveCallback(Action<GameObject> callback) {
+      onMoveCallbacks.Add(callback);
+    }
+
+    protected void updateMotion(int steps=1) {
       velocity.X += Util.computeVelocity(
-          velocity.X, acceleration.X, drag.X, maxVelocity.X
+          velocity.X, acceleration.X, drag.X, maxVelocity.X, steps
         ) - velocity.X;
 
       velocity.Y += Util.computeVelocity(
-          velocity.Y, acceleration.Y, drag.Y, maxVelocity.Y
+          velocity.Y, acceleration.Y, drag.Y, maxVelocity.Y, steps
         ) - velocity.Y;
 
       if(maxSpeed > 0 && velocity.Length() > maxSpeed) {
@@ -81,8 +91,10 @@ namespace Dodgeball.Engine {
         velocity -= velocity * linearDrag;
       }
 
-      x += G.elapsed * velocity.X;
-      y += G.elapsed * velocity.Y;
+      x += G.elapsed/steps * velocity.X;
+      y += G.elapsed/steps * velocity.Y;
+
+      onMoveCallbacks.ForEach((callback) => callback(this));
 		}
   }
 }
