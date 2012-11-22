@@ -31,6 +31,7 @@ namespace Dodgeball.Game {
     Ball ball = null;
 
     bool triggerHeld = false;
+    bool triggerWasHeld = false;
 
     public Player(PlayerIndex playerIndex, Team team, float X=0f, float Y=0f) : base(X,Y) {
       this.playerIndex = playerIndex;
@@ -77,10 +78,17 @@ namespace Dodgeball.Game {
       acceleration.Y = G.input.ThumbSticks(playerIndex).Left.Y * -movementAccel;
       if(Math.Sign(acceleration.Y) != Math.Sign(velocity.Y)) acceleration.Y *= 15;
 
+      triggerWasHeld = triggerHeld;
+      if(G.input.Triggers(playerIndex).Right > 0.3) {
+        triggerHeld = true;
+      } else {
+        triggerHeld = false;
+      }
+
       if(this.ball != null) {
         ball.x = x + BALL_OFFSEET_X;
         ball.y = y + BALL_OFFSEET_Y;
-        if(G.input.Triggers(playerIndex).Right > 0.3) {
+        if(triggerHeld) {
           retical.visible = true;
           triggerHeld = true;
           maxSpeed = 150f;
@@ -89,7 +97,7 @@ namespace Dodgeball.Game {
           charge = MathHelper.Clamp(charge, minCharge, maxCharge);
         } else {
           retical.visible = false;
-          if(triggerHeld) FlingBall();
+          if(triggerWasHeld) FlingBall();
           triggerHeld = false;
           maxSpeed = 250f;
           charge = 0;
