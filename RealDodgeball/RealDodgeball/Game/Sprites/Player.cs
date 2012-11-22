@@ -123,13 +123,15 @@ namespace Dodgeball.Game {
     }
 
     void FlingBall() {
-      Vector2 flingDirection = Vector2.Normalize(retical.Direction);
-      if(float.IsNaN(flingDirection.X) || float.IsNaN(flingDirection.Y)) {
-        ball.Fling(-1, 0, charge);
-      } else {
-        ball.Fling(flingDirection.X, flingDirection.Y, charge);
+      if(ball != null) {
+        Vector2 flingDirection = Vector2.Normalize(retical.Direction);
+        if(float.IsNaN(flingDirection.X) || float.IsNaN(flingDirection.Y)) {
+          ball.Fling(-1, 0, charge);
+        } else {
+          ball.Fling(flingDirection.X, flingDirection.Y, charge);
+        }
+        ball = null;
       }
-      ball = null;
     }
 
     void updateAnimation() {
