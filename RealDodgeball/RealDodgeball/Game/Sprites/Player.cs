@@ -141,10 +141,12 @@ namespace Dodgeball.Game {
       } else {
         ball.Fling(flingDirection.X, flingDirection.Y, charge);
       }
+      ball = null;
+      hasBall = false;
     }
 
     public void PickUpBall(Ball ball) {
-      if(!ball.dangerous) {
+      if(!ball.dangerous && !hasBall) {
         hasBall = true;
         this.ball = ball;
         this.ball.pickedUp();

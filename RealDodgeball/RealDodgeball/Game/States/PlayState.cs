@@ -16,7 +16,6 @@ namespace Dodgeball.Game {
     public const int ARENA_WIDTH = 512;
     public const int ARENA_HEIGHT = 288;
     Sprite dot;
-    Ball ball;
 
     Group balls = new Group();
     Group players = new Group();
@@ -36,24 +35,30 @@ namespace Dodgeball.Game {
       dot.z = 100000;
       add(dot);
 
-      for(int i = 0; i < 512; i += 16) {
-        for(int j = 0; j < 228; j += 16) {
-          ball = new Ball(i,j);
-          add(ball);
-          balls.add(ball);
-        }
-      }
+      Ball ball = new Ball(80, 80);
+      add(ball);
+      balls.add(ball);
+      ball = new Ball(80, 120);
+      add(ball);
+      balls.add(ball);
+      ball = new Ball(ARENA_WIDTH - 80 - ball.width, 80);
+      add(ball);
+      balls.add(ball);
+      ball = new Ball(ARENA_WIDTH - 80 - ball.width, 120);
+      add(ball);
+      balls.add(ball);
+
 
       //probably want to let people pick their team later
-      players.add(new Player(PlayerIndex.One, Team.Left, 40, 40));
-      players.add(new Player(PlayerIndex.Two, Team.Right, ARENA_WIDTH - 40, 40));
+      players.add(new Player(PlayerIndex.Two, Team.Left, 40, 40));
+      players.add(new Player(PlayerIndex.One, Team.Right, ARENA_WIDTH - 40, 40));
       //players.add(new Player(PlayerIndex.Three, Team.Left));
       //players.add(new Player(PlayerIndex.Four, Team.Right));
       players.Each((player) => add(player));
     }
 
     public override void Update() {
-      members = members.OrderBy((member) => member.z).ToList();
+      base.Update();
 
       players.Each((player) => {
         balls.Each((ball) => {
@@ -63,11 +68,10 @@ namespace Dodgeball.Game {
           }
         });
       });
-
-      base.Update();
     }
 
     public override void Draw() {
+      members = members.OrderBy((member) => member.z).ToList();
       base.Draw();
     }
   }
