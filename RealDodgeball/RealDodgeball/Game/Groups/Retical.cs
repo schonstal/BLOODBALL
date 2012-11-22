@@ -13,7 +13,7 @@ using Dodgeball.Engine;
 
 namespace Dodgeball.Game {
   class Retical : Group {
-    public const int DOT_COUNT = 5;
+    public const int DOT_COUNT = 6;
     public const int DOT_SPREAD = 10;
     public const float DISTORTION_AMOUNT = 0.15f;
     public const float ANGLE_LIMIT = 45f;
