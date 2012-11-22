@@ -65,27 +65,6 @@ namespace Dodgeball.Engine {
     }
 
     protected void updateMotion() {
-			//float delta;
-			//float velocityDelta;
-
-			/*velocityDelta = (
-          Util.computeVelocity(velocity.X, acceleration.X, drag.X, maxVelocity.X) -
-          velocity.X
-        ) / 2;
-			velocity.X += velocityDelta;
-			delta = velocity.X*G.elapsed;
-			velocity.X += velocityDelta;
-			x += delta;
-
-			velocityDelta = (
-          Util.computeVelocity(velocity.Y, acceleration.Y, drag.Y, maxVelocity.Y) -
-          velocity.Y
-        )/2;
-			velocity.Y += velocityDelta;
-			delta = velocity.Y*G.elapsed;
-			velocity.Y += velocityDelta;
-			y += delta;*/
-
       velocity.X += Util.computeVelocity(
           velocity.X, acceleration.X, drag.X, maxVelocity.X
         ) - velocity.X;
