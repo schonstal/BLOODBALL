@@ -28,7 +28,6 @@ namespace Dodgeball.Game {
     float maxCharge = 2500.0f;
     float minCharge = 700.0f;
 
-    bool hasBall = false;
     Ball ball = null;
 
     bool triggerHeld = false;
@@ -78,7 +77,7 @@ namespace Dodgeball.Game {
       acceleration.Y = G.input.ThumbSticks(playerIndex).Left.Y * -movementAccel;
       if(Math.Sign(acceleration.Y) != Math.Sign(velocity.Y)) acceleration.Y *= 15;
 
-      if(hasBall) {
+      if(this.ball != null) {
         ball.x = x + BALL_OFFSEET_X;
         ball.y = y + BALL_OFFSEET_Y;
         if(G.input.Triggers(playerIndex).Right > 0.3) {
@@ -131,7 +130,6 @@ namespace Dodgeball.Game {
         ball.Fling(flingDirection.X, flingDirection.Y, charge);
       }
       ball = null;
-      hasBall = false;
     }
 
     void updateAnimation() {
@@ -149,8 +147,7 @@ namespace Dodgeball.Game {
     }
 
     public void PickUpBall(Ball ball) {
-      if(!ball.dangerous && !hasBall && !ball.owned) {
-        hasBall = true;
+      if(!ball.dangerous && this.ball == null && !ball.owned) {
         ball.owned = true;
         this.ball = ball;
         this.ball.pickedUp();
