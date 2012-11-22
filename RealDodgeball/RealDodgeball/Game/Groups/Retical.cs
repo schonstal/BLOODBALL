@@ -19,6 +19,9 @@ namespace Dodgeball.Game {
     public const float ANGLE_LIMIT = 45f;
     public const float AIM_THRESHOLD = 0.6f;
 
+    public Color CHARGED_COLOR = Color.Red;
+    public Color UNCHARGED_COLOR = Color.MediumPurple;
+
     public float charge = 0f;
 
     PlayerIndex playerIndex;
@@ -88,7 +91,7 @@ namespace Dodgeball.Game {
       updateDirection();
       if(charge > 0) {
         for(int i = 0; i < DOT_COUNT; i++) {
-          dots[i].color = i < (int)(DOT_COUNT * charge) ? Color.Red : Color.MediumPurple;
+          dots[i].color = i < (int)(DOT_COUNT * charge) ? CHARGED_COLOR : UNCHARGED_COLOR;
         }
       }
       base.Update();
