@@ -46,8 +46,9 @@ namespace Dodgeball.Game {
       set {
         y = value;
         for(int i = 0; i < DOT_COUNT; i++) {
-          dots[i].y = y + ((i + 1) * DOT_SPREAD * direction.Y) * 
-            (direction.Y < 0 ? -(1 + DISTORTION_AMOUNT) : -(1 - DISTORTION_AMOUNT));
+          dots[i].y = y + ((i + 1) * DOT_SPREAD * direction.Y) *
+            -(1 - DISTORTION_AMOUNT);
+            //(direction.Y < 0 ? -(1 + DISTORTION_AMOUNT) : -(1 - DISTORTION_AMOUNT));
         }
       }
       get { return y; }
