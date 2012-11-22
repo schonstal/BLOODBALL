@@ -139,6 +139,9 @@ namespace Dodgeball.Game {
           ball.Fling(flingDirection.X, flingDirection.Y, charge);
         }
         ball = null;
+        G.state.DoForSeconds(0.2f,
+          () => GamePad.SetVibration(playerIndex, 0.4f, 0.2f),
+          () => GamePad.SetVibration(playerIndex, 0, 0));
       }
     }
 
