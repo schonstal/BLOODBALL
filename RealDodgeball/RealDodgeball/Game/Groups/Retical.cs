@@ -56,10 +56,21 @@ namespace Dodgeball.Game {
       }
     }
 
+    public bool onLeft {
+      get { return team == Team.Left; }
+    }
+
+    public bool onRight {
+      get { return team == Team.Right; }
+    }
+
+
     public Retical(PlayerIndex playerIndex, Team team) : base() {
       this.team = team;
       this.playerIndex = playerIndex;
       z = 0;
+
+      direction.X = onLeft ? 1 : -1;
 
       dots = new Sprite[DOT_COUNT];
       for(int i = 0; i < DOT_COUNT; i++) {
@@ -72,10 +83,15 @@ namespace Dodgeball.Game {
     }
 
     public override void Update() {
+      updateDirection();
+      base.Update();
+    }
+
+    void updateDirection() {
       if(G.input.ThumbSticks(playerIndex).Right.Length() > AIM_THRESHOLD) {
         if((team == Team.Right && G.input.ThumbSticks(playerIndex).Right.X < 0) ||
             (team == Team.Left && G.input.ThumbSticks(playerIndex).Right.X > 0)) {
-          if(team == Team.Right) {
+          if(onRight) {
             direction.X = MathHelper.Clamp(
               Vector2.Normalize(G.input.ThumbSticks(playerIndex).Right).X,
               -1f, -(float)Math.Cos(MathHelper.ToRadians(ANGLE_LIMIT)));
@@ -88,7 +104,6 @@ namespace Dodgeball.Game {
         }
         direction.Normalize();
       }
-      base.Update();
     }
   }
 }
