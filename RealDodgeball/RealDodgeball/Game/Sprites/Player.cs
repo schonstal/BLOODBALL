@@ -73,23 +73,15 @@ namespace Dodgeball.Game {
       updateAnimation();
 
       acceleration.X = G.input.ThumbSticks(playerIndex).Left.X * movementAccel;
-      //DEBUG - REMOVE
-      if(Keyboard.GetState().IsKeyDown(Keys.A)) acceleration.X -= movementAccel;
-      if(Keyboard.GetState().IsKeyDown(Keys.D)) acceleration.X += movementAccel;
-      //END DEBUG
       if(Math.Sign(acceleration.X) != Math.Sign(velocity.X)) acceleration.X *= 15;
 
       acceleration.Y = G.input.ThumbSticks(playerIndex).Left.Y * -movementAccel;
-      //DEBUG - REMOVE
-      if(Keyboard.GetState().IsKeyDown(Keys.W)) acceleration.Y -= movementAccel;
-      if(Keyboard.GetState().IsKeyDown(Keys.S)) acceleration.Y += movementAccel;
-      //END DEBUG
       if(Math.Sign(acceleration.Y) != Math.Sign(velocity.Y)) acceleration.Y *= 15;
 
       if(hasBall) {
         ball.x = x + BALL_OFFSEET_X;
         ball.y = y + BALL_OFFSEET_Y;
-        if(G.input.Triggers(playerIndex).Right > 0.3 || Keyboard.GetState().IsKeyDown(Keys.Space)) {
+        if(G.input.Triggers(playerIndex).Right > 0.3) {
           retical.visible = true;
           triggerHeld = true;
           maxSpeed = 150f;
