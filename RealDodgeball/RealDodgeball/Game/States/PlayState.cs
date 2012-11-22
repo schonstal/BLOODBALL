@@ -13,8 +13,8 @@ using Dodgeball.Engine;
 
 namespace Dodgeball.Game {
   public class PlayState : GameState {
-    public const int ARENA_WIDTH = 512;
-    public const int ARENA_HEIGHT = 288;
+    public const int ARENA_WIDTH = 448;
+    public const int ARENA_HEIGHT = 252;
     Sprite dot;
 
     Group balls = new Group();
@@ -58,8 +58,8 @@ namespace Dodgeball.Game {
       //probably want to let people pick their team later
       players.add(new Player(PlayerIndex.Two, Team.Left, 40, 40));
       players.add(new Player(PlayerIndex.One, Team.Right, ARENA_WIDTH - 40, 40));
-      //players.add(new Player(PlayerIndex.Three, Team.Left));
-      //players.add(new Player(PlayerIndex.Four, Team.Right));
+      players.add(new Player(PlayerIndex.Three, Team.Left, 40, ARENA_HEIGHT - 100));
+      players.add(new Player(PlayerIndex.Four, Team.Right, ARENA_WIDTH - 40, ARENA_HEIGHT - 100));
       players.Each((player) => add(player));
     }
 

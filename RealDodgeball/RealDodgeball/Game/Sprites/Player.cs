@@ -25,7 +25,7 @@ namespace Dodgeball.Game {
 
     float charge = 0;
     float chargeAmount = 1000.0f;
-    float maxCharge = 2500.0f;
+    float maxCharge = 2000.0f;
     float minCharge = 700.0f;
 
     Ball ball = null;
