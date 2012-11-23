@@ -16,6 +16,7 @@ namespace Dodgeball.Game {
     public const float MIN_RUN_SPEED = 50;
     public const float BALL_OFFSEET_X = 5f;
     public const float BALL_OFFSEET_Y = 8f;
+    public const float CATCH_THRESHOLD = 0.06f;
     public Sprite shadow;
 
     PlayerIndex playerIndex;
@@ -33,6 +34,8 @@ namespace Dodgeball.Game {
     bool triggerHeld = false;
     bool triggerWasHeld = false;
 
+    float catchTimer = 0f;
+
     public Player(PlayerIndex playerIndex, Team team, float X=0f, float Y=0f) : base(X,Y) {
       this.playerIndex = playerIndex;
       this.team = team;
@@ -41,7 +44,7 @@ namespace Dodgeball.Game {
       drag = new Vector2(2500,2500);
       
       loadGraphic("player", 34, 34);
-      addAnimation("idle", new List<int> { 0, 1, 2, 3 }, 15, true);
+      addAnimation("idle", new List<int> { 0, 1, 2, 3 }, 10, true);
 
       addAnimation("runForward", new List<int> { 12, 13, 14, 15 }, 15, true);
       addAnimation("runBackward", new List<int> { 16, 17, 18, 19 }, 15, true);
