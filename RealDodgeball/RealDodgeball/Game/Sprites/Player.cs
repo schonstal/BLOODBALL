@@ -25,6 +25,7 @@ namespace Dodgeball.Game {
 
     PlayerIndex playerIndex;
     Team team;
+    Heading heading;
     float movementAccel = 5000.0f;
     Retical retical;
 
@@ -45,6 +46,7 @@ namespace Dodgeball.Game {
     public Player(PlayerIndex playerIndex, Team team, float X=0f, float Y=0f) : base(X,Y) {
       this.playerIndex = playerIndex;
       this.team = team;
+      heading = Heading.Forward;
       
       maxSpeed = 250f;
       drag = new Vector2(2500,2500);
@@ -70,9 +72,9 @@ namespace Dodgeball.Game {
           new Vector2(0, 0)
         };
       throwOffsets[(int)Heading.Forward] = new Vector2[3] {
-          new Vector2(0, 0),
-          new Vector2(0, 0),
-          new Vector2(0, 0)
+          new Vector2(1, 0),
+          new Vector2(3, 0),
+          new Vector2(1, 0)
         };
       throwOffsets[(int)Heading.DownMid] = new Vector2[3] {
           new Vector2(0, 0),
@@ -106,6 +108,7 @@ namespace Dodgeball.Game {
 
     public override void Update() {
       updateAnimation();
+      updateHeading();
 
       acceleration.X = G.input.ThumbSticks(playerIndex).Left.X * movementAccel;
       if(Math.Sign(acceleration.X) != Math.Sign(velocity.X)) acceleration.X *= 15;
@@ -198,6 +201,9 @@ namespace Dodgeball.Game {
           play(velocity.X < 0 ? "runUpForward" : "runUpBackward");
         } else play("idle");
       }
+    }
+
+    void updateHeading() {
     }
 
     public void PickUpBall(Ball ball) {
