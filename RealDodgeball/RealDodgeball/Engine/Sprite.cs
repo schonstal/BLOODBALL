@@ -73,6 +73,11 @@ namespace Dodgeball.Engine {
       animations.Add(name, new Animation(frames, fps, looped));
     }
 
+    //callback is passed the frame index
+    public void addAnimationCallback(String animationName, Action<int> callback) {
+
+    }
+
     public override void Update() {
       animation.play();
       base.Update();

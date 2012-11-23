@@ -20,6 +20,9 @@ namespace Dodgeball.Engine {
     bool finished = false;
     bool paused = false;
 
+    List<Action<int>> animationCallbacks = new List<Action<int>>();
+    List<Action<int>> onCompleteCallbacks = new List<Action<int>>();
+
     public float elapsed;
 
     public int currentFrame = 0;
@@ -45,13 +48,14 @@ namespace Dodgeball.Engine {
         if(currentFrame < frames.Count - 1) {
           currentFrame++;
           finished = false;
+          animationCallbacks.ForEach((callback) => callback(currentFrame));
         } else {
           if(looped) {
             currentFrame = 0;
           } else {
             hasPlayed = true;
           }
-
+          onCompleteCallbacks.ForEach((callback) => callback(currentFrame));
           finished = true;
         }
         elapsed = 0;
@@ -73,6 +77,12 @@ namespace Dodgeball.Engine {
     public void reset() {
       hasPlayed = false;
       currentFrame = 0;
+    }
+
+    public void addAnimationCallback(Action<int> callback) {
+    }
+
+    public void addOnCompleteCallback(Action<int> callaback) {
     }
   }
 }
