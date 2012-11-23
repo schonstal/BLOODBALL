@@ -38,6 +38,8 @@ namespace Dodgeball.Game {
     bool triggerHeld = false;
     bool triggerWasHeld = false;
 
+    Vector2[][] throwOffsets = new Vector2[Enum.GetNames(typeof(Heading)).Length][];
+
     float catchTimer = 0f;
 
     public Player(PlayerIndex playerIndex, Team team, float X=0f, float Y=0f) : base(X,Y) {
@@ -56,6 +58,32 @@ namespace Dodgeball.Game {
       addAnimation("runDownForward", new List<int> { 8, 9, 10, 11 }, 15, true);
       addAnimation("runUpBackward", new List<int> { 11, 10, 9, 8 }, 15, true);
       addAnimation("runDownBackward", new List<int> { 7, 6, 5, 4 }, 15, true);
+
+      throwOffsets[(int)Heading.Up] = new Vector2[3] {
+          new Vector2(0, 0),
+          new Vector2(0, 0),
+          new Vector2(0, 0)
+        };
+      throwOffsets[(int)Heading.UpMid] = new Vector2[3] {
+          new Vector2(0, 0),
+          new Vector2(0, 0),
+          new Vector2(0, 0)
+        };
+      throwOffsets[(int)Heading.Forward] = new Vector2[3] {
+          new Vector2(0, 0),
+          new Vector2(0, 0),
+          new Vector2(0, 0)
+        };
+      throwOffsets[(int)Heading.DownMid] = new Vector2[3] {
+          new Vector2(0, 0),
+          new Vector2(0, 0),
+          new Vector2(0, 0)
+        };
+      throwOffsets[(int)Heading.Down] = new Vector2[3] {
+          new Vector2(0, 0),
+          new Vector2(0, 0),
+          new Vector2(0, 0)
+        };
 
       //No actual hit yet, this should substitute for now
       addAnimation("hit", new List<int> { 12, 13, 14, 15 }, 60, true);
@@ -184,5 +212,13 @@ namespace Dodgeball.Game {
   public enum Team {
     Left = 0x01,
     Right = 0x02
+  }
+
+  public enum Heading {
+    Up = 0,
+    UpMid = 1,
+    Forward = 2,
+    DownMid = 3,
+    Down = 4
   }
 }
