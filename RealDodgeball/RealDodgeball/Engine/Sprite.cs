@@ -14,6 +14,13 @@ namespace Dodgeball.Engine {
   public class Sprite : GameObject {
     const string DEFAULT_ANIMATION = "__default__";
 
+    public BlendState blend = BlendState.AlphaBlend;
+    public Color color = Color.White;
+    public bool visible = true;
+    public Vector2 offset = new Vector2();
+
+    protected Vector2 sheetOffset = new Vector2();
+
     String currentAnimation = DEFAULT_ANIMATION;
     Dictionary<String, Animation> animations;
     Texture2D atlas;
@@ -23,10 +30,13 @@ namespace Dodgeball.Engine {
     int graphicWidth;
     int graphicHeight;
 
-    public BlendState blend = BlendState.AlphaBlend;
-    public Color color = Color.White;
-    public bool visible = true;
-    public Vector2 offset = new Vector2();
+    public int GraphicHeight {
+      get { return graphicHeight; }
+    }
+
+    public int GraphicWidth {
+      get { return graphicWidth; }
+    }
 
     public bool finished {
       get { return animations[currentAnimation].Finished; }
@@ -73,10 +83,10 @@ namespace Dodgeball.Engine {
         screenPosition.X = (int)(G.camera.x + offset.X + x);
         screenPosition.Y = (int)(G.camera.y + offset.Y + y);
 
-        renderSlice.X = (animation.getFrame() * graphicWidth) % atlas.Width;
-        renderSlice.Y = (int)Math.Floor(
+        renderSlice.X = ((animation.getFrame() * graphicWidth) % atlas.Width) + (int)sheetOffset.X;
+        renderSlice.Y = ((int)Math.Floor(
             (double)((animation.getFrame() * graphicWidth) / atlas.Width)
-          ) * graphicHeight;
+          ) * graphicHeight) + (int)sheetOffset.Y;
         renderSlice.Width = graphicWidth;
         renderSlice.Height = graphicHeight;
 

@@ -17,6 +17,10 @@ namespace Dodgeball.Game {
     public const float BALL_OFFSEET_X = 5f;
     public const float BALL_OFFSEET_Y = 8f;
     public const float CATCH_THRESHOLD = 0.06f;
+    
+    public const int CHARGE_OFFSET = 2;
+    public const int HOLD_OFFSET = 1;
+
     public Sprite shadow;
 
     PlayerIndex playerIndex;
@@ -89,6 +93,11 @@ namespace Dodgeball.Game {
       }
 
       if(this.ball != null) {
+        if(charge > 0) {
+          sheetOffset.Y = CHARGE_OFFSET * GraphicHeight;
+        } else {
+          sheetOffset.Y = HOLD_OFFSET * GraphicHeight;
+        }
         ball.x = x + BALL_OFFSEET_X;
         ball.y = y + BALL_OFFSEET_Y;
         if(triggerHeld) {
@@ -106,6 +115,7 @@ namespace Dodgeball.Game {
           charge = 0;
         }
       } else {
+        sheetOffset.Y = 0;
         charge = 0;
       }
 
