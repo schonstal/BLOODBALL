@@ -62,6 +62,10 @@ namespace Dodgeball.Game {
       set { sheetOffset.Y = (int)value * GraphicHeight; }
     }
 
+    public bool Stunned {
+      get { return throwing; }
+    }
+
     public Player(PlayerIndex playerIndex, Team team, float X=0f, float Y=0f) : base(X,Y) {
       this.playerIndex = playerIndex;
       this.team = team;
@@ -228,10 +232,14 @@ namespace Dodgeball.Game {
           play(velocity.X < 0 ? "runUpForward" : "runUpBackward");
         } else play("idle");
       }
+
+      if(currentAnimation != "throw" && currentAnimation != "idle") {
+        animation.FPS = velocity.Length() / 11f;
+      }
     }
 
     void updatePhysics() {
-      if(!throwing) {
+      if(!Stunned) {
         acceleration.X = G.input.ThumbSticks(playerIndex).Left.X * movementAccel;
         if(Math.Sign(acceleration.X) != Math.Sign(velocity.X)) acceleration.X *= 15;
 

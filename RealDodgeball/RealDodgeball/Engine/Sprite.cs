@@ -21,7 +21,7 @@ namespace Dodgeball.Engine {
 
     protected Vector2 sheetOffset = new Vector2();
 
-    String currentAnimation = DEFAULT_ANIMATION;
+    protected String currentAnimation = DEFAULT_ANIMATION;
     Dictionary<String, Animation> animations;
     Texture2D atlas;
     Vector2 screenPosition = new Vector2();
