@@ -93,7 +93,12 @@ namespace Dodgeball.Game {
       get { return hitPoints <= 0; }
     }
 
-    public Player(PlayerIndex playerIndex, Team team, Vector2 submatrix, float X=0f, float Y=0f) : base(X,Y) {
+    public float MaxFling {
+      get { return maxCharge; }
+    }
+
+    public Player(PlayerIndex playerIndex, Team team, Vector2 submatrix,
+        float X=0f, float Y=0f) : base(X,Y) {
       this.playerIndex = playerIndex;
       this.team = team;
       spriteSubmatrix = submatrix;
@@ -269,7 +274,8 @@ namespace Dodgeball.Game {
         play("throw");
         throwing = true;
         animation.reset();
-        animation.FPS = MIN_THROW_FPS + ((charge / maxCharge) * (MAX_THROW_FPS - MIN_THROW_FPS));
+        animation.FPS = MIN_THROW_FPS + ((charge / maxCharge) *
+            (MAX_THROW_FPS - MIN_THROW_FPS));
         G.state.DoForSeconds(0.2f,
           () => GamePad.SetVibration(playerIndex,
             (flungAtCharge - minCharge) / (maxCharge - minCharge), 0),
@@ -357,7 +363,8 @@ namespace Dodgeball.Game {
     }
 
     public void onCollide(Ball ball) {
-      if(!ball.dangerous && this.ball == null && !ball.owned && !throwing && !hurt && !Dead) {
+      if(!ball.dangerous && this.ball == null && !ball.owned &&
+          !throwing && !hurt && !Dead) {
         ball.owned = true;
         ball.owner = this;
         this.ball = ball;
@@ -375,20 +382,20 @@ namespace Dodgeball.Game {
         velocity.Y = ball.velocity.Y*10;
         play("hurt");
         blood.spray();
-        hitRumble();
+        hitRumble(ball);
       }
     }
 
-    void hitRumble() {
-      float seconds = MathHelper.Lerp(MIN_HIT_SECONDS, MAX_HIT_SECONDS,
-        ball.velocity.Length() / ball.maxSpeed);
+    void hitRumble(Ball ball) {
+      float relativeSpeed = ball.velocity.Length() / MaxFling;
+      float seconds = MathHelper.Lerp(MIN_HIT_SECONDS, MAX_HIT_SECONDS, relativeSpeed);
       //TODO: FINISH THIS SHIT
-      float bog;
+      float big = MathHelper.Lerp(MIN_HIT_POWER, MAX_HIT_POWER, relativeSpeed);
+      float little = MathHelper.Lerp(MIN_HIT_POWER, MAX_HIT_POWER, relativeSpeed);
 
-      G.state.DoInSeconds(seconds, () => {
-        play("throwReturn");
-        animation.reset();
-      });
+      G.state.DoForSeconds(seconds,
+        () => GamePad.SetVibration(playerIndex, big, little),
+        () => GamePad.SetVibration(playerIndex, 0, 0));
     }
   }
 
