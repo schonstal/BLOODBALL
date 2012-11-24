@@ -129,6 +129,7 @@
     <Compile Include="Game\Groups\Retical.cs" />
     <Compile Include="Game\Sprites\Ball.cs" />
     <Compile Include="Game\Sprites\BloodSpray.cs" />
+    <Compile Include="Game\Sprites\PlayerShadow.cs" />
     <Compile Include="Game\Sprites\Player.cs" />
     <Compile Include="Game\States\BoilerState.cs" />
     <Compile Include="Game\States\PlayState.cs" />

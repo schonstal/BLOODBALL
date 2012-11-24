@@ -41,7 +41,7 @@ namespace Dodgeball.Game {
       "throw", "idle", "throwReturn", "hurt", "hurtFall", "hurtRecover"
     };
 
-    public Sprite shadow;
+    public PlayerShadow shadow;
     public Team team;
 
     PlayerIndex playerIndex;
@@ -174,10 +174,7 @@ namespace Dodgeball.Game {
       width = 18;
       offset.X = -9;
 
-      shadow = new Sprite(0, 0);
-      shadow.loadGraphic("playerShadow", 13, 12);
-      shadow.color = new Color(0x1c, 0x1c, 0x1c);
-      shadow.z = 0;
+      shadow = new PlayerShadow(this);
       G.state.add(shadow);
 
       retical = new Retical(playerIndex, team);
@@ -247,8 +244,6 @@ namespace Dodgeball.Game {
       if(y > PlayState.ARENA_HEIGHT - height) y = PlayState.ARENA_HEIGHT - height;
 
       z = shadow.y;
-      shadow.y = y + 18;
-      shadow.x = x + 4;
 
       if(team == Team.Right) {
         retical.X = x + 5;
