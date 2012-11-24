@@ -67,8 +67,9 @@ namespace Dodgeball.Game {
       if(started) {
         players.Each((player) => {
           if(Util.Overlaps(((Player)player).shadow, ((Ball)ball).shadow)) {
+            bool playerWasDead = ((Player)player).Dead;
             ((Player)player).onCollide((Ball)ball);
-            ((Ball)ball).onCollide((Player)player);
+            ((Ball)ball).onCollide((Player)player, playerWasDead);
             //ball.visible = false;
           }
         });

@@ -13,10 +13,11 @@ using Dodgeball.Engine;
 
 namespace Dodgeball.Game {
   class Player : Sprite {
-    public const float MIN_RUN_SPEED = 50;
+    public const float MIN_RUN_SPEED = 30;
     public const float BALL_OFFSEET_X = 5f;
     public const float BALL_OFFSEET_Y = 8f;
     public const float CATCH_THRESHOLD = 0.06f;
+    public const float CONTROL_DRAG = 2500f;
 
     public const float MAX_RUN_SPEED = 175f;
     public const float CHARGE_RUN_SPEED = 100f;
@@ -30,6 +31,11 @@ namespace Dodgeball.Game {
 
     public const float MAX_HITPOINTS = 100.0f;
     public const float HIT_DRAG = 0.1f;
+    public const float HIT_STOP_SPEED = 5f;
+
+    String[] SPECIAL_ANIMATIONS = new String[] {
+      "throw", "idle", "throwReturn", "hurt", "hurtFall", "hurtRecover"
+    };
 
     public Sprite shadow;
     public Team team;
@@ -89,7 +95,7 @@ namespace Dodgeball.Game {
       heading = Heading.Forward;
       
       maxSpeed = MAX_RUN_SPEED;
-      drag = new Vector2(2500,2500);
+      drag = new Vector2(CONTROL_DRAG,CONTROL_DRAG);
       
       loadGraphic("player", 34, 34);
       characterOffset.X = submatrix.X * atlas.Width / 2;
@@ -116,6 +122,7 @@ namespace Dodgeball.Game {
       addAnimation("hurtFall", new List<int> { 6, 7 }, 10, false);
       addAnimation("hurtRecover", new List<int> { 8, 8 }, 20, false);
       addOnCompleteCallback("hurtRecover", onHurtRecoverCompleteCallback);
+      addAnimationCallback("hurtFall", onHurtFallCallback);
 
       throwOffsets[(int)Heading.Up] = new Vector2[3] {
           new Vector2(0, 0),
@@ -260,7 +267,14 @@ namespace Dodgeball.Game {
       if(throwing) {
         //play("throw");
       } else if(hurt) {
-        //??
+        if(velocity.Length() < HIT_STOP_SPEED &&
+            currentAnimation != "hurtFall" &&
+            currentAnimation != "hurtRecover") {
+          velocity.X = velocity.Y = 0;
+          if(Dead) play("hurtFall");
+          else play("hurtRecover");
+          animation.reset();
+        }
       } else if(Math.Abs(velocity.X) > Math.Abs(velocity.Y)) {
         if(velocity.X > MIN_RUN_SPEED) play("runBackward");
         else if(velocity.X < -MIN_RUN_SPEED) play("runForward");
@@ -273,7 +287,7 @@ namespace Dodgeball.Game {
         } else play("idle");
       }
 
-      if(currentAnimation != "throw" && currentAnimation != "idle" && currentAnimation != "throwReturn") {
+      if(!SPECIAL_ANIMATIONS.Contains(currentAnimation)) {
         animation.FPS = velocity.Length() / 14f;
       }
     }
@@ -301,6 +315,14 @@ namespace Dodgeball.Game {
       }
     }
 
+    void onHurtFallCallback(int frameIndex) {
+      int teamDirection = onLeft ? 1 : -1;
+      if(frameIndex > 0) {
+        x += fallOffsets[frameIndex].X * teamDirection;
+        y += fallOffsets[frameIndex].Y * teamDirection;
+      }
+    }
+
     void onThrowCompleteCallback(int frameIndex) {
       float seconds = MathHelper.Lerp(
         MIN_THROW_DELAY, MAX_THROW_DELAY,
@@ -321,24 +343,22 @@ namespace Dodgeball.Game {
     }
 
     public void onCollide(Ball ball) {
-      if(!ball.dangerous && this.ball == null && !ball.owned && !throwing && !hurt) {
+      if(!ball.dangerous && this.ball == null && !ball.owned && !throwing && !hurt && !Dead) {
         ball.owned = true;
         ball.owner = this;
         this.ball = ball;
         this.ball.pickedUp();
-      } else if(ball.dangerous) {
+      } else if(ball.dangerous && !Dead) {
         hitByBall(ball);
       }
     }
 
     void hitByBall(Ball ball) {
       if(ball.owner != null && ball.owner.team != team) {
-        hitPoints -= 100;
+        hitPoints -= 10f;
         hurt = true;
-        velocity.X = ball.velocity.X;
-        velocity.Y = ball.velocity.Y;
-        drag = new Vector2(0, 0);
-        linearDrag = HIT_DRAG;
+        velocity.X = ball.velocity.X*10;
+        velocity.Y = ball.velocity.Y*10;
         play("hurt");
       }
     }

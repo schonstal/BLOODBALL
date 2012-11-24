@@ -120,8 +120,8 @@ namespace Dodgeball.Game {
       owned = false;
     }
 
-    public void onCollide(Player player) {
-      if(dangerous && owner != null && player.team != owner.team) {
+    public void onCollide(Player player, bool playerWasDead=false) {
+      if(dangerous && !playerWasDead && owner != null && player.team != owner.team) {
         bounceVelocity = -PLAYER_VERTICAL_BOUNCE;
         hitWall();
       }
