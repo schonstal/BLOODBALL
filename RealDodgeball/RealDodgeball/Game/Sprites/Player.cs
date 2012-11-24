@@ -375,12 +375,20 @@ namespace Dodgeball.Game {
         velocity.Y = ball.velocity.Y*10;
         play("hurt");
         blood.spray();
-        float seconds = MathHelper.Lerp(0.2f, 0.5f, ball.velocity.Length() / ball.maxSpeed);
-        G.state.DoInSeconds(seconds, () => {
-          play("throwReturn");
-          animation.reset();
-        });
+        hitRumble();
       }
+    }
+
+    void hitRumble() {
+      float seconds = MathHelper.Lerp(MIN_HIT_SECONDS, MAX_HIT_SECONDS,
+        ball.velocity.Length() / ball.maxSpeed);
+      //TODO: FINISH THIS SHIT
+      float bog;
+
+      G.state.DoInSeconds(seconds, () => {
+        play("throwReturn");
+        animation.reset();
+      });
     }
   }
 
