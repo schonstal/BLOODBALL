@@ -22,8 +22,9 @@ namespace Dodgeball.Engine {
     protected Vector2 sheetOffset = new Vector2();
 
     protected String currentAnimation = DEFAULT_ANIMATION;
+    protected Texture2D atlas;
+
     Dictionary<String, Animation> animations;
-    Texture2D atlas;
     Vector2 screenPosition = new Vector2();
     Rectangle renderSlice = new Rectangle();
 

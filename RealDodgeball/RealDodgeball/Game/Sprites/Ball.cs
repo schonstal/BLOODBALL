@@ -19,6 +19,7 @@ namespace Dodgeball.Game {
     public const float BOUNCE_AMOUNT = -1f;
     public const float BOUNCE_DECAY = 0.85f;
     public const float GRAVITY = 5;
+    public const float PLAYER_VERTICAL_BOUNCE = 1f;
     
     public const float DANGER_SPEED = 750;
 
@@ -113,7 +114,7 @@ namespace Dodgeball.Game {
       shadow.visible = true;
       linearDrag = 0.005f;
       maxSpeed = 0f;
-      bounceVelocity = -MathHelper.Clamp(charge/2000f,0,1);
+      bounceVelocity = -MathHelper.Clamp(charge/2000f,0,0.6f);
       velocity.X = flingX * charge;
       velocity.Y = flingY * charge;
       owned = false;
@@ -121,6 +122,7 @@ namespace Dodgeball.Game {
 
     public void onCollide(Player player) {
       if(dangerous && owner != null && player.team != owner.team) {
+        bounceVelocity = -PLAYER_VERTICAL_BOUNCE;
         hitWall();
       }
     }

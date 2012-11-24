@@ -29,6 +29,7 @@ namespace Dodgeball.Game {
     public const float minCharge = 700.0f;
 
     public const float MAX_HITPOINTS = 100.0f;
+    public const float HIT_DRAG = 0.1f;
 
     public Sprite shadow;
     public Team team;
@@ -37,6 +38,8 @@ namespace Dodgeball.Game {
     Heading heading;
     float movementAccel = 5000.0f;
     Retical retical;
+    Vector2 spriteSubmatrix = new Vector2(0, 0);
+    Vector2 characterOffset = new Vector2(0, 0);
 
     float charge = 0;
     float flungAtCharge = 0;
@@ -64,7 +67,7 @@ namespace Dodgeball.Game {
     }
 
     public SpriteMode Mode {
-      set { sheetOffset.Y = (int)value * GraphicHeight; }
+      set { sheetOffset.Y = (int)value * GraphicHeight + characterOffset.Y; }
     }
 
     public bool Stunned {
@@ -79,15 +82,21 @@ namespace Dodgeball.Game {
       get { return hitPoints <= 0; }
     }
 
-    public Player(PlayerIndex playerIndex, Team team, float X=0f, float Y=0f) : base(X,Y) {
+    public Player(PlayerIndex playerIndex, Team team, Vector2 submatrix, float X=0f, float Y=0f) : base(X,Y) {
       this.playerIndex = playerIndex;
       this.team = team;
+      spriteSubmatrix = submatrix;
       heading = Heading.Forward;
       
       maxSpeed = MAX_RUN_SPEED;
       drag = new Vector2(2500,2500);
       
       loadGraphic("player", 34, 34);
+      characterOffset.X = submatrix.X * atlas.Width / 2;
+      characterOffset.Y = submatrix.Y * atlas.Height / 2;
+
+      sheetOffset.X = characterOffset.X;
+
       addAnimation("idle", new List<int> { 0, 1, 2, 3 }, 10, true);
 
       addAnimation("runForward", new List<int> { 12, 13, 14, 15 }, 15, true);
@@ -326,7 +335,8 @@ namespace Dodgeball.Game {
         hurt = true;
         velocity.X = ball.velocity.X;
         velocity.Y = ball.velocity.Y;
-        drag = new Vector2(500, 500);
+        drag = new Vector2(0, 0);
+        linearDrag = HIT_DRAG;
       }
     }
   }

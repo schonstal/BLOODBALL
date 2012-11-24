@@ -56,10 +56,10 @@ namespace Dodgeball.Game {
 
 
       //probably want to let people pick their team later
-      players.add(new Player(PlayerIndex.Two, Team.Left, 40, 40));
-      players.add(new Player(PlayerIndex.One, Team.Right, ARENA_WIDTH - 40, 40));
-      players.add(new Player(PlayerIndex.Three, Team.Left, 40, ARENA_HEIGHT - 100));
-      players.add(new Player(PlayerIndex.Four, Team.Right, ARENA_WIDTH - 40, ARENA_HEIGHT - 100));
+      players.add(new Player(PlayerIndex.Two, Team.Left, new Vector2(0,0), 80, 40));
+      players.add(new Player(PlayerIndex.One, Team.Right, new Vector2(1,0), ARENA_WIDTH - 80, 40));
+      players.add(new Player(PlayerIndex.Three, Team.Left, new Vector2(0,0), 80, ARENA_HEIGHT - 100));
+      players.add(new Player(PlayerIndex.Four, Team.Right, new Vector2(1,0), ARENA_WIDTH - 80, ARENA_HEIGHT - 100));
       players.Each((player) => add(player));
     }
 
