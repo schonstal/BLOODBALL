@@ -234,7 +234,7 @@ namespace Dodgeball.Game {
       }
 
       if(currentAnimation != "throw" && currentAnimation != "idle") {
-        animation.FPS = velocity.Length() / 11f;
+        animation.FPS = velocity.Length() / 14f;
       }
     }
 
