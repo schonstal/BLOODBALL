@@ -43,6 +43,7 @@ namespace Dodgeball.Game {
 
     public PlayerShadow shadow;
     public Team team;
+    public CourtPosition courtPosition;
 
     PlayerIndex playerIndex;
     Heading heading;
@@ -98,11 +99,30 @@ namespace Dodgeball.Game {
     }
 
     public Player(PlayerIndex playerIndex, Team team, Vector2 submatrix,
-        float X=0f, float Y=0f) : base(X,Y) {
+        CourtPosition position) : base() {
       this.playerIndex = playerIndex;
       this.team = team;
       spriteSubmatrix = submatrix;
       heading = Heading.Forward;
+
+      switch (position) {
+        case CourtPosition.TopLeft:
+          x = 80;
+          y = 40;
+          break;
+        case CourtPosition.TopRight:
+          x = PlayState.ARENA_WIDTH - 80;
+          y = 40;
+          break;
+        case CourtPosition.BottomLeft:
+          x = 80;
+          y = PlayState.ARENA_HEIGHT - 100;
+          break;
+        case CourtPosition.BottomRight:
+          x = PlayState.ARENA_WIDTH - 80;
+          y = PlayState.ARENA_HEIGHT - 100;
+          break;
+      }
       
       maxSpeed = MAX_RUN_SPEED;
       drag = new Vector2(CONTROL_DRAG,CONTROL_DRAG);
@@ -418,5 +438,10 @@ namespace Dodgeball.Game {
     Hold = 1,
     Charge = 2,
     Misc = 3
+  }
+
+  public enum CourtPosition {
+    TopLeft, BottomLeft,
+    TopRight, BottomRight
   }
 }
