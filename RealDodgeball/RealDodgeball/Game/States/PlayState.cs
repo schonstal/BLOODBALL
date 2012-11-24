@@ -28,6 +28,12 @@ namespace Dodgeball.Game {
       dot = new Sprite(0,0);
       dot.loadGraphic("Dot", ARENA_WIDTH, ARENA_HEIGHT);
       dot.color = new Color(0x2c,0x2c,0x2c);
+      dot.z = -2;
+      add(dot);
+
+      dot = new Sprite(ARENA_WIDTH/2-1, 0);
+      dot.loadGraphic("Dot", 1, ARENA_HEIGHT);
+      dot.color = Color.Gray;
       dot.z = -1;
       add(dot);
 
