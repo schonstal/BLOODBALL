@@ -208,7 +208,7 @@ namespace Dodgeball.Game {
         charge = 0;
       }
 
-      if(throwing) Mode = SpriteMode.Misc;
+      if(throwing || hurt) Mode = SpriteMode.Misc;
 
       retical.charge = charge / maxCharge;
 
@@ -259,6 +259,8 @@ namespace Dodgeball.Game {
     void updateAnimation() {
       if(throwing) {
         //play("throw");
+      } else if(hurt) {
+        //??
       } else if(Math.Abs(velocity.X) > Math.Abs(velocity.Y)) {
         if(velocity.X > MIN_RUN_SPEED) play("runBackward");
         else if(velocity.X < -MIN_RUN_SPEED) play("runForward");
@@ -337,6 +339,7 @@ namespace Dodgeball.Game {
         velocity.Y = ball.velocity.Y;
         drag = new Vector2(0, 0);
         linearDrag = HIT_DRAG;
+        play("hurt");
       }
     }
   }
