@@ -326,6 +326,7 @@ namespace Dodgeball.Game {
         hurt = true;
         velocity.X = ball.velocity.X;
         velocity.Y = ball.velocity.Y;
+        drag = new Vector2(500, 500);
       }
     }
   }
