@@ -161,6 +161,7 @@ namespace Dodgeball.Game {
           charge = MathHelper.Clamp(charge, minCharge, maxCharge);
         } else {
           retical.visible = false;
+          charge = MathHelper.Clamp(charge, minCharge, maxCharge);
           if(triggerWasHeld) FlingBall();
           triggerHeld = false;
           maxSpeed = MAX_RUN_SPEED;
