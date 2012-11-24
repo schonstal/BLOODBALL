@@ -85,7 +85,7 @@ namespace Dodgeball.Engine {
     }
 
     public void addOnCompleteCallback(Action<int> callaback) {
-      animationCallbacks.Add(callaback);
+      onCompleteCallbacks.Add(callaback);
     }
   }
 }

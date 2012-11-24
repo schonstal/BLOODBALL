@@ -23,7 +23,7 @@ namespace Dodgeball.Game {
 
     public const float MIN_THROW_FPS = 20f;
     public const float MAX_THROW_FPS = 60f;
-    public const float MIN_THROW_DELAY = 0.05f;
+    public const float MIN_THROW_DELAY = 0;
     public const float MAX_THROW_DELAY = 0.5f;
 
     public Sprite shadow;
@@ -84,8 +84,10 @@ namespace Dodgeball.Game {
       addAnimation("runUpBackward", new List<int> { 11, 10, 9, 8 }, 15, true);
       addAnimation("runDownBackward", new List<int> { 7, 6, 5, 4 }, 15, true);
       addAnimation("throw", new List<int> { 0, 1, 2, 3 }, 10, false);
+      addAnimation("throwReturn", new List<int> { 4, 4 }, 20, false);
       addAnimationCallback("throw", onThrowCallback);
       addOnCompleteCallback("throw", onThrowCompleteCallback);
+      addOnCompleteCallback("throwReturn", onThrowReturnCompleteCallback);
 
       throwOffsets[(int)Heading.Up] = new Vector2[3] {
           new Vector2(0, 0),
@@ -221,7 +223,7 @@ namespace Dodgeball.Game {
 
     void updateAnimation() {
       if(throwing) {
-        play("throw");
+        //play("throw");
       } else if(Math.Abs(velocity.X) > Math.Abs(velocity.Y)) {
         if(velocity.X > MIN_RUN_SPEED) play("runBackward");
         else if(velocity.X < -MIN_RUN_SPEED) play("runForward");
@@ -234,7 +236,7 @@ namespace Dodgeball.Game {
         } else play("idle");
       }
 
-      if(currentAnimation != "throw" && currentAnimation != "idle") {
+      if(currentAnimation != "throw" && currentAnimation != "idle" && currentAnimation != "throwReturn") {
         animation.FPS = velocity.Length() / 14f;
       }
     }
@@ -263,11 +265,18 @@ namespace Dodgeball.Game {
     }
 
     void onThrowCompleteCallback(int frameIndex) {
-      float seconds = MIN_THROW_DELAY + 
-        MathHelper.Lerp(MIN_THROW_DELAY, MAX_THROW_DELAY, flungAtCharge/maxCharge);
+      float seconds = MathHelper.Lerp(
+        MIN_THROW_DELAY, MAX_THROW_DELAY,
+        (flungAtCharge - minCharge) / (maxCharge - minCharge));
+
       G.state.DoInSeconds(seconds, () => {
-        throwing = false;
+        play("throwReturn");
+        animation.reset();
       });
+    }
+
+    void onThrowReturnCompleteCallback(int frameIndex) {
+      throwing = false;
     }
 
     public void PickUpBall(Ball ball) {
