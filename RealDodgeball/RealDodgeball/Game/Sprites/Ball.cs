@@ -18,16 +18,17 @@ namespace Dodgeball.Game {
     
     public const float BOUNCE_AMOUNT = -1f;
     public const float BOUNCE_DECAY = 0.85f;
-    public const float GRAVITY = 6;
+    public const float GRAVITY = 5;
     
     public const float DANGER_SPEED = 750;
 
     public const float WALL_SPEED = 200;
-    public const float WALL_DRAG = 0.02f;
+    public const float WALL_DRAG = 0.004f;
 
     public bool dangerous = false;
     public Sprite shadow;
     public bool owned = false;
+    public Player owner = null;
 
     float bounceVelocity = 0;
     float bounceRate = BOUNCE_AMOUNT;
@@ -38,8 +39,9 @@ namespace Dodgeball.Game {
       offset.Y = 8;
       offset.X = -3;
       //drag = new Vector2(750,750);
-      linearDrag = 0.005f;
+      linearDrag = 0.0005f;
       width = 9;
+      motionSteps = 5;
       //acceleration.X = 100;
 
       shadow = new Sprite(0, 0);
@@ -75,7 +77,6 @@ namespace Dodgeball.Game {
     public override void postUpdate() {
       if(x < 0) {
         x = 0;
-        velocity.X = -velocity.X;
         hitWall();
       }
       if(y < 0) {
@@ -88,7 +89,6 @@ namespace Dodgeball.Game {
       }
       if(x > PlayState.ARENA_WIDTH - width) {
         x = PlayState.ARENA_WIDTH - width;
-        velocity.X = -velocity.X;
         hitWall();
       }
 
@@ -119,11 +119,18 @@ namespace Dodgeball.Game {
       owned = false;
     }
 
+    public void onCollide(Player player) {
+      if(dangerous && owner != null && player.team != owner.team) {
+        hitWall();
+      }
+    }
+
     void assertDanger() {
       dangerous = dangerous && velocity.Length() > DANGER_SPEED;
     }
 
     void hitWall() {
+      velocity.X = -velocity.X;
       maxSpeed = WALL_SPEED;
       linearDrag = WALL_DRAG;
       dangerous = false;

@@ -67,7 +67,8 @@ namespace Dodgeball.Game {
       if(started) {
         players.Each((player) => {
           if(Util.Overlaps(((Player)player).shadow, ((Ball)ball).shadow)) {
-            ((Player)player).PickUpBall((Ball)ball);
+            ((Player)player).onCollide((Ball)ball);
+            ((Ball)ball).onCollide((Player)player);
             //ball.visible = false;
           }
         });

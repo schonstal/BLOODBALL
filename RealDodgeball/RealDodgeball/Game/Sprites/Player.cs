@@ -25,11 +25,15 @@ namespace Dodgeball.Game {
     public const float MAX_THROW_FPS = 60f;
     public const float MIN_THROW_DELAY = 0;
     public const float MAX_THROW_DELAY = 0.5f;
+    public const float maxCharge = 2000.0f;
+    public const float minCharge = 700.0f;
+
+    public const float MAX_HITPOINTS = 100.0f;
 
     public Sprite shadow;
+    public Team team;
 
     PlayerIndex playerIndex;
-    Team team;
     Heading heading;
     float movementAccel = 5000.0f;
     Retical retical;
@@ -37,16 +41,17 @@ namespace Dodgeball.Game {
     float charge = 0;
     float flungAtCharge = 0;
     float chargeAmount = 1000.0f;
-    float maxCharge = 2000.0f;
-    float minCharge = 700.0f;
+    float hitPoints = MAX_HITPOINTS;
 
     Ball ball = null;
 
     bool triggerHeld = false;
     bool triggerWasHeld = false;
     bool throwing = false;
+    bool hurt = false;
 
     Vector2[][] throwOffsets = new Vector2[Enum.GetNames(typeof(Heading)).Length][];
+    Vector2[] fallOffsets;
 
     float catchTimer = 0f;
 
@@ -63,7 +68,15 @@ namespace Dodgeball.Game {
     }
 
     public bool Stunned {
-      get { return throwing; }
+      get { return throwing || hurt; }
+    }
+
+    public float HP {
+      get { return hitPoints; }
+    }
+
+    public bool Dead {
+      get { return hitPoints <= 0; }
     }
 
     public Player(PlayerIndex playerIndex, Team team, float X=0f, float Y=0f) : base(X,Y) {
@@ -81,13 +94,19 @@ namespace Dodgeball.Game {
       addAnimation("runBackward", new List<int> { 16, 17, 18, 19 }, 15, true);
       addAnimation("runUpForward", new List<int> { 4, 5, 6, 7 }, 15, true);
       addAnimation("runDownForward", new List<int> { 8, 9, 10, 11 }, 15, true);
-      addAnimation("runUpBackward", new List<int> { 11, 10, 9, 8 }, 15, true);
-      addAnimation("runDownBackward", new List<int> { 7, 6, 5, 4 }, 15, true);
+      addAnimation("runUpBackward", new List<int> { 8, 11, 10, 9 }, 15, true);
+      addAnimation("runDownBackward", new List<int> { 6, 5, 4, 7 }, 15, true);
+
       addAnimation("throw", new List<int> { 0, 1, 2, 3 }, 10, false);
       addAnimation("throwReturn", new List<int> { 4, 4 }, 20, false);
       addAnimationCallback("throw", onThrowCallback);
       addOnCompleteCallback("throw", onThrowCompleteCallback);
       addOnCompleteCallback("throwReturn", onThrowReturnCompleteCallback);
+
+      addAnimation("hurt", new List<int> { 5 });
+      addAnimation("hurtFall", new List<int> { 6, 7 }, 10, false);
+      addAnimation("hurtRecover", new List<int> { 8, 8 }, 20, false);
+      addOnCompleteCallback("hurtRecover", onHurtRecoverCompleteCallback);
 
       throwOffsets[(int)Heading.Up] = new Vector2[3] {
           new Vector2(0, 0),
@@ -114,6 +133,12 @@ namespace Dodgeball.Game {
           new Vector2(0, 0),
           new Vector2(0, 0)
         };
+
+      //We can change this to use Heading later if needed
+      fallOffsets = new Vector2[2] {
+        new Vector2(-4, 0),
+        new Vector2(-11, 0)
+      };
 
       //No actual hit yet, this should substitute for now
       addAnimation("hit", new List<int> { 12, 13, 14, 15 }, 60, true);
@@ -280,11 +305,27 @@ namespace Dodgeball.Game {
       throwing = false;
     }
 
-    public void PickUpBall(Ball ball) {
-      if(!ball.dangerous && this.ball == null && !ball.owned && !throwing) {
+    void onHurtRecoverCompleteCallback(int frameIndex) {
+      hurt = false;
+    }
+
+    public void onCollide(Ball ball) {
+      if(!ball.dangerous && this.ball == null && !ball.owned && !throwing && !hurt) {
         ball.owned = true;
+        ball.owner = this;
         this.ball = ball;
         this.ball.pickedUp();
+      } else if(ball.dangerous) {
+        hitByBall(ball);
+      }
+    }
+
+    void hitByBall(Ball ball) {
+      if(ball.owner != null && ball.owner.team != team) {
+        hitPoints -= 100;
+        hurt = true;
+        velocity.X = ball.velocity.X;
+        velocity.Y = ball.velocity.Y;
       }
     }
   }
