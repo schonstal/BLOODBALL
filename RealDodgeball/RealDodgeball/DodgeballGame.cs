@@ -58,10 +58,13 @@ namespace Dodgeball {
       dot.SetData(new Color[] { Color.White });
       Assets.addTexture("Dot", dot);
 
-      Assets.addTexture("player", Content.Load<Texture2D>("player"));
-      Assets.addTexture("ball", Content.Load<Texture2D>("ball"));
-      Assets.addTexture("ballShadow", Content.Load<Texture2D>("ballShadow"));
-      Assets.addTexture("playerShadow", Content.Load<Texture2D>("playerShadow"));
+      new List<string> { 
+        "player",
+        "ball",
+        "ballShadow",
+        "playerShadow",
+        "bloodSpray"
+      }.ForEach((s) => Assets.addTexture(s, Content.Load<Texture2D>(s)));
 
       G.switchState(new PlayState());
     }

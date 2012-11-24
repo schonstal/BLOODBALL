@@ -32,6 +32,10 @@ namespace Dodgeball.Game {
     public const float MAX_HITPOINTS = 100.0f;
     public const float HIT_DRAG = 0.1f;
     public const float HIT_STOP_SPEED = 5f;
+    public const float MIN_HIT_SECONDS = 0.2f;
+    public const float MAX_HIT_SECONDS = 0.5f;
+    public const float MIN_HIT_POWER = 0.4f;
+    public const float MAX_HIT_POWER = 1f;
 
     String[] SPECIAL_ANIMATIONS = new String[] {
       "throw", "idle", "throwReturn", "hurt", "hurtFall", "hurtRecover"
@@ -44,6 +48,7 @@ namespace Dodgeball.Game {
     Heading heading;
     float movementAccel = 5000.0f;
     Retical retical;
+    BloodSpatter blood;
     Vector2 spriteSubmatrix = new Vector2(0, 0);
     Vector2 characterOffset = new Vector2(0, 0);
 
@@ -173,6 +178,9 @@ namespace Dodgeball.Game {
       retical = new Retical(playerIndex, team);
       retical.visible = false;
       G.state.add(retical);
+
+      blood = new BloodSpatter(this);
+      G.state.add(blood);
     }
 
     public override void Update() {
@@ -223,10 +231,16 @@ namespace Dodgeball.Game {
     }
 
     public override void postUpdate() {
-      if(x < 0) x = 0;
+      if(onLeft) {
+        if(x < 0) x = 0;
+        if(x > PlayState.ARENA_WIDTH / 2 - width) x = PlayState.ARENA_WIDTH / 2 - width;
+      } else {
+        if(x > PlayState.ARENA_WIDTH - width) x = PlayState.ARENA_WIDTH - width;
+        if(x < PlayState.ARENA_WIDTH / 2) x = PlayState.ARENA_WIDTH / 2;
+      }
       if(y < 0) y = 0;
       if(y > PlayState.ARENA_HEIGHT - height) y = PlayState.ARENA_HEIGHT - height;
-      if(x > PlayState.ARENA_WIDTH - width) x = PlayState.ARENA_WIDTH - width;
+
       z = shadow.y;
       shadow.y = y + 18;
       shadow.x = x + 4;
@@ -360,7 +374,21 @@ namespace Dodgeball.Game {
         velocity.X = ball.velocity.X*10;
         velocity.Y = ball.velocity.Y*10;
         play("hurt");
+        blood.spray();
+        hitRumble();
       }
+    }
+
+    void hitRumble() {
+      float seconds = MathHelper.Lerp(MIN_HIT_SECONDS, MAX_HIT_SECONDS,
+        ball.velocity.Length() / ball.maxSpeed);
+      //TODO: FINISH THIS SHIT
+      float bog;
+
+      G.state.DoInSeconds(seconds, () => {
+        play("throwReturn");
+        animation.reset();
+      });
     }
   }
 
