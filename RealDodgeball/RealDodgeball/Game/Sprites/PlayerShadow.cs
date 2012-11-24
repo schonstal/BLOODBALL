@@ -13,8 +13,8 @@ using Dodgeball.Engine;
 
 namespace Dodgeball.Game {
   class PlayerShadow : Sprite {
-    float Y_OFFSET = 21;
-    float X_OFFSET = -8;
+    public float Y_OFFSET = 20;
+    public float X_OFFSET = -9;
 
     Player player;
     /*Ian:
@@ -35,7 +35,7 @@ Ian: the impact frame uses frame 0 as well
     public PlayerShadow(Player player, float X=0, float Y=0) : base(X,Y) {
       if(player.team == Team.Left) {
         sheetOffset.Y = 9;
-        X_OFFSET -= 2;
+        //X_OFFSET;
       }
 
       z = 0;
@@ -44,10 +44,8 @@ Ian: the impact frame uses frame 0 as well
       loadGraphic("playerShadow", 34, 9);
     }
 
-    public override void postUpdate() {
-      y = player.y + Y_OFFSET;
-      x = player.x + X_OFFSET;
-      base.postUpdate();
+    public override void Update() {
+      base.Update();
     }
   }
 }

@@ -243,6 +243,8 @@ namespace Dodgeball.Game {
       if(y < 0) y = 0;
       if(y > PlayState.ARENA_HEIGHT - height) y = PlayState.ARENA_HEIGHT - height;
 
+      shadow.y = y + shadow.Y_OFFSET;
+      shadow.x = x + shadow.X_OFFSET;
       z = shadow.y;
 
       if(team == Team.Right) {
@@ -291,20 +293,24 @@ namespace Dodgeball.Game {
           animation.reset();
         }
       } else if(Math.Abs(velocity.X) > Math.Abs(velocity.Y)) {
-        if(velocity.X > MIN_RUN_SPEED) play("runBackward");
-        else if(velocity.X < -MIN_RUN_SPEED) play("runForward");
+        if(velocity.X > MIN_RUN_SPEED) play("run" + forwardOn(onLeft));
+        else if(velocity.X < -MIN_RUN_SPEED) play("run" + forwardOn(onRight));
         else play("idle");
       } else {
         if(velocity.Y > MIN_RUN_SPEED) {
-          play(velocity.X < 0 ? "runDownForward" : "runDownBackward");
+          play("runDown" + (velocity.X < 0 ? forwardOn(onRight) : forwardOn(onLeft)));
         } else if(velocity.Y < -MIN_RUN_SPEED) {
-          play(velocity.X < 0 ? "runUpForward" : "runUpBackward");
+          play("runUp" + (velocity.X < 0 ? forwardOn(onRight) : forwardOn(onLeft)));
         } else play("idle");
       }
 
       if(!SPECIAL_ANIMATIONS.Contains(currentAnimation)) {
         animation.FPS = velocity.Length() / 14f;
       }
+    }
+
+    string forwardOn(bool isForward) {
+      return isForward ? "Forward" : "Backward";
     }
 
     void updatePhysics() {
