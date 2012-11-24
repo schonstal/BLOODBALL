@@ -216,7 +216,8 @@ namespace Dodgeball.Game {
         animation.reset();
         animation.FPS = MIN_THROW_FPS + ((charge / maxCharge) * (MAX_THROW_FPS - MIN_THROW_FPS));
         G.state.DoForSeconds(0.2f,
-          () => GamePad.SetVibration(playerIndex, 0.4f, 0.2f),
+          () => GamePad.SetVibration(playerIndex,
+            (flungAtCharge - minCharge) / (maxCharge - minCharge), 0),
           () => GamePad.SetVibration(playerIndex, 0, 0));
       }
     }
