@@ -65,9 +65,9 @@ namespace Dodgeball.Game {
       }
 
       if(dangerous) {
-        color = Color.Red;
+        //color = Color.Red;
       } else {
-        color = Color.White;
+        //color = Color.White;
       }
       base.Update();
     }

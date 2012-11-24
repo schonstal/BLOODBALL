@@ -27,7 +27,7 @@ namespace Dodgeball.Engine {
           }
           actions.Remove(action);
         } else {
-          action.Item2();
+          if(action.Item2 != null) action.Item2();
         }
       });
       base.Update();
@@ -36,6 +36,10 @@ namespace Dodgeball.Engine {
     public void DoForSeconds(float seconds, Action action, Action onComplete = null) {
       float endTime = totalTime + seconds;
       actions.Add(new Tuple<float, Action, Action>(endTime, action, onComplete));
+    }
+
+    public void DoInSeconds(float seconds, Action action) {
+      DoForSeconds(seconds, null, action);
     }
   }
 }

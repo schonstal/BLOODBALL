@@ -17,9 +17,14 @@ namespace Dodgeball.Game {
     public const float BALL_OFFSEET_X = 5f;
     public const float BALL_OFFSEET_Y = 8f;
     public const float CATCH_THRESHOLD = 0.06f;
-    
-    public const int CHARGE_OFFSET = 2;
-    public const int HOLD_OFFSET = 1;
+
+    public const float MAX_RUN_SPEED = 175f;
+    public const float CHARGE_RUN_SPEED = 100f;
+
+    public const float MIN_THROW_FPS = 20f;
+    public const float MAX_THROW_FPS = 60f;
+    public const float MIN_THROW_DELAY = 0.05f;
+    public const float MAX_THROW_DELAY = 0.5f;
 
     public Sprite shadow;
 
@@ -30,6 +35,7 @@ namespace Dodgeball.Game {
     Retical retical;
 
     float charge = 0;
+    float flungAtCharge = 0;
     float chargeAmount = 1000.0f;
     float maxCharge = 2000.0f;
     float minCharge = 700.0f;
@@ -38,17 +44,30 @@ namespace Dodgeball.Game {
 
     bool triggerHeld = false;
     bool triggerWasHeld = false;
+    bool throwing = false;
 
     Vector2[][] throwOffsets = new Vector2[Enum.GetNames(typeof(Heading)).Length][];
 
     float catchTimer = 0f;
+
+    public bool onLeft {
+      get { return team == Team.Left; }
+    }
+
+    public bool onRight {
+      get { return team == Team.Right; }
+    }
+
+    public SpriteMode Mode {
+      set { sheetOffset.Y = (int)value * GraphicHeight; }
+    }
 
     public Player(PlayerIndex playerIndex, Team team, float X=0f, float Y=0f) : base(X,Y) {
       this.playerIndex = playerIndex;
       this.team = team;
       heading = Heading.Forward;
       
-      maxSpeed = 250f;
+      maxSpeed = MAX_RUN_SPEED;
       drag = new Vector2(2500,2500);
       
       loadGraphic("player", 34, 34);
@@ -60,6 +79,9 @@ namespace Dodgeball.Game {
       addAnimation("runDownForward", new List<int> { 8, 9, 10, 11 }, 15, true);
       addAnimation("runUpBackward", new List<int> { 11, 10, 9, 8 }, 15, true);
       addAnimation("runDownBackward", new List<int> { 7, 6, 5, 4 }, 15, true);
+      addAnimation("throw", new List<int> { 0, 1, 2, 3 }, 10, false);
+      addAnimationCallback("throw", onThrowCallback);
+      addOnCompleteCallback("throw", onThrowCompleteCallback);
 
       throwOffsets[(int)Heading.Up] = new Vector2[3] {
           new Vector2(0, 0),
@@ -108,13 +130,8 @@ namespace Dodgeball.Game {
 
     public override void Update() {
       updateAnimation();
+      updatePhysics();
       updateHeading();
-
-      acceleration.X = G.input.ThumbSticks(playerIndex).Left.X * movementAccel;
-      if(Math.Sign(acceleration.X) != Math.Sign(velocity.X)) acceleration.X *= 15;
-
-      acceleration.Y = G.input.ThumbSticks(playerIndex).Left.Y * -movementAccel;
-      if(Math.Sign(acceleration.Y) != Math.Sign(velocity.Y)) acceleration.Y *= 15;
 
       triggerWasHeld = triggerHeld;
       if(G.input.Triggers(playerIndex).Right > 0.3) {
@@ -125,16 +142,16 @@ namespace Dodgeball.Game {
 
       if(this.ball != null) {
         if(charge > 0) {
-          sheetOffset.Y = CHARGE_OFFSET * GraphicHeight;
+          Mode = SpriteMode.Charge;
         } else {
-          sheetOffset.Y = HOLD_OFFSET * GraphicHeight;
+          Mode = SpriteMode.Hold;
         }
         ball.x = x + BALL_OFFSEET_X;
         ball.y = y + BALL_OFFSEET_Y;
         if(triggerHeld) {
           retical.visible = true;
           triggerHeld = true;
-          maxSpeed = 150f;
+          maxSpeed = CHARGE_RUN_SPEED;
           if(charge < maxCharge)
             charge += chargeAmount * G.elapsed;
           charge = MathHelper.Clamp(charge, minCharge, maxCharge);
@@ -142,13 +159,15 @@ namespace Dodgeball.Game {
           retical.visible = false;
           if(triggerWasHeld) FlingBall();
           triggerHeld = false;
-          maxSpeed = 250f;
+          maxSpeed = MAX_RUN_SPEED;
           charge = 0;
         }
       } else {
-        sheetOffset.Y = 0;
+        Mode = SpriteMode.Neutral;
         charge = 0;
       }
+
+      if(throwing) Mode = SpriteMode.Misc;
 
       retical.charge = charge / maxCharge;
 
@@ -176,6 +195,8 @@ namespace Dodgeball.Game {
 
     void FlingBall() {
       if(ball != null) {
+        flungAtCharge = charge;
+
         Vector2 flingDirection = Vector2.Normalize(retical.Direction);
         if(float.IsNaN(flingDirection.X) || float.IsNaN(flingDirection.Y)) {
           ball.Fling(-1, 0, charge);
@@ -183,6 +204,10 @@ namespace Dodgeball.Game {
           ball.Fling(flingDirection.X, flingDirection.Y, charge);
         }
         ball = null;
+        play("throw");
+        throwing = true;
+        animation.reset();
+        animation.FPS = MIN_THROW_FPS + ((charge / maxCharge) * (MAX_THROW_FPS - MIN_THROW_FPS));
         G.state.DoForSeconds(0.2f,
           () => GamePad.SetVibration(playerIndex, 0.4f, 0.2f),
           () => GamePad.SetVibration(playerIndex, 0, 0));
@@ -190,7 +215,9 @@ namespace Dodgeball.Game {
     }
 
     void updateAnimation() {
-      if(Math.Abs(velocity.X) > Math.Abs(velocity.Y)) {
+      if(throwing) {
+        play("throw");
+      } else if(Math.Abs(velocity.X) > Math.Abs(velocity.Y)) {
         if(velocity.X > MIN_RUN_SPEED) play("runBackward");
         else if(velocity.X < -MIN_RUN_SPEED) play("runForward");
         else play("idle");
@@ -203,7 +230,35 @@ namespace Dodgeball.Game {
       }
     }
 
+    void updatePhysics() {
+      if(!throwing) {
+        acceleration.X = G.input.ThumbSticks(playerIndex).Left.X * movementAccel;
+        if(Math.Sign(acceleration.X) != Math.Sign(velocity.X)) acceleration.X *= 15;
+
+        acceleration.Y = G.input.ThumbSticks(playerIndex).Left.Y * -movementAccel;
+        if(Math.Sign(acceleration.Y) != Math.Sign(velocity.Y)) acceleration.Y *= 15;
+      } else {
+        acceleration.X = acceleration.Y = 0;
+      }
+    }
+
     void updateHeading() {
+    }
+
+    void onThrowCallback(int frameIndex) {
+      int teamDirection = onLeft ? 1 : -1;
+      if(frameIndex > 0) {
+        x += throwOffsets[(int)heading][frameIndex - 1].X * teamDirection;
+        y += throwOffsets[(int)heading][frameIndex - 1].Y * teamDirection;
+      }
+    }
+
+    void onThrowCompleteCallback(int frameIndex) {
+      float seconds = MIN_THROW_DELAY + 
+        MathHelper.Lerp(MIN_THROW_DELAY, MAX_THROW_DELAY, flungAtCharge/maxCharge);
+      G.state.DoInSeconds(seconds, () => {
+        throwing = false;
+      });
     }
 
     public void PickUpBall(Ball ball) {
@@ -226,5 +281,12 @@ namespace Dodgeball.Game {
     Forward = 2,
     DownMid = 3,
     Down = 4
+  }
+
+  public enum SpriteMode {
+    Neutral = 0,
+    Hold = 1,
+    Charge = 2,
+    Misc = 3
   }
 }

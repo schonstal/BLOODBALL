@@ -77,12 +77,15 @@ namespace Dodgeball.Engine {
     public void reset() {
       hasPlayed = false;
       currentFrame = 0;
+      elapsed = 0;
     }
 
     public void addAnimationCallback(Action<int> callback) {
+      animationCallbacks.Add(callback);
     }
 
     public void addOnCompleteCallback(Action<int> callaback) {
+      animationCallbacks.Add(callaback);
     }
   }
 }

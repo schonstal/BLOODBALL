@@ -75,7 +75,12 @@ namespace Dodgeball.Engine {
 
     //callback is passed the frame index
     public void addAnimationCallback(String animationName, Action<int> callback) {
+      animations[animationName].addAnimationCallback(callback);
+    }
 
+    //callback is passed the frame index
+    public void addOnCompleteCallback(String animationName, Action<int> callback) {
+      animations[animationName].addOnCompleteCallback(callback);
     }
 
     public override void Update() {
