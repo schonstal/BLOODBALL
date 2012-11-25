@@ -17,7 +17,8 @@ namespace Dodgeball.Game {
     public const int BAR_HEIGHT = 12;
 
     public const int BAR_OFFSET_X = 2;
-    public const int BAR_OFFSET_Y = 3;
+    public const int BAR_OFFSET_TOP_Y = 3;
+    public const int BAR_OFFSET_BOTTOM_Y = 19;
 
     public const float FADE_RATE = 50f;
 
@@ -33,22 +34,22 @@ namespace Dodgeball.Game {
       switch(player.courtPosition) {
         case CourtPosition.TopLeft:
           x = ((PlayState.ARENA_WIDTH - HUD.SCOREBOARD_WIDTH) / 2) + BAR_OFFSET_X;
-          y = -HUD.SCOREBOARD_HEIGHT - HUD.SCOREBOARD_OFFSET + BAR_OFFSET_Y;
+          y = -HUD.SCOREBOARD_HEIGHT - HUD.SCOREBOARD_OFFSET + BAR_OFFSET_TOP_Y;
           imageIndex = new Vector2(0, 0);
           break;
         case CourtPosition.TopRight:
           x = scoreBoard.x + scoreBoard.width - BAR_WIDTH - BAR_OFFSET_X;
-          y = -HUD.SCOREBOARD_HEIGHT - HUD.SCOREBOARD_OFFSET + BAR_OFFSET_Y;
+          y = -HUD.SCOREBOARD_HEIGHT - HUD.SCOREBOARD_OFFSET + BAR_OFFSET_TOP_Y;
           imageIndex = new Vector2(1, 0);
           break;
         case CourtPosition.BottomLeft:
-          x = 0;
-          y = PlayState.ARENA_HEIGHT + 5;
+          x = ((PlayState.ARENA_WIDTH - HUD.SCOREBOARD_WIDTH) / 2) + BAR_OFFSET_X;
+          y = -HUD.SCOREBOARD_HEIGHT - HUD.SCOREBOARD_OFFSET + BAR_OFFSET_BOTTOM_Y;
           imageIndex = new Vector2(0, 1);
           break;
         case CourtPosition.BottomRight:
-          x = PlayState.ARENA_WIDTH - BAR_WIDTH;
-          y = PlayState.ARENA_HEIGHT + 5;
+          x = scoreBoard.x + scoreBoard.width - BAR_WIDTH - BAR_OFFSET_X;
+          y = -HUD.SCOREBOARD_HEIGHT - HUD.SCOREBOARD_OFFSET + BAR_OFFSET_BOTTOM_Y;
           imageIndex = new Vector2(1, 1);
           break;
       }
