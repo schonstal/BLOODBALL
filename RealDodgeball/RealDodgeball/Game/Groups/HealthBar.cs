@@ -82,7 +82,7 @@ namespace Dodgeball.Game {
       }
 
       if(player.onLeft) {
-        healthBars.EachSprite((bar) => {
+        healthBars.Each<Sprite>((bar) => {
           bar.sheetOffset.X = BAR_WIDTH - bar.graphicWidth;
           bar.x = x + BAR_WIDTH - bar.graphicWidth;
         });

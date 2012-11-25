@@ -69,11 +69,9 @@ namespace Dodgeball.Engine {
       }
     }
 
-    //I want to make an Each<T> but I don't know how to guarantee
-    //T is a subclass of GameObject
-    public void EachSprite(Action<Sprite> method) {
-      foreach(GameObject o in members) {
-        method((Sprite)o);
+    public void Each<T>(Action<T> method) where T : GameObject {
+      foreach(T o in members) {
+        method(o);
       }
     }
 
