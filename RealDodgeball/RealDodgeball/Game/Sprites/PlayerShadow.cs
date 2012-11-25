@@ -25,8 +25,8 @@ namespace Dodgeball.Game {
       addAnimation("runBackward", new List<int> { 0 }, 15, true);
       addAnimation("runUpForward", new List<int> { 1 }, 15, true);
       addAnimation("runDownForward", new List<int> { 2 }, 15, true);
-      addAnimation("runUpBackward", new List<int> { 1 }, 15, true);
-      addAnimation("runDownBackward", new List<int> { 2 }, 15, true);
+      addAnimation("runUpBackward", new List<int> { 2 }, 15, true);
+      addAnimation("runDownBackward", new List<int> { 1 }, 15, true);
 
       addAnimation("throw", new List<int> { 0 }, 10, false);
       addAnimation("throwReturn", new List<int> { 0 }, 20, false);
