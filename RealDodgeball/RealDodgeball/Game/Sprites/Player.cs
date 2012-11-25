@@ -79,7 +79,10 @@ namespace Dodgeball.Game {
     }
 
     public SpriteMode Mode {
-      set { sheetOffset.Y = (int)value * GraphicHeight + characterOffset.Y; }
+      set { 
+        sheetOffset.Y = (int)value * GraphicHeight + characterOffset.Y;
+        shadow.sheetOffset.Y = (int)value * shadow.GraphicHeight;
+      }
     }
 
     public bool Stunned {
@@ -418,6 +421,11 @@ namespace Dodgeball.Game {
       G.state.DoForSeconds(seconds,
         () => GamePad.SetVibration(playerIndex, big, little),
         () => GamePad.SetVibration(playerIndex, 0, 0));
+    }
+
+    public override void play(string animation) {
+      shadow.play(animation);
+      base.play(animation);
     }
   }
 

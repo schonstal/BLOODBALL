@@ -19,7 +19,7 @@ namespace Dodgeball.Engine {
     public bool visible = true;
     public Vector2 offset = new Vector2();
 
-    protected Vector2 sheetOffset = new Vector2();
+    public Vector2 sheetOffset = new Vector2();
 
     protected String currentAnimation = DEFAULT_ANIMATION;
     protected Texture2D atlas;
@@ -61,7 +61,7 @@ namespace Dodgeball.Engine {
       graphicHeight = height;
     }
 
-    public void play(String animation) {
+    public virtual void play(String animation) {
       this.animation.start();
       currentAnimation = animation;
     }
