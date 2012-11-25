@@ -376,8 +376,10 @@ namespace Dodgeball.Game {
         (flungAtCharge - minCharge) / (maxCharge - minCharge));
 
       G.state.DoInSeconds(seconds, () => {
-        play("throwReturn");
-        animation.reset();
+        if(!hurt && !Dead) {
+          play("throwReturn");
+          animation.reset();
+        }
       });
     }
 
