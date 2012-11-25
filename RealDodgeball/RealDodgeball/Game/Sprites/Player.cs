@@ -386,7 +386,6 @@ namespace Dodgeball.Game {
     }
 
     void onHurtRecoverCompleteCallback(int frameIndex) {
-      throwing = false;
       hurt = false;
     }
 
@@ -406,6 +405,7 @@ namespace Dodgeball.Game {
       if(ball.owner != null && ball.owner.team != team) {
         hitPoints -= (ball.velocity.Length())/50;
         hurt = true;
+        throwing = false;
         velocity.X = ball.velocity.X*10;
         velocity.Y = ball.velocity.Y*10;
         play("hurt");
