@@ -13,28 +13,38 @@ using Dodgeball.Engine;
 
 namespace Dodgeball.Game {
   class HealthBar : Group {
+    public const int BAR_WIDTH = 200;
+
     Player player;
+    Sprite background;
+    Sprite temporaryHealth;
+    Sprite realHealth;
 
     public HealthBar(Player player) : base() {
       this.player = player;
       switch(player.courtPosition) {
         case CourtPosition.TopLeft:
-          x = 80;
-          y = -40;
+          x = 0;
+          y = -15;
           break;
         case CourtPosition.TopRight:
-          x = PlayState.ARENA_WIDTH - 80;
-          y = -40;
+          x = PlayState.ARENA_WIDTH - BAR_WIDTH;
+          y = -15;
           break;
         case CourtPosition.BottomLeft:
-          x = 80;
-          y = -20;
+          x = 0;
+          y = PlayState.ARENA_HEIGHT + 5;
           break;
         case CourtPosition.BottomRight:
-          x = PlayState.ARENA_WIDTH - 80;
-          y = -20;
+          x = PlayState.ARENA_WIDTH - BAR_WIDTH;
+          y = PlayState.ARENA_HEIGHT + 5;
           break;
       }
+
+      background = new Sprite(x, y);
+      background.loadGraphic("Dot", BAR_WIDTH, 10);
+      background.color = Color.White;
+      add(background);
     }
   }
 }

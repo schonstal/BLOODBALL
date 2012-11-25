@@ -70,6 +70,7 @@ namespace Dodgeball.Game {
       players.Each((player) => add(player));
 
       hud = new HUD(players);
+      add(hud);
     }
 
     void onBallMove(GameObject ball) {
