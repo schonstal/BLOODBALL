@@ -74,9 +74,9 @@ namespace Dodgeball {
 
     protected override void Update(GameTime gameTime) {
       G.update(gameTime);
-      
-      if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-        this.Exit();
+
+      if(GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+        G.switchState(new PlayState());
 
       // TODO: Add your update logic here
 
