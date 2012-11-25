@@ -58,8 +58,8 @@ namespace Dodgeball.Engine {
 
     public static void update(GameTime gameTime) {
       instance._timeElapsed = gameTime.ElapsedGameTime.Milliseconds/1000f;
-      instance._state.Update();
       instance._input.Update();
+      instance._state.Update();
     }
 
     public static void switchState(GameState state) {
