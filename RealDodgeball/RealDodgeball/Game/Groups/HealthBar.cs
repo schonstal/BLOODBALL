@@ -26,6 +26,7 @@ namespace Dodgeball.Game {
     Sprite temporaryHealth;
     Sprite realHealth;
     Vector2 imageIndex;
+    Group healthBars = new Group();
 
     float tempWidth = BAR_WIDTH;
 
@@ -57,12 +58,14 @@ namespace Dodgeball.Game {
       temporaryHealth = new Sprite(x, y);
       temporaryHealth.loadGraphic("healthBar", BAR_WIDTH, BAR_HEIGHT);
       temporaryHealth.color = new Color(227, 0, 0);
-      add(temporaryHealth);
+      healthBars.add(temporaryHealth);
 
       realHealth = new Sprite(x, y);
       realHealth.loadGraphic("healthBar", BAR_WIDTH, BAR_HEIGHT);
       realHealth.color = new Color(217, 206, 11);
-      add(realHealth);
+      healthBars.add(realHealth);
+
+      add(healthBars);
 
       temporaryHealth.sheetOffset = realHealth.sheetOffset =
         new Vector2(imageIndex.X * BAR_WIDTH, imageIndex.Y * BAR_HEIGHT);
@@ -79,7 +82,7 @@ namespace Dodgeball.Game {
       }
 
       if(player.onLeft) {
-        new List<Sprite> { realHealth, temporaryHealth }.ForEach((bar) => {
+        healthBars.EachSprite((bar) => {
           bar.sheetOffset.X = BAR_WIDTH - bar.graphicWidth;
           bar.x = x + BAR_WIDTH - bar.graphicWidth;
         });
