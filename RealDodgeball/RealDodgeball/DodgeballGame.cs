@@ -50,8 +50,13 @@ namespace Dodgeball {
         GraphicsDevice.Viewport.Height/2);
       G.camera.Initialize(spriteBatch);
       //Actually put it in the right place...
-      G.camera.x = 96;
-      G.camera.y = 54;
+      G.camera.x = (GraphicsDevice.Viewport.Width/2 - PlayState.ARENA_WIDTH)/2;
+      G.camera.y = -(
+          (GraphicsDevice.Viewport.Height/2) 
+          - PlayState.ARENA_HEIGHT
+          + HUD.SCOREBOARD_HEIGHT
+          - HUD.SCOREBOARD_OFFSET
+        )/2;
 
       //Debugging
       Texture2D dot = new Texture2D(GraphicsDevice, 1, 1);
@@ -63,7 +68,9 @@ namespace Dodgeball {
         "ball",
         "ballShadow",
         "playerShadow",
-        "bloodSpray"
+        "bloodSpray",
+        "scoreBoard",
+        "healthBar"
       }.ForEach((s) => Assets.addTexture(s, Content.Load<Texture2D>(s)));
 
       G.switchState(new PlayState());

@@ -65,7 +65,7 @@ namespace Dodgeball.Game {
     bool throwing = false;
     bool hurt = false;
 
-    Vector2[][] throwOffsets = new Vector2[Enum.GetNames(typeof(Heading)).Length][];
+    Vector2[][] throwOffsets = new Vector2[5][];
     Vector2[] fallOffsets;
 
     float catchTimer = 0f;
@@ -278,11 +278,13 @@ namespace Dodgeball.Game {
         retical.X = x + 15;
         retical.Y = y + 24;
       }
+
+      if(Dead) retical.visible = false;
       base.postUpdate();
     }
 
     void FlingBall() {
-      if(ball != null) {
+      if(ball != null && !Dead) {
         flungAtCharge = charge;
 
         Vector2 flingDirection = Vector2.Normalize(retical.Direction);
@@ -384,6 +386,7 @@ namespace Dodgeball.Game {
     }
 
     void onHurtRecoverCompleteCallback(int frameIndex) {
+      throwing = false;
       hurt = false;
     }
 
@@ -401,7 +404,7 @@ namespace Dodgeball.Game {
 
     void hitByBall(Ball ball) {
       if(ball.owner != null && ball.owner.team != team) {
-        hitPoints -= 10f;
+        hitPoints -= (ball.velocity.Length())/50;
         hurt = true;
         velocity.X = ball.velocity.X*10;
         velocity.Y = ball.velocity.Y*10;

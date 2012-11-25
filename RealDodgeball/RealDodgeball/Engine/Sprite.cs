@@ -28,8 +28,8 @@ namespace Dodgeball.Engine {
     Vector2 screenPosition = new Vector2();
     Rectangle renderSlice = new Rectangle();
 
-    int graphicWidth;
-    int graphicHeight;
+    public int graphicWidth;
+    public int graphicHeight;
 
     public int GraphicHeight {
       get { return graphicHeight; }
@@ -92,7 +92,7 @@ namespace Dodgeball.Engine {
     public override void Draw() {
       if(visible) {
         screenPosition.X = (int)(G.camera.x + offset.X + x);
-        screenPosition.Y = (int)(G.camera.y + offset.Y + y);
+        screenPosition.Y = (int)(-G.camera.y + offset.Y + y);
 
         renderSlice.X = ((animation.getFrame() * graphicWidth) % atlas.Width) + (int)sheetOffset.X;
         renderSlice.Y = ((int)Math.Floor(

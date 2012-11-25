@@ -13,38 +13,70 @@ using Dodgeball.Engine;
 
 namespace Dodgeball.Game {
   class HealthBar : Group {
-    public const int BAR_WIDTH = 200;
+    public const int BAR_WIDTH = 125;
+    public const int BAR_HEIGHT = 12;
+
+    public const int BAR_OFFSET_X = 2;
+    public const int BAR_OFFSET_Y = 3;
+
+    public const float FADE_RATE = 50f;
 
     Player player;
-    Sprite background;
     Sprite temporaryHealth;
     Sprite realHealth;
+    Vector2 imageIndex;
 
-    public HealthBar(Player player) : base() {
+    float tempWidth = BAR_WIDTH;
+
+    public HealthBar(Player player, Sprite scoreBoard) : base() {
       this.player = player;
       switch(player.courtPosition) {
         case CourtPosition.TopLeft:
-          x = 0;
-          y = -15;
+          x = ((PlayState.ARENA_WIDTH - HUD.SCOREBOARD_WIDTH) / 2) + BAR_OFFSET_X;
+          y = -HUD.SCOREBOARD_HEIGHT - HUD.SCOREBOARD_OFFSET + BAR_OFFSET_Y;
+          imageIndex = new Vector2(0, 0);
           break;
         case CourtPosition.TopRight:
-          x = PlayState.ARENA_WIDTH - BAR_WIDTH;
-          y = -15;
+          x = scoreBoard.x + scoreBoard.width - BAR_WIDTH - BAR_OFFSET_X;
+          y = -HUD.SCOREBOARD_HEIGHT - HUD.SCOREBOARD_OFFSET + BAR_OFFSET_Y;
+          imageIndex = new Vector2(1, 0);
           break;
         case CourtPosition.BottomLeft:
           x = 0;
           y = PlayState.ARENA_HEIGHT + 5;
+          imageIndex = new Vector2(0, 1);
           break;
         case CourtPosition.BottomRight:
           x = PlayState.ARENA_WIDTH - BAR_WIDTH;
           y = PlayState.ARENA_HEIGHT + 5;
+          imageIndex = new Vector2(1, 1);
           break;
       }
 
-      background = new Sprite(x, y);
-      background.loadGraphic("Dot", BAR_WIDTH, 10);
-      background.color = Color.White;
-      add(background);
+      temporaryHealth = new Sprite(x, y);
+      temporaryHealth.loadGraphic("healthBar", BAR_WIDTH, BAR_HEIGHT);
+      temporaryHealth.color = new Color(227, 0, 0);
+      add(temporaryHealth);
+
+      realHealth = new Sprite(x, y);
+      realHealth.loadGraphic("healthBar", BAR_WIDTH, BAR_HEIGHT);
+      realHealth.color = new Color(217, 206, 11);
+      add(realHealth);
+
+      temporaryHealth.sheetOffset = realHealth.sheetOffset =
+        new Vector2(imageIndex.X * BAR_WIDTH, imageIndex.Y * BAR_HEIGHT);
+    }
+
+    public override void postUpdate() {
+      if(player.onRight) {
+        realHealth.graphicWidth = (int)MathHelper.Clamp(
+            BAR_WIDTH * player.HP / Player.MAX_HITPOINTS, 0, BAR_WIDTH);
+        if(realHealth.graphicWidth < tempWidth) {
+          tempWidth -= G.elapsed * FADE_RATE;
+          temporaryHealth.graphicWidth = (int)tempWidth;
+        }
+      }
+      base.postUpdate();
     }
   }
 }

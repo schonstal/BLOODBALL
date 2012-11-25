@@ -13,7 +13,7 @@ using Dodgeball.Engine;
 
 namespace Dodgeball.Game {
   class PlayerShadow : Sprite {
-    public float Y_OFFSET = 20;
+    public float Y_OFFSET = 15;
     public float X_OFFSET = -9;
 
     Player player;
@@ -39,6 +39,8 @@ namespace Dodgeball.Game {
       this.player = player;
 
       loadGraphic("playerShadow", 34, 9);
+      height = 21;
+      offset.Y = 6;
 
       if(player.onRight) {
         sheetOffset.X = atlas.Width / 2;
