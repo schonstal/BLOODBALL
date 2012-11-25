@@ -27,7 +27,7 @@ namespace Dodgeball.Engine {
     public void Update() {
       ForEachInput((index) => {
         previousState[index] = currentState[index];
-        currentState[index] = GamePad.GetState(index);
+        currentState[index] = GamePad.GetState(index, GamePadDeadZone.IndependentAxes);
       });
     }
 
@@ -44,8 +44,13 @@ namespace Dodgeball.Engine {
       return currentState[index].Triggers;
     }
 
-    public GamePadThumbSticks ThumbSticks(PlayerIndex index) {
-      return currentState[index].ThumbSticks;
+    public GamePadThumbSticks ThumbSticks(PlayerIndex index,
+        GamePadDeadZone deadZone = GamePadDeadZone.IndependentAxes) {
+      if(deadZone == GamePadDeadZone.IndependentAxes) {
+        return currentState[index].ThumbSticks;
+      } else {
+        return GamePad.GetState(index, deadZone).ThumbSticks;
+      }
     }
 
     public static void ForEachInput(Action<PlayerIndex> action) {

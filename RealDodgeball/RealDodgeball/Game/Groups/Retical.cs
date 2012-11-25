@@ -17,7 +17,7 @@ namespace Dodgeball.Game {
     public const int DOT_SPREAD = 10;
     public const float DISTORTION_AMOUNT = 0.15f;
     public const float ANGLE_LIMIT = 45f;
-    public const float AIM_THRESHOLD = 0.6f;
+    public const float AIM_THRESHOLD = 0.075f;
 
     public Color CHARGED_COLOR = Color.White;
     public Color UNCHARGED_COLOR = Color.MediumPurple;
@@ -99,22 +99,18 @@ namespace Dodgeball.Game {
     }
 
     void updateDirection() {
-      if(G.input.ThumbSticks(playerIndex).Right.Length() > AIM_THRESHOLD) {
-        if((team == Team.Right && G.input.ThumbSticks(playerIndex).Right.X < 0) ||
-            (team == Team.Left && G.input.ThumbSticks(playerIndex).Right.X > 0)) {
-          if(onRight) {
-            direction.X = MathHelper.Clamp(
-              Vector2.Normalize(G.input.ThumbSticks(playerIndex).Right).X,
-              -1f, -(float)Math.Cos(MathHelper.ToRadians(ANGLE_LIMIT)));
-          } else {
-            direction.X = MathHelper.Clamp(
-              Vector2.Normalize(G.input.ThumbSticks(playerIndex).Right).X,
-              (float)Math.Cos(MathHelper.ToRadians(ANGLE_LIMIT)), 1f);
-          }
-          direction.Y = G.input.ThumbSticks(playerIndex).Right.Y;
-        }
-        direction.Normalize();
+      if(onRight) {
+        direction.X = -1;
+      } else {
+        direction.X = 1;
       }
+      if(Math.Abs(G.input.ThumbSticks(playerIndex, GamePadDeadZone.None).Right.Y) > AIM_THRESHOLD) {
+        direction.Y = MathHelper.Clamp(
+          G.input.ThumbSticks(playerIndex, GamePadDeadZone.None).Right.Y, -1, 1);
+      } else {
+        direction.Y = 0;
+      }
+      direction.Normalize();
     }
   }
 }
