@@ -105,6 +105,7 @@ namespace Dodgeball.Game {
       spriteSubmatrix = submatrix;
       heading = Heading.Forward;
 
+      courtPosition = position;
       switch (position) {
         case CourtPosition.TopLeft:
           x = 80;

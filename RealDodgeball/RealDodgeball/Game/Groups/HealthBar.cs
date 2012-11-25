@@ -17,6 +17,24 @@ namespace Dodgeball.Game {
 
     public HealthBar(Player player) : base() {
       this.player = player;
+      switch(player.courtPosition) {
+        case CourtPosition.TopLeft:
+          x = 80;
+          y = -40;
+          break;
+        case CourtPosition.TopRight:
+          x = PlayState.ARENA_WIDTH - 80;
+          y = -40;
+          break;
+        case CourtPosition.BottomLeft:
+          x = 80;
+          y = -20;
+          break;
+        case CourtPosition.BottomRight:
+          x = PlayState.ARENA_WIDTH - 80;
+          y = -20;
+          break;
+      }
     }
   }
 }

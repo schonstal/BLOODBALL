@@ -16,7 +16,10 @@ namespace Dodgeball.Game {
     public const float HUGE_Z = 100000000;
     Group players;
 
-    public HUD() : base() {
+    public HUD(Group players) : base() {
+      players.Each((player) => {
+        add(new HealthBar((Player)player));
+      });
       z = HUGE_Z;
     }
   }

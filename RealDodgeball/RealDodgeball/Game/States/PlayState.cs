@@ -19,7 +19,7 @@ namespace Dodgeball.Game {
 
     Group balls = new Group();
     Group players = new Group();
-    HUD hud = new HUD();
+    HUD hud;
 
     bool started = false;
 
@@ -68,6 +68,8 @@ namespace Dodgeball.Game {
       players.add(new Player(PlayerIndex.Three, Team.Left, new Vector2(0,0), CourtPosition.BottomLeft));
       players.add(new Player(PlayerIndex.Four, Team.Right, new Vector2(1,0), CourtPosition.BottomRight));
       players.Each((player) => add(player));
+
+      hud = new HUD(players);
     }
 
     void onBallMove(GameObject ball) {
