@@ -69,13 +69,20 @@ namespace Dodgeball.Game {
     }
 
     public override void postUpdate() {
-      if(player.onRight) {
-        realHealth.graphicWidth = (int)MathHelper.Clamp(
-            BAR_WIDTH * player.HP / Player.MAX_HITPOINTS, 0, BAR_WIDTH);
-        if(realHealth.graphicWidth < tempWidth) {
-          tempWidth -= G.elapsed * FADE_RATE;
-          temporaryHealth.graphicWidth = (int)tempWidth;
-        }
+      realHealth.graphicWidth = (int)MathHelper.Clamp(
+        BAR_WIDTH * player.HP / Player.MAX_HITPOINTS, 0, BAR_WIDTH);
+      if(realHealth.graphicWidth < tempWidth) {
+        tempWidth -= G.elapsed * FADE_RATE;
+        temporaryHealth.graphicWidth = (int)tempWidth;
+      } else {
+        temporaryHealth.graphicWidth = realHealth.graphicWidth;
+      }
+
+      if(player.onLeft) {
+        new List<Sprite> { realHealth, temporaryHealth }.ForEach((bar) => {
+          bar.sheetOffset.X = BAR_WIDTH - bar.graphicWidth;
+          bar.x = x + BAR_WIDTH - bar.graphicWidth;
+        });
       }
       base.postUpdate();
     }
