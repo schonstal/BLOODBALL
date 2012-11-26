@@ -70,7 +70,8 @@ namespace Dodgeball {
         "playerShadow",
         "bloodSpray",
         "scoreBoard",
-        "healthBar"
+        "healthBar",
+        "timerDigits"
       }.ForEach((s) => Assets.addTexture(s, Content.Load<Texture2D>(s)));
 
       G.switchState(new PlayState());
