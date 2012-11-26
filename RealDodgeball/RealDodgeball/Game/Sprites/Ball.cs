@@ -31,6 +31,7 @@ namespace Dodgeball.Game {
     public bool owned = false;
     public Player owner = null;
     public BallTrail trail;
+    public bool collectable = true;
 
     float bounceVelocity = 0;
     float bounceRate = BOUNCE_AMOUNT;
@@ -64,11 +65,13 @@ namespace Dodgeball.Game {
         offset.Y += bounceVelocity/motionSteps;
         if(bounceRate > -0.2f) {
           offset.Y = FLOOR_HEIGHT;
+          collectable = true;
           assertDanger();
         } else if(offset.Y >= FLOOR_HEIGHT) {
           assertDanger();
           bounceVelocity = bounceRate;
           bounceRate *= BOUNCE_DECAY;
+          collectable = true;
           //if(!dangerous) linearDrag = 0.02f;
         }
       }
@@ -119,6 +122,7 @@ namespace Dodgeball.Game {
     }
 
     public void Fling(float flingX, float flingY, float charge) {
+      collectable = false;
       offset.Y = FLOAT_HEIGHT;
       visible = true;
       dangerous = true;
@@ -144,6 +148,7 @@ namespace Dodgeball.Game {
     }
 
     void hitWall() {
+      collectable = false;
       velocity.X = -velocity.X;
       maxSpeed = WALL_SPEED;
       linearDrag = WALL_DRAG;

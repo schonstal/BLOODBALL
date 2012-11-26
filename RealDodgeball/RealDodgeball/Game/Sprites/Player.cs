@@ -28,6 +28,7 @@ namespace Dodgeball.Game {
     public const float MAX_THROW_DELAY = 0.5f;
     public const float maxCharge = 2000.0f;
     public const float minCharge = 700.0f;
+    public const float DROP_CHARGE = 100.0f;
 
     public const float MAX_HITPOINTS = 100.0f;
     public const float HIT_DRAG = 0.1f;
@@ -36,6 +37,8 @@ namespace Dodgeball.Game {
     public const float MAX_HIT_SECONDS = 0.5f;
     public const float MIN_HIT_POWER = 0.4f;
     public const float MAX_HIT_POWER = 1f;
+
+    public const float DROP_PICKUP_TIME = 0.5f;
 
     String[] SPECIAL_ANIMATIONS = new String[] {
       "throw", "idle", "throwReturn", "hurt", "hurtFall", "hurtRecover"
@@ -66,6 +69,7 @@ namespace Dodgeball.Game {
     bool leftTriggerWasHeld = false;
     bool throwing = false;
     bool hurt = false;
+    bool canPickupBall = true;
 
     Vector2[][] throwOffsets = new Vector2[5][];
     Vector2[] fallOffsets;
@@ -253,6 +257,10 @@ namespace Dodgeball.Game {
           maxSpeed = MAX_RUN_SPEED;
           charge = 0;
         }
+        if(G.input.JustPressed(playerIndex, Buttons.A) ||
+          G.input.JustPressed(playerIndex, Buttons.LeftShoulder)) {
+          dropBall();
+        }
       } else {
         Mode = SpriteMode.Neutral;
         charge = 0;
@@ -297,11 +305,8 @@ namespace Dodgeball.Game {
         flungAtCharge = charge;
 
         Vector2 flingDirection = Vector2.Normalize(retical.Direction);
-        if(float.IsNaN(flingDirection.X) || float.IsNaN(flingDirection.Y)) {
-          ball.Fling(-1, 0, charge);
-        } else {
-          ball.Fling(flingDirection.X, flingDirection.Y, charge);
-        }
+        ball.Fling(flingDirection.X, flingDirection.Y, charge);
+
         ball = null;
         play("throw");
         throwing = true;
@@ -312,6 +317,19 @@ namespace Dodgeball.Game {
           () => GamePad.SetVibration(playerIndex,
             (flungAtCharge - minCharge) / (maxCharge - minCharge), 0),
           () => GamePad.SetVibration(playerIndex, 0, 0));
+      }
+    }
+
+    void dropBall() {
+      if(ball != null) {
+        flungAtCharge = DROP_CHARGE;
+        ball.Fling(onRight ? 1f : -1f, 0.5f, DROP_CHARGE);
+        //ball.dangerous = false;
+        ball = null;
+        canPickupBall = false;
+        G.state.DoInSeconds(DROP_PICKUP_TIME, () => canPickupBall = true);
+        maxSpeed = MAX_RUN_SPEED;
+        retical.visible = false;
       }
     }
 
@@ -402,7 +420,7 @@ namespace Dodgeball.Game {
 
     public void onCollide(Ball ball) {
       if(!ball.dangerous && this.ball == null && !ball.owned &&
-          !throwing && !hurt && !Dead) {
+          !throwing && !hurt && !Dead && ball.collectable && canPickupBall) {
         ball.owned = true;
         ball.owner = this;
         this.ball = ball;
@@ -422,6 +440,7 @@ namespace Dodgeball.Game {
         play("hurt");
         blood.spray();
         hitRumble(ball);
+        dropBall();
       }
     }
 
