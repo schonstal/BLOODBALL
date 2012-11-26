@@ -28,6 +28,7 @@ namespace Dodgeball.Engine {
     public Vector2 maxVelocity = new Vector2(0,0);
 
     public bool moves = true;
+    public bool active = true;
     public int motionSteps = 1;
     List<Action<GameObject>> onMoveCallbacks = new List<Action<GameObject>>();
 
@@ -51,9 +52,12 @@ namespace Dodgeball.Engine {
     }
 
     public virtual void preUpdate() {
+      if(!active) return;
     }
 
     public virtual void Update() {
+      if(!active) return;
+
       if(moves) {
         for(int i = 0; i < motionSteps; i++) {
           updateMotion(motionSteps);
@@ -62,6 +66,7 @@ namespace Dodgeball.Engine {
     }
 
     public virtual void postUpdate() {
+      if(!active) return;
     }
 
     public virtual void Draw() {

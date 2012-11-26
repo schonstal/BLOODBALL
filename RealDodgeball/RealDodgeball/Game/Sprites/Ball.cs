@@ -30,6 +30,7 @@ namespace Dodgeball.Game {
     public Sprite shadow;
     public bool owned = false;
     public Player owner = null;
+    public BallTrail trail;
 
     float bounceVelocity = 0;
     float bounceRate = BOUNCE_AMOUNT;
@@ -45,11 +46,19 @@ namespace Dodgeball.Game {
       motionSteps = 5;
       //acceleration.X = 100;
 
+      trail = new BallTrail(this);
+      G.state.add(trail);
+      addOnMoveCallback(spawnTrail);
+
       shadow = new Sprite(0, 0);
       shadow.loadGraphic("ballShadow", 10, 10);
       shadow.color = new Color(0x1c, 0x1c, 0x1c);
       shadow.z = 0;
       G.state.add(shadow);
+    }
+
+    void spawnTrail(GameObject o) {
+      trail.spawn(motionSteps);
     }
 
     public override void Update() {
@@ -97,6 +106,9 @@ namespace Dodgeball.Game {
       shadow.x = x;
       shadow.y = y + 14;
 
+      trail.z = z + 0.1f;
+      if(!dangerous) trail.active = false;
+
       base.postUpdate();
     }
 
@@ -117,6 +129,7 @@ namespace Dodgeball.Game {
       bounceVelocity = -MathHelper.Clamp(charge/2000f,0,0.6f);
       velocity.X = flingX * charge;
       velocity.Y = flingY * charge;
+      if(charge / Player.maxCharge > 0.9) trail.active = true;
       owned = false;
     }
 
