@@ -24,6 +24,10 @@ namespace Dodgeball.Game {
     }
 
     public void spawn(int steps=1) {
+      foreach(GameObject o in members) {
+        ((BallParticle)o).updateAlpha(steps);
+      }
+
       if(!active) return;
 
       spawnTimer += G.elapsed/(float)steps;

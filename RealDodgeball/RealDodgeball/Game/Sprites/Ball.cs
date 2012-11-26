@@ -48,7 +48,7 @@ namespace Dodgeball.Game {
 
       trail = new BallTrail(this);
       G.state.add(trail);
-      addOnMoveCallback(spawnTrail);
+      addOnMoveCallback(onMove);
 
       shadow = new Sprite(0, 0);
       shadow.loadGraphic("ballShadow", 10, 10);
@@ -57,14 +57,11 @@ namespace Dodgeball.Game {
       G.state.add(shadow);
     }
 
-    void spawnTrail(GameObject o) {
+    void onMove(GameObject o) {
       trail.spawn(motionSteps);
-    }
-
-    public override void Update() {
       if(!owned) {
-        bounceVelocity += GRAVITY * G.elapsed;
-        offset.Y += bounceVelocity;
+        bounceVelocity += GRAVITY * G.elapsed/motionSteps;
+        offset.Y += bounceVelocity/motionSteps;
         if(bounceRate > -0.2f) {
           offset.Y = FLOOR_HEIGHT;
           assertDanger();
@@ -75,7 +72,9 @@ namespace Dodgeball.Game {
           //if(!dangerous) linearDrag = 0.02f;
         }
       }
+    }
 
+    public override void Update() {
       if(dangerous) {
         //color = Color.Red;
       } else {

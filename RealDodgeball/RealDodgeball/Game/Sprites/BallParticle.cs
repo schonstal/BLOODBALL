@@ -29,10 +29,9 @@ namespace Dodgeball.Game {
       return this;
     }
 
-    public override void Update() {
-      alpha -= G.elapsed / decayRate;
+    public void updateAlpha(int steps) {
+      alpha -= (G.elapsed/steps) / decayRate;
       if(alpha <= 0) visible = false;
-      base.Update();
     }
 
   }
