@@ -40,7 +40,7 @@ namespace Dodgeball.Game {
 
       loadGraphic("playerShadow", 34, 9);
       height = 21;
-      offset.Y = 6;
+      offset.Y = 5;
 
       if(player.onRight) {
         sheetOffset.X = atlas.Width / 2;
