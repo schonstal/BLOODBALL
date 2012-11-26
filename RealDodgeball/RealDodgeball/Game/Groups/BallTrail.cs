@@ -35,10 +35,11 @@ namespace Dodgeball.Game {
         members = members.OrderBy((p) => ((BallParticle)p).alpha).ToList();
         BallParticle oldest = (members.Count <= 0 ? null : (BallParticle)members.First());
         if(oldest != null && !oldest.visible) {
-          oldest.initialize(ball.x + ball.offset.X + 3, ball.y + ball.offset.Y + 3);
+          oldest.initialize(ball.x + ball.offset.X + 3f, ball.y + ball.offset.Y + 3f);
           oldest.alpha = startingAlpha();
         } else if(members.Count < maxCount) {
           BallParticle newParticle = new BallParticle(ball.x + ball.offset.X, ball.y + ball.offset.Y);
+          newParticle.initialize(ball.x + ball.offset.X + 3f, ball.y + ball.offset.Y + 3f);
           newParticle.alpha = startingAlpha();
           add(newParticle);
         }
