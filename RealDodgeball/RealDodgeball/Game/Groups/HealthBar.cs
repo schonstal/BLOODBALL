@@ -21,7 +21,7 @@ namespace Dodgeball.Game {
     public const int BAR_OFFSET_BOTTOM_Y = 19;
 
     public const float FADE_RATE = 50f;
-    public const float PAUSE_TIME = 0.5f;
+    public const float PAUSE_TIME = 0.0f;
 
     Player player;
     Sprite temporaryHealth;
