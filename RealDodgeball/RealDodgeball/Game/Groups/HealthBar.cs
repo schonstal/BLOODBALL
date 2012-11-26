@@ -21,12 +21,14 @@ namespace Dodgeball.Game {
     public const int BAR_OFFSET_BOTTOM_Y = 19;
 
     public const float FADE_RATE = 50f;
+    public const float PAUSE_TIME = 0.5f;
 
     Player player;
     Sprite temporaryHealth;
     Sprite realHealth;
     Vector2 imageIndex;
     Group healthBars = new Group();
+    bool draining = false;
 
     float tempWidth = BAR_WIDTH;
 
@@ -75,9 +77,14 @@ namespace Dodgeball.Game {
       realHealth.graphicWidth = (int)MathHelper.Clamp(
         BAR_WIDTH * player.HP / Player.MAX_HITPOINTS, 0, BAR_WIDTH);
       if(realHealth.graphicWidth < tempWidth) {
-        tempWidth -= G.elapsed * FADE_RATE;
-        temporaryHealth.graphicWidth = (int)tempWidth;
+        if(draining == true) {
+          tempWidth -= G.elapsed * FADE_RATE;
+          temporaryHealth.graphicWidth = (int)tempWidth;
+        } else {
+          G.state.DoInSeconds(PAUSE_TIME, () => draining = true);
+        }
       } else {
+        draining = false;
         temporaryHealth.graphicWidth = realHealth.graphicWidth;
       }
 
