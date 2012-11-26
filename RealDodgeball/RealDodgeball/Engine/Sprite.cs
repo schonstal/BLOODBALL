@@ -14,10 +14,11 @@ namespace Dodgeball.Engine {
   public class Sprite : GameObject {
     const string DEFAULT_ANIMATION = "__default__";
 
-    public BlendState blend = BlendState.AlphaBlend;
+    public BlendState blend = BlendState.NonPremultiplied;
     public Color color = Color.White;
     public bool visible = true;
     public Vector2 offset = new Vector2();
+    public float alpha = 1.0f;
 
     public Vector2 sheetOffset = new Vector2();
 
@@ -27,6 +28,7 @@ namespace Dodgeball.Engine {
     Dictionary<String, Animation> animations;
     Vector2 screenPosition = new Vector2();
     Rectangle renderSlice = new Rectangle();
+    Color alphaColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 
     public int graphicWidth;
     public int graphicHeight;
@@ -100,6 +102,9 @@ namespace Dodgeball.Engine {
           ) * graphicHeight) + (int)sheetOffset.Y;
         renderSlice.Width = graphicWidth;
         renderSlice.Height = graphicHeight;
+
+        float localAlpha = MathHelper.Clamp(alpha, 0.0f, 1.0f);
+        color.A = (byte)(int)Math.Floor(localAlpha == 1.0f ? 255 : localAlpha * 256.0f);
 
         G.camera.Render(blend, (spriteBatch) => {
           spriteBatch.Draw(atlas, screenPosition, renderSlice, color);
