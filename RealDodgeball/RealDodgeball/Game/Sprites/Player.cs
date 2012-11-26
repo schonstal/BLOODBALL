@@ -60,8 +60,10 @@ namespace Dodgeball.Game {
 
     Ball ball = null;
 
-    bool triggerHeld = false;
-    bool triggerWasHeld = false;
+    bool rightTriggerHeld = false;
+    bool rightTriggerWasHeld = false;
+    bool leftTriggerHeld = false;
+    bool leftTriggerWasHeld = false;
     bool throwing = false;
     bool hurt = false;
 
@@ -214,11 +216,18 @@ namespace Dodgeball.Game {
       updatePhysics();
       updateHeading();
 
-      triggerWasHeld = triggerHeld;
+      rightTriggerWasHeld = rightTriggerHeld;
       if(G.input.Triggers(playerIndex).Right > 0.3) {
-        triggerHeld = true;
+        rightTriggerHeld = true;
       } else {
-        triggerHeld = false;
+        rightTriggerHeld = false;
+      }
+
+      leftTriggerWasHeld = leftTriggerHeld;
+      if(G.input.Triggers(playerIndex).Left > 0.3) {
+        leftTriggerHeld = true;
+      } else {
+        leftTriggerHeld = false;
       }
 
       if(this.ball != null) {
@@ -229,9 +238,9 @@ namespace Dodgeball.Game {
         }
         ball.x = x + BALL_OFFSEET_X;
         ball.y = y + BALL_OFFSEET_Y;
-        if(triggerHeld) {
+        if(rightTriggerHeld) {
           retical.visible = true;
-          triggerHeld = true;
+          rightTriggerHeld = true;
           maxSpeed = CHARGE_RUN_SPEED;
           if(charge < maxCharge)
             charge += chargeAmount * G.elapsed;
@@ -239,8 +248,8 @@ namespace Dodgeball.Game {
         } else {
           retical.visible = false;
           charge = MathHelper.Clamp(charge, minCharge, maxCharge);
-          if(triggerWasHeld) FlingBall();
-          triggerHeld = false;
+          if(rightTriggerWasHeld) FlingBall();
+          rightTriggerHeld = false;
           maxSpeed = MAX_RUN_SPEED;
           charge = 0;
         }
