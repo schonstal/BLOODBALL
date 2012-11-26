@@ -65,8 +65,8 @@ namespace Dodgeball.Game {
       //probably want to let people pick their team later
       players.add(new Player(PlayerIndex.Two, Team.Left, new Vector2(0,0), CourtPosition.TopLeft));
       players.add(new Player(PlayerIndex.One, Team.Right, new Vector2(1,0), CourtPosition.TopRight));
-      players.add(new Player(PlayerIndex.Three, Team.Left, new Vector2(0,0), CourtPosition.BottomLeft));
-      players.add(new Player(PlayerIndex.Four, Team.Right, new Vector2(1,0), CourtPosition.BottomRight));
+      players.add(new Player(PlayerIndex.Three, Team.Left, new Vector2(0,1), CourtPosition.BottomLeft));
+      players.add(new Player(PlayerIndex.Four, Team.Right, new Vector2(1,1), CourtPosition.BottomRight));
       players.Each((player) => add(player));
 
       hud = new HUD(players);
