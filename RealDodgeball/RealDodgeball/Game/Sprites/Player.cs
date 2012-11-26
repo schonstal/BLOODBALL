@@ -28,7 +28,7 @@ namespace Dodgeball.Game {
     public const float MAX_THROW_DELAY = 0.5f;
     public const float maxCharge = 2000.0f;
     public const float minCharge = 700.0f;
-    public const float DROP_CHARGE = 75.0f;
+    public const float DROP_CHARGE = 80.0f;
 
     public const float MAX_HITPOINTS = 100.0f;
     public const float HIT_DRAG = 0.1f;
@@ -323,7 +323,7 @@ namespace Dodgeball.Game {
     void dropBall() {
       if(ball != null) {
         flungAtCharge = DROP_CHARGE;
-        ball.Fling(onRight ? -1f : 1f, 0.5f, DROP_CHARGE);
+        ball.Fling(onRight ? 1f : -1f, 0.5f, DROP_CHARGE);
         //ball.dangerous = false;
         ball = null;
         canPickupBall = false;
