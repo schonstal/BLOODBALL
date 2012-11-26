@@ -129,7 +129,7 @@ namespace Dodgeball.Game {
       bounceVelocity = -MathHelper.Clamp(charge/2000f,0,0.6f);
       velocity.X = flingX * charge;
       velocity.Y = flingY * charge;
-      if(charge / Player.maxCharge > 0.9) trail.active = true;
+      if(charge / Player.maxCharge > 0.99) trail.active = true;
       owned = false;
     }
 
