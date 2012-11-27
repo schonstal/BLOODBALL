@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Dodgeball.Engine {
   public class Sprite : GameObject {
-    const string DEFAULT_ANIMATION = "__default__";
+    public const string DEFAULT_ANIMATION = "__default__";
 
     public BlendState blend = BlendState.NonPremultiplied;
     public Color color = Color.White;
@@ -25,7 +25,7 @@ namespace Dodgeball.Engine {
     protected String currentAnimation = DEFAULT_ANIMATION;
     protected Texture2D atlas;
 
-    Dictionary<String, Animation> animations;
+    protected Dictionary<String, Animation> animations;
     Vector2 screenPosition = new Vector2();
     Rectangle renderSlice = new Rectangle();
     Color alphaColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
@@ -47,6 +47,14 @@ namespace Dodgeball.Engine {
 
     public Animation animation {
       get { return animations[currentAnimation]; }
+    }
+
+    public string animationName {
+      get { return currentAnimation; }
+    }
+
+    public Dictionary<String, Animation> Animations {
+      get { return animations; }
     }
 
     public Sprite(float x = 0f, float y = 0f, int width = 0, int height = 0) :
@@ -72,7 +80,7 @@ namespace Dodgeball.Engine {
       animation.stop();
     }
 
-    public void addAnimation(String name, List<int> frames, int fps = 15, bool looped = false) {
+    public virtual void addAnimation(String name, List<int> frames, int fps = 15, bool looped = false) {
       animations.Add(name, new Animation(frames, fps, looped));
     }
 

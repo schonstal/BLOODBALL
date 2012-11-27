@@ -60,6 +60,7 @@ namespace Dodgeball.Game {
     float movementAccel = 5000.0f;
     Retical retical;
     BloodSpatter blood;
+    PlayerGlow playerGlow;
     Vector2 spriteSubmatrix = new Vector2(0, 0);
     Vector2 characterOffset = new Vector2(0, 0);
 
@@ -156,6 +157,9 @@ namespace Dodgeball.Game {
       characterOffset.Y = submatrix.Y * atlas.Height / 2;
 
       sheetOffset.X = characterOffset.X;
+
+      playerGlow = new PlayerGlow(this);
+      G.state.add(playerGlow);
 
       addAnimation("idle", new List<int> { 0, 1, 2, 3 }, 10, true);
 
@@ -491,6 +495,7 @@ namespace Dodgeball.Game {
 
     void catchBall(Ball ball) {
       hitPoints += (ball.velocity.Length()) / HEAL_DENOM;
+      playerGlow.flash();
       takeBall(ball);
     }
 
@@ -533,7 +538,15 @@ namespace Dodgeball.Game {
 
     public override void play(string animation) {
       shadow.play(animation);
+      playerGlow.play(animation);
       base.play(animation);
+    }
+
+    public override void addAnimation(string name, List<int> frames, int fps = 15, bool looped = false) {
+      if(name != Sprite.DEFAULT_ANIMATION) {
+        playerGlow.addAnimation(name, frames, fps, looped);
+      }
+      base.addAnimation(name, frames, fps, looped);
     }
   }
 
