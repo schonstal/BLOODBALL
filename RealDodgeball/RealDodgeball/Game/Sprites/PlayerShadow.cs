@@ -31,6 +31,9 @@ namespace Dodgeball.Game {
       addAnimation("throw", new List<int> { 0 }, 10, false);
       addAnimation("throwReturn", new List<int> { 0 }, 20, false);
 
+      addAnimation("parry", new List<int> { 0 }, 10, false);
+      addAnimation("parryReturn", new List<int> { 0 }, 20, false);
+
       addAnimation("hurt", new List<int> { 0 });
       addAnimation("hurtFall", new List<int> { 1, 2 }, 10, false);
       addAnimation("hurtRecover", new List<int> { 1, 1 }, 20, false);
