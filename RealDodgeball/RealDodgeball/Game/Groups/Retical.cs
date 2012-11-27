@@ -20,7 +20,7 @@ namespace Dodgeball.Game {
     public const float AIM_THRESHOLD = 0.075f;
 
     public Color CHARGED_COLOR = Color.White;
-    public Color UNCHARGED_COLOR = Color.MediumPurple;
+    public Color UNCHARGED_COLOR = new Color(0x60,0x60,0x60);
 
     public float charge = 0f;
 
