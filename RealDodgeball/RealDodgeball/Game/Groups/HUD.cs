@@ -17,6 +17,9 @@ namespace Dodgeball.Game {
     public const int SCOREBOARD_HEIGHT = 42;
     public const int SCOREBOARD_WIDTH = 322;
     public const int SCOREBOARD_OFFSET = 4;
+    public const int ICON_OFFSET_X = 17;
+    public const int ICON_OFFSET_Y = 1;
+    public const int ICON_SIZE = 13;
 
     Group players;
     public Sprite scoreBoard;
@@ -29,8 +32,16 @@ namespace Dodgeball.Game {
       scoreBoard.color = new Color(55, 189, 104);
       add(scoreBoard);
 
-      players.Each((player) => {
-        add(new HealthBar((Player)player, scoreBoard));
+      players.Each<Player>((player) => {
+        HealthBar healthBar = new HealthBar(player, scoreBoard);
+        Sprite controllerIcon = new Sprite(
+          healthBar.x + (player.onLeft ? -ICON_OFFSET_X : HealthBar.BAR_WIDTH + ICON_OFFSET_X - ICON_SIZE),
+          healthBar.y + ICON_OFFSET_Y);
+        controllerIcon.loadGraphic("controllerIcon", ICON_SIZE, ICON_SIZE);
+        controllerIcon.color = scoreBoard.color;
+        controllerIcon.sheetOffset.X = controllerIcon.GraphicWidth * (int)player.playerIndex;
+        add(healthBar);
+        add(controllerIcon);
       });
       z = HUGE_Z;
     }

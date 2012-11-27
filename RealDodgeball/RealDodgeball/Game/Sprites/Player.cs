@@ -47,8 +47,8 @@ namespace Dodgeball.Game {
     public PlayerShadow shadow;
     public Team team;
     public CourtPosition courtPosition;
+    public PlayerIndex playerIndex;
 
-    PlayerIndex playerIndex;
     Heading heading;
     float movementAccel = 5000.0f;
     Retical retical;

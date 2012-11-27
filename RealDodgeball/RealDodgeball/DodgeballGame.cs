@@ -72,7 +72,8 @@ namespace Dodgeball {
         "scoreBoard",
         "healthBar",
         "timerDigits",
-        "ballTrail"
+        "ballTrail",
+        "controllerIcon"
       }.ForEach((s) => Assets.addTexture(s, Content.Load<Texture2D>(s)));
 
       G.switchState(new PlayState());
