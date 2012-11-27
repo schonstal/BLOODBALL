@@ -29,6 +29,9 @@ namespace Dodgeball.Game {
     public const float maxCharge = 2000.0f;
     public const float minCharge = 700.0f;
     public const float DROP_CHARGE = 80.0f;
+    
+    public const float DAMAGE_DENOM = 50f;
+    public const float HEAL_DENOM = 100f;
 
     public const float MAX_HITPOINTS = 100.0f;
     public const float HIT_DRAG = 0.1f;
@@ -40,8 +43,12 @@ namespace Dodgeball.Game {
 
     public const float DROP_PICKUP_TIME = 0.5f;
 
+    public const float PARRY_WINDOW_SECONDS = 0.1f;
+    public const float PARRY_STUN_SECONDS = 0.1f;
+    public const float PARRY_DELAY_SECONDS = 0.5f;
+
     String[] SPECIAL_ANIMATIONS = new String[] {
-      "throw", "idle", "throwReturn", "hurt", "hurtFall", "hurtRecover"
+      "throw", "idle", "throwReturn", "hurt", "hurtFall", "hurtRecover", "parry", "parryReturn"
     };
 
     public PlayerShadow shadow;
@@ -77,7 +84,7 @@ namespace Dodgeball.Game {
     Vector2[][] throwOffsets = new Vector2[5][];
     Vector2[] fallOffsets;
 
-    float catchTimer = 0f;
+    float parryTimer = PARRY_DELAY_SECONDS;
 
     public bool onLeft {
       get { return team == Team.Left; }
@@ -95,7 +102,7 @@ namespace Dodgeball.Game {
     }
 
     public bool Stunned {
-      get { return throwing || hurt; }
+      get { return throwing || hurt || parrying; }
     }
 
     public float HP {
@@ -108,6 +115,10 @@ namespace Dodgeball.Game {
 
     public float MaxFling {
       get { return maxCharge; }
+    }
+
+    public bool ActiveParry {
+      get { return parryTimer < PARRY_WINDOW_SECONDS; }
     }
 
     public Player(PlayerIndex playerIndex, Team team, Vector2 submatrix,
@@ -167,8 +178,9 @@ namespace Dodgeball.Game {
       addOnCompleteCallback("hurtRecover", onHurtRecoverCompleteCallback);
       addAnimationCallback("hurtFall", onHurtFallCallback);
 
-      addAnimation("parry", new List<int> { 10, 9 }, 20, false);
+      addAnimation("parry", new List<int> { 10, 9, 9, 10 }, 40, false);
       addAnimation("parryReturn", new List<int> { 10, 10 }, 20, false);
+      addOnCompleteCallback("parryReturn", onParryReturn);
 
       throwOffsets[(int)Heading.Up] = new Vector2[3] {
           new Vector2(0, 0),
@@ -225,6 +237,8 @@ namespace Dodgeball.Game {
       updateAnimation();
       updatePhysics();
       updateHeading();
+
+      parryTimer += G.elapsed;
 
       rightTriggerWasHeld = rightTriggerHeld;
       if(G.input.Triggers(playerIndex).Right > 0.3) {
@@ -350,14 +364,30 @@ namespace Dodgeball.Game {
     }
 
     void parry() {
-      if(!throwing && !hurt) {
+      if(parryTimer > PARRY_DELAY_SECONDS && !throwing && !hurt) {
         charge = 0;
+        maxSpeed = MAX_RUN_SPEED;
+        retical.visible = false;
+
         parrying = true;
+        play("parry");
+        animation.reset();
+        parryTimer = 0;
+        G.state.DoInSeconds(PARRY_STUN_SECONDS, () => {
+          if(parrying && !hurt) {
+            play("parryReturn");
+            animation.reset();
+          }
+        });
       }
     }
 
+    void onParryReturn(int frameIndex) {
+      parrying = false;
+    }
+
     void updateAnimation() {
-      if(throwing) {
+      if(throwing || parrying) {
         //play("throw");
       } else if(hurt) {
         if(velocity.Length() < HIT_STOP_SPEED &&
@@ -444,20 +474,42 @@ namespace Dodgeball.Game {
     public void onCollide(Ball ball) {
       if(!ball.dangerous && this.ball == null && !ball.owned &&
           !throwing && !hurt && !Dead && ball.collectable && canPickupBall) {
-        ball.owned = true;
-        ball.owner = this;
-        this.ball = ball;
-        this.ball.pickedUp();
+        takeBall(ball);
       } else if(ball.dangerous && !Dead) {
-        hitByBall(ball);
+        if(ActiveParry) {
+          if(this.ball == null) {
+            catchBall(ball);
+          } else {
+            blockBall(ball);
+          }
+        } else {
+          hitByBall(ball);
+        }
       }
+    }
+
+    void catchBall(Ball ball) {
+      hitPoints += (ball.velocity.Length()) / HEAL_DENOM;
+      takeBall(ball);
+    }
+
+    void blockBall(Ball ball) {
+    }
+
+    void takeBall(Ball ball) {
+      ball.dangerous = false;
+      ball.owned = true;
+      ball.owner = this;
+      this.ball = ball;
+      this.ball.pickedUp();
     }
 
     void hitByBall(Ball ball) {
       if(ball.owner != null && ball.owner.team != team) {
-        hitPoints -= (ball.velocity.Length())/50;
+        hitPoints -= (ball.velocity.Length()) / DAMAGE_DENOM;
         hurt = true;
         throwing = false;
+        parrying = false;
         velocity.X = ball.velocity.X*10;
         velocity.Y = ball.velocity.Y*10;
         play("hurt");
