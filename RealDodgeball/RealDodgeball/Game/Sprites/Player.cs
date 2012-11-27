@@ -67,8 +67,11 @@ namespace Dodgeball.Game {
     bool rightTriggerWasHeld = false;
     bool leftTriggerHeld = false;
     bool leftTriggerWasHeld = false;
+
+    //game jam state machine ;)
     bool throwing = false;
     bool hurt = false;
+    bool parrying = false;
     bool canPickupBall = true;
 
     Vector2[][] throwOffsets = new Vector2[5][];
@@ -163,6 +166,9 @@ namespace Dodgeball.Game {
       addAnimation("hurtRecover", new List<int> { 8, 8 }, 20, false);
       addOnCompleteCallback("hurtRecover", onHurtRecoverCompleteCallback);
       addAnimationCallback("hurtFall", onHurtFallCallback);
+
+      addAnimation("parry", new List<int> { 10, 9 }, 20, false);
+      addAnimation("parryReturn", new List<int> { 10, 10 }, 20, false);
 
       throwOffsets[(int)Heading.Up] = new Vector2[3] {
           new Vector2(0, 0),
@@ -266,7 +272,17 @@ namespace Dodgeball.Game {
         charge = 0;
       }
 
-      if(throwing || hurt) Mode = SpriteMode.Misc;
+      if(!leftTriggerWasHeld && leftTriggerHeld) {
+        parry();
+      }
+
+      if(throwing || hurt || parrying) Mode = SpriteMode.Misc;
+      if(parrying && ball != null) {
+        sheetOffset.X = characterOffset.X + (graphicWidth * 2);
+      } else {
+        sheetOffset.X = characterOffset.X;
+      }
+
 
       retical.charge = charge / maxCharge;
 
@@ -330,6 +346,13 @@ namespace Dodgeball.Game {
         G.state.DoInSeconds(DROP_PICKUP_TIME, () => canPickupBall = true);
         maxSpeed = MAX_RUN_SPEED;
         retical.visible = false;
+      }
+    }
+
+    void parry() {
+      if(!throwing && !hurt) {
+        charge = 0;
+        parrying = true;
       }
     }
 
