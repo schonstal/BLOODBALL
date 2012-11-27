@@ -23,13 +23,21 @@ namespace Dodgeball.Game {
 
     Group players;
     public Sprite scoreBoard;
+    public Sprite scoreBoardBackground;
 
     public HUD(Group players) : base() {
+      scoreBoardBackground = new Sprite(0, 0);
+      scoreBoardBackground.loadGraphic("scoreBoardBackground", SCOREBOARD_WIDTH, SCOREBOARD_HEIGHT);
+      scoreBoardBackground.x = (PlayState.ARENA_WIDTH - SCOREBOARD_WIDTH) / 2;
+      scoreBoardBackground.y = -SCOREBOARD_HEIGHT - SCOREBOARD_OFFSET;
+      scoreBoardBackground.color = Color.White;
+      add(scoreBoardBackground);
+
       scoreBoard = new Sprite(0, 0);
       scoreBoard.loadGraphic("scoreBoard", SCOREBOARD_WIDTH, SCOREBOARD_HEIGHT);
       scoreBoard.x = (PlayState.ARENA_WIDTH - SCOREBOARD_WIDTH) / 2;
       scoreBoard.y = -SCOREBOARD_HEIGHT - SCOREBOARD_OFFSET;
-      scoreBoard.color = new Color(55, 189, 104);
+      scoreBoard.color = new Color(0x2b, 0xab, 0x67);
       add(scoreBoard);
 
       players.Each<Player>((player) => {

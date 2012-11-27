@@ -309,10 +309,10 @@ namespace Dodgeball.Game {
 
     public override void postUpdate() {
       if(onLeft) {
-        if(x < 0) x = 0;
+        if(x < 5) x = 5;
         if(x > PlayState.ARENA_WIDTH / 2 - width) x = PlayState.ARENA_WIDTH / 2 - width;
       } else {
-        if(x > PlayState.ARENA_WIDTH - width) x = PlayState.ARENA_WIDTH - width;
+        if(x > PlayState.ARENA_WIDTH - width - 3) x = PlayState.ARENA_WIDTH - width - 3;
         if(x < PlayState.ARENA_WIDTH / 2) x = PlayState.ARENA_WIDTH / 2;
       }
       if(y < 0) y = 0;

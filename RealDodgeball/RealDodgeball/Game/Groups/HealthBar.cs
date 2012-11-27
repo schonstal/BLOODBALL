@@ -17,14 +17,15 @@ namespace Dodgeball.Game {
     public const int BAR_HEIGHT = 12;
 
     public const int BAR_OFFSET_X = 2;
-    public const int BAR_OFFSET_TOP_Y = 3;
-    public const int BAR_OFFSET_BOTTOM_Y = 19;
+    public const int BAR_OFFSET_TOP_Y = 4;
+    public const int BAR_OFFSET_BOTTOM_Y = 20;
 
     public const float FADE_RATE = 50f;
 
     Player player;
     Sprite temporaryHealth;
     Sprite realHealth;
+    Sprite scoreBoard;
     Vector2 imageIndex;
     Group healthBars = new Group();
 
@@ -32,6 +33,8 @@ namespace Dodgeball.Game {
 
     public HealthBar(Player player, Sprite scoreBoard) : base() {
       this.player = player;
+      this.scoreBoard = scoreBoard;
+
       switch(player.courtPosition) {
         case CourtPosition.TopLeft:
           x = ((PlayState.ARENA_WIDTH - HUD.SCOREBOARD_WIDTH) / 2) + BAR_OFFSET_X;
@@ -57,12 +60,11 @@ namespace Dodgeball.Game {
 
       temporaryHealth = new Sprite(x, y);
       temporaryHealth.loadGraphic("healthBar", BAR_WIDTH, BAR_HEIGHT);
-      temporaryHealth.color = new Color(227, 0, 0);
+      temporaryHealth.color = new Color(0xb5, 0x00, 0x05);
       healthBars.add(temporaryHealth);
 
       realHealth = new Sprite(x, y);
       realHealth.loadGraphic("healthBar", BAR_WIDTH, BAR_HEIGHT);
-      realHealth.color = new Color(217, 206, 11);
       healthBars.add(realHealth);
 
       add(healthBars);
@@ -86,6 +88,12 @@ namespace Dodgeball.Game {
           bar.sheetOffset.X = BAR_WIDTH - bar.graphicWidth;
           bar.x = x + BAR_WIDTH - bar.graphicWidth;
         });
+      }
+
+      if(realHealth.graphicWidth == BAR_WIDTH) {
+        realHealth.color = scoreBoard.color;
+      } else {
+        realHealth.color = new Color(0xbe, 0xb9, 0x10);
       }
       base.postUpdate();
     }

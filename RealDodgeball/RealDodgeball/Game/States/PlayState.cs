@@ -15,7 +15,8 @@ namespace Dodgeball.Game {
   public class PlayState : GameState {
     public const int ARENA_WIDTH = 448;
     public const int ARENA_HEIGHT = 252;
-    Sprite dot;
+
+    public const int ARENA_OFFSET_Y = 5;
 
     Group balls = new Group();
     Group players = new Group();
@@ -25,24 +26,23 @@ namespace Dodgeball.Game {
 
     public override void Create() {
       //G.visualDebug = true;
+      Sprite arenaBackground = new Sprite(-G.camera.x, G.camera.y + ARENA_OFFSET_Y);
+      arenaBackground.loadGraphic("arenaBackground", 640, 360);
+      arenaBackground.z = -10;
+      //arenaBackground.screenPositioning = ScreenPositioning.Absolute;
+      add(arenaBackground);
 
-      dot = new Sprite(0,0);
-      dot.loadGraphic("Dot", ARENA_WIDTH, ARENA_HEIGHT);
-      dot.color = new Color(0x2c,0x2c,0x2c);
-      dot.z = -2;
-      add(dot);
+      Sprite arenaForeground = new Sprite(-G.camera.x, G.camera.y + ARENA_OFFSET_Y);
+      arenaForeground.loadGraphic("arenaForeground", 640, 360);
+      arenaForeground.z = 9999;
+      //arenaForeground.screenPositioning = ScreenPositioning.Absolute;
+      add(arenaForeground);
 
-      dot = new Sprite(ARENA_WIDTH/2-1, 0);
-      dot.loadGraphic("Dot", 1, ARENA_HEIGHT);
-      dot.color = Color.Gray;
-      dot.z = -1;
-      add(dot);
-
-      dot = new Sprite(-100, ARENA_HEIGHT);
-      dot.loadGraphic("Dot", 1000, ARENA_HEIGHT);
-      dot.color = Color.Black;
-      dot.z = 100000;
-      add(dot);
+      Sprite arenaVignette = new Sprite(-G.camera.x, G.camera.y + ARENA_OFFSET_Y);
+      arenaVignette.loadGraphic("arenaVignette", 640, 360);
+      arenaVignette.z = 10000;
+      //arenaVignette.screenPositioning = ScreenPositioning.Absolute;
+      add(arenaVignette);
 
       Ball ball = new Ball(80, 80);
       add(ball);

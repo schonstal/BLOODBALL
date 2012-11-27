@@ -14,11 +14,12 @@ namespace Dodgeball.Engine {
   public class Sprite : GameObject {
     public const string DEFAULT_ANIMATION = "__default__";
 
-    public BlendState blend = BlendState.NonPremultiplied;
+    public BlendState blend = BlendState.AlphaBlend;
     public Color color = Color.White;
     public bool visible = true;
     public Vector2 offset = new Vector2();
     public float alpha = 1.0f;
+    public ScreenPositioning screenPositioning = ScreenPositioning.Relative;
 
     public Vector2 sheetOffset = new Vector2();
 
@@ -101,8 +102,13 @@ namespace Dodgeball.Engine {
 
     public override void Draw() {
       if(visible) {
-        screenPosition.X = (int)(G.camera.x + offset.X + x);
-        screenPosition.Y = (int)(-G.camera.y + offset.Y + y);
+        if(screenPositioning == ScreenPositioning.Relative) {
+          screenPosition.X = (int)(G.camera.x + offset.X + x);
+          screenPosition.Y = (int)(-G.camera.y + offset.Y + y);
+        } else {
+          screenPosition.X = (int)(offset.X + x);
+          screenPosition.Y = (int)(offset.Y + y);
+        }
 
         renderSlice.X = ((animation.getFrame() * graphicWidth) % atlas.Width) + (int)sheetOffset.X;
         renderSlice.Y = ((int)Math.Floor(
@@ -119,5 +125,10 @@ namespace Dodgeball.Engine {
         });
       }
     }
+  }
+
+  public enum ScreenPositioning {
+    Relative,
+    Absolute
   }
 }
