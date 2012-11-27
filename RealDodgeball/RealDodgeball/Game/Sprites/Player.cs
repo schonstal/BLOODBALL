@@ -476,6 +476,7 @@ namespace Dodgeball.Game {
           !throwing && !hurt && !Dead && ball.collectable && canPickupBall) {
         takeBall(ball);
       } else if(ball.dangerous && !Dead) {
+        hitRumble(ball);
         if(ActiveParry) {
           if(this.ball == null) {
             catchBall(ball);
@@ -514,7 +515,6 @@ namespace Dodgeball.Game {
         velocity.Y = ball.velocity.Y*10;
         play("hurt");
         blood.spray();
-        hitRumble(ball);
         dropBall();
       }
     }
