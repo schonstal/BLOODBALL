@@ -21,6 +21,7 @@ namespace Dodgeball.Game {
     Group balls = new Group();
     Group players = new Group();
     HUD hud;
+    TimeSpan startingGameTime;
 
     bool started = false;
 
@@ -87,6 +88,17 @@ namespace Dodgeball.Game {
     }
 
     public override void Update() {
+      if(startingGameTime == null) {
+        startingGameTime = G.gameTime.TotalGameTime;
+      }
+      if(GameTracker.TotalSeconds <= 99) {
+        GameTracker.RoundSeconds = 
+          GameTracker.TotalSeconds - (float)(
+          G.gameTime.TotalGameTime.TotalSeconds -
+          startingGameTime.TotalSeconds);
+      }
+      if(GameTracker.RoundSeconds <= 0) GameTracker.RoundSeconds = 0;
+
       base.Update();
       started = true;
     }

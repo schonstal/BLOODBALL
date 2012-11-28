@@ -14,7 +14,8 @@ using Dodgeball.Engine;
 namespace Dodgeball.Game {
   public class GameTracker {
     private static GameTracker _instance;
-    public int _roundSeconds;
+    public float _roundSeconds;
+    public float _totalSeconds;
     public int _totalRounds;
     public int _currentRound;
     public Dictionary<Team, int> _roundsWon = new Dictionary<Team, int>();
@@ -28,24 +29,29 @@ namespace Dodgeball.Game {
       }
     }
 
-    public int RoundSeconds {
-      get { return _instance._roundSeconds; }
-      set { _instance._roundSeconds = value; }
+    public static float RoundSeconds {
+      get { return instance._roundSeconds; }
+      set { instance._roundSeconds = value; }
     }
 
-    public int TotalRounds {
-      get { return _instance._totalRounds; }
-      set { _instance._totalRounds = value; }
+    public static float TotalSeconds {
+      get { return instance._totalSeconds; }
+      set { instance._totalSeconds = value; }
     }
 
-    public int CurrentRound {
-      get { return _instance._currentRound; }
-      set { _instance._currentRound = value; }
+    public static int TotalRounds {
+      get { return instance._totalRounds; }
+      set { instance._totalRounds = value; }
     }
 
-    public Dictionary<Team, int> RoundsWon {
-      get { return _instance._roundsWon; }
-      set { _instance._roundsWon = value; }
+    public static int CurrentRound {
+      get { return instance._currentRound; }
+      set { instance._currentRound = value; }
+    }
+
+    public static Dictionary<Team, int> RoundsWon {
+      get { return instance._roundsWon; }
+      set { instance._roundsWon = value; }
     }
   }
 }

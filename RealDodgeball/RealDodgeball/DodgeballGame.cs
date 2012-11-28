@@ -39,6 +39,15 @@ namespace Dodgeball {
     protected override void Initialize() {
       //TODO: BUTTER YO SHIT
       GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
+
+      //DEBUG FUCKNUGGETS
+      GameTracker.CurrentRound = 0;
+      GameTracker.RoundSeconds = 60;
+      GameTracker.RoundsWon[Team.Left] = 0;
+      GameTracker.RoundsWon[Team.Right] = 0;
+      GameTracker.TotalRounds = 3;
+      GameTracker.TotalSeconds = 60;
+
       base.Initialize();
     }
 
