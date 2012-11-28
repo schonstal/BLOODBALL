@@ -266,7 +266,7 @@ namespace Dodgeball.Game {
         }
         ball.x = x + BALL_OFFSEET_X;
         ball.y = y + BALL_OFFSEET_Y;
-        if(rightTriggerHeld) {
+        if(rightTriggerHeld && !parrying) {
           retical.visible = true;
           rightTriggerHeld = true;
           maxSpeed = CHARGE_RUN_SPEED;
@@ -335,7 +335,7 @@ namespace Dodgeball.Game {
     }
 
     void FlingBall() {
-      if(ball != null && !Dead) {
+      if(ball != null && !Dead && !parrying) {
         flungAtCharge = charge;
 
         Vector2 flingDirection = Vector2.Normalize(retical.Direction);
@@ -481,7 +481,7 @@ namespace Dodgeball.Game {
         takeBall(ball);
       } else if(ball.dangerous && !Dead) {
         hitRumble(ball);
-        if(ActiveParry) {
+        if(ActiveParry && ball.owner.team != team) {
           if(this.ball == null) {
             catchBall(ball);
           } else {
