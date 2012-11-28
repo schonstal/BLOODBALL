@@ -91,6 +91,7 @@
     <Compile Include="Game\Groups\HealthBar.cs" />
     <Compile Include="Game\Groups\HUD.cs" />
     <Compile Include="Game\Groups\Retical.cs" />
+    <Compile Include="Game\Groups\RoundMarker.cs" />
     <Compile Include="Game\Groups\Timer.cs" />
     <Compile Include="Game\Sprites\Ball.cs" />
     <Compile Include="Game\Sprites\BallParticle.cs" />

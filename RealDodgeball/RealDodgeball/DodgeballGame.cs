@@ -42,10 +42,10 @@ namespace Dodgeball {
 
       //DEBUG FUCKNUGGETS
       GameTracker.CurrentRound = 0;
-      GameTracker.RoundSeconds = 60;
+      GameTracker.RoundSeconds = 99;
       GameTracker.RoundsWon[Team.Left] = 0;
       GameTracker.RoundsWon[Team.Right] = 0;
-      GameTracker.TotalRounds = 3;
+      GameTracker.RoundsToWin = 3;
       GameTracker.TotalSeconds = 60;
 
       base.Initialize();
@@ -86,7 +86,9 @@ namespace Dodgeball {
         "arenaBackground",
         "arenaForeground",
         "arenaVignette",
-        "scoreBoardBackground"
+        "scoreBoardBackground",
+        "roundMarker",
+        "roundMarkerBackground"
       }.ForEach((s) => Assets.addTexture(s, Content.Load<Texture2D>(s)));
 
       G.switchState(new PlayState());

@@ -20,6 +20,9 @@ namespace Dodgeball.Game {
     public const int ICON_OFFSET_X = 17;
     public const int ICON_OFFSET_Y = 1;
     public const int ICON_SIZE = 13;
+    public const int ROUND_MARKER_OFFSET_X = 25;
+    public const int ROUND_MARKER_OFFSET_Y = 33;
+    public const int ROUND_MARKER_SPACING = 9;
 
     Group players;
     public Sprite scoreBoard;
@@ -53,6 +56,17 @@ namespace Dodgeball.Game {
       });
 
       add(new Timer(scoreBoard.color));
+
+      for(int i = 1; i <= GameTracker.RoundsToWin; i++) {
+        add(new RoundMarker(
+          PlayState.ARENA_WIDTH/2 - 8 - ROUND_MARKER_OFFSET_X - (i * ROUND_MARKER_SPACING),
+          scoreBoard.y + ROUND_MARKER_OFFSET_Y,
+          GameTracker.RoundsWon[Team.Left] >= i, scoreBoard.color));
+        add(new RoundMarker(
+          PlayState.ARENA_WIDTH/2 + ROUND_MARKER_OFFSET_X + (i * ROUND_MARKER_SPACING),
+          scoreBoard.y + ROUND_MARKER_OFFSET_Y,
+          GameTracker.RoundsWon[Team.Right] >= i, scoreBoard.color));
+      }
 
       z = HUGE_Z;
     }

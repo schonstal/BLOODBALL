@@ -128,6 +128,7 @@
     <Compile Include="Engine\Util.cs" />
     <Compile Include="Engine\Input.cs" />
     <Compile Include="Game\Groups\BallTrail.cs" />
+    <Compile Include="Game\Groups\RoundMarker.cs" />
     <Compile Include="Game\Groups\Timer.cs" />
     <Compile Include="Game\Groups\HealthBar.cs" />
     <Compile Include="Game\Groups\HUD.cs" />
