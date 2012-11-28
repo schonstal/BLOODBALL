@@ -38,7 +38,6 @@ namespace Dodgeball.Game {
       scoreBoard.x = (PlayState.ARENA_WIDTH - SCOREBOARD_WIDTH) / 2;
       scoreBoard.y = -SCOREBOARD_HEIGHT - SCOREBOARD_OFFSET;
       scoreBoard.color = new Color(0x2b, 0xab, 0x67);
-      scoreBoard.blend = BlendState.Additive;
       add(scoreBoard);
 
       players.Each<Player>((player) => {
@@ -52,6 +51,9 @@ namespace Dodgeball.Game {
         add(healthBar);
         add(controllerIcon);
       });
+
+      add(new Timer(scoreBoard.color));
+
       z = HUGE_Z;
     }
   }
