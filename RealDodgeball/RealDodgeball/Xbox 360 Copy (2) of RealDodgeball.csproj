@@ -86,6 +86,7 @@
     <Compile Include="Engine\Tuple.cs" />
     <Compile Include="Engine\Util.cs" />
     <Compile Include="Engine\Input.cs" />
+    <Compile Include="Game\GameTracker.cs" />
     <Compile Include="Game\Groups\BallTrail.cs" />
     <Compile Include="Game\Groups\HealthBar.cs" />
     <Compile Include="Game\Groups\HUD.cs" />

@@ -106,7 +106,6 @@ namespace Dodgeball {
       spriteBatch.Begin();
       G.state.Draw();
       spriteBatch.End();
-      base.Draw(gameTime);
 
       //set rendering back to the back buffer
       GraphicsDevice.SetRenderTarget(null);
@@ -115,6 +114,8 @@ namespace Dodgeball {
       targetBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone); 
       targetBatch.Draw(renderTarget, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
       targetBatch.End();
+
+      base.Draw(gameTime);
     }
   }
 }

@@ -82,7 +82,7 @@ namespace Dodgeball.Game {
       for(int i = 0; i < DOT_COUNT; i++) {
         dots[i] = new Sprite(i * DOT_SPREAD);
         dots[i].loadGraphic("Dot", 1, 1);
-        dots[i].color = Color.MediumPurple;
+        dots[i].color = CHARGED_COLOR;
         dots[i].z = 0;
         add(dots[i]);
       }
@@ -90,10 +90,9 @@ namespace Dodgeball.Game {
 
     public override void Update() {
       updateDirection();
-      if(charge > 0) {
-        for(int i = 0; i < DOT_COUNT; i++) {
-          dots[i].color = i < (int)(DOT_COUNT * charge) ? CHARGED_COLOR : UNCHARGED_COLOR;
-        }
+
+      for(int i = 0; i < DOT_COUNT-1; i++) {
+        dots[i+1].color = i < (int)((DOT_COUNT-1) * charge) ? CHARGED_COLOR : UNCHARGED_COLOR;
       }
       base.Update();
     }

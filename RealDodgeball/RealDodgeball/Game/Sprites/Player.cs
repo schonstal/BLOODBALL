@@ -132,20 +132,20 @@ namespace Dodgeball.Game {
       courtPosition = position;
       switch (position) {
         case CourtPosition.TopLeft:
-          x = 80;
-          y = 40;
+          x = 15;
+          y = 45;
           break;
         case CourtPosition.TopRight:
-          x = PlayState.ARENA_WIDTH - 80;
-          y = 40;
+          x = 414;
+          y = 45;
           break;
         case CourtPosition.BottomLeft:
-          x = 80;
-          y = PlayState.ARENA_HEIGHT - 100;
+          x = 15;
+          y = 180;
           break;
         case CourtPosition.BottomRight:
-          x = PlayState.ARENA_WIDTH - 80;
-          y = PlayState.ARENA_HEIGHT - 100;
+          x = 414;
+          y = 180;
           break;
       }
       
@@ -301,9 +301,6 @@ namespace Dodgeball.Game {
         sheetOffset.X = characterOffset.X;
       }
 
-
-      retical.charge = charge / maxCharge;
-
       base.Update();
     }
 
@@ -331,6 +328,8 @@ namespace Dodgeball.Game {
       }
 
       if(Dead) retical.visible = false;
+
+      retical.charge = (charge - minCharge) / (maxCharge - minCharge);
       base.postUpdate();
     }
 
@@ -370,6 +369,7 @@ namespace Dodgeball.Game {
     void parry() {
       if(parryTimer > PARRY_DELAY_SECONDS && !throwing && !hurt) {
         charge = 0;
+        retical.charge = 0;
         maxSpeed = MAX_RUN_SPEED;
         retical.visible = false;
 

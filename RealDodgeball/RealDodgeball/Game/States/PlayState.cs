@@ -44,16 +44,16 @@ namespace Dodgeball.Game {
       //arenaVignette.screenPositioning = ScreenPositioning.Absolute;
       add(arenaVignette);
 
-      Ball ball = new Ball(80, 80);
+      Ball ball = new Ball(15, 45);
       add(ball);
       balls.add(ball);
-      ball = new Ball(80, 120);
+      ball = new Ball(414, 45);
       add(ball);
       balls.add(ball);
-      ball = new Ball(ARENA_WIDTH - 80 - ball.width, 80);
+      ball = new Ball(15, 180);
       add(ball);
       balls.add(ball);
-      ball = new Ball(ARENA_WIDTH - 80 - ball.width, 120);
+      ball = new Ball(414, 180);
       add(ball);
       balls.add(ball);
 
