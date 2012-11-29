@@ -32,6 +32,11 @@ namespace Dodgeball.Game {
     bool started = false;
     bool timeSet = false;
     bool frozen = true;
+    bool restarted = false;
+
+    public PlayState(bool restart=false) : base() {
+      restarted = restart;
+    }
 
     public override void Create() {
       //G.visualDebug = true;
@@ -97,7 +102,7 @@ namespace Dodgeball.Game {
     }
 
     public override void Update() {
-      if(G.camera.y > yDest - 1) {
+      if(G.camera.y > yDest - 1 || restarted) {
         G.camera.y = yDest;
         hud.visible = true;
         if(MediaPlayer.State != MediaState.Playing) {
