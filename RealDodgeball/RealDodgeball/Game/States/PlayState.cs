@@ -106,7 +106,19 @@ namespace Dodgeball.Game {
           + HUD.SCOREBOARD_HEIGHT
           - HUD.SCOREBOARD_OFFSET
         ) / 2,
-        G.elapsed*1.5f);
+        G.elapsed*2.5f);
+
+      /*if(G.camera.y > (PlayState.ARENA_OFFSET_Y - (
+          360
+          - PlayState.ARENA_HEIGHT
+          + HUD.SCOREBOARD_HEIGHT
+          - HUD.SCOREBOARD_OFFSET
+        ) / 2) - 2) G.camera.y = PlayState.ARENA_OFFSET_Y - (
+          360
+          - PlayState.ARENA_HEIGHT
+          + HUD.SCOREBOARD_HEIGHT
+          - HUD.SCOREBOARD_OFFSET
+        ) / 2;*/
 
       base.Update();
       started = true;
