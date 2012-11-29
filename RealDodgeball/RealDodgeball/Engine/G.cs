@@ -19,12 +19,16 @@ namespace Dodgeball.Engine {
     public GameState _state;
     public Camera _camera;
     public Input _input;
+    public Group _transitions;
+    public Dictionary<string, Transition> _transitionMap;
     public bool _visualDebug = false;
 
     private static G instance {
       get {
         if (_instance == null) {
           _instance = new G();
+          _instance._transitionMap = new Dictionary<string,Transition>();
+          _instance._transitions = new Group();
         }
         return _instance;
       }
@@ -56,6 +60,11 @@ namespace Dodgeball.Engine {
       set { instance._visualDebug = value; }
     }
 
+    public static Group transitions {
+      get { return instance._transitions; }
+      set { instance._transitions = value; }
+    }
+
     public G() {
       _input = new Input();
       _camera = new Camera();
@@ -68,10 +77,19 @@ namespace Dodgeball.Engine {
       instance._state.Update();
     }
 
-    public static void switchState(GameState state) {
+    public static void switchState(GameState state, string transition = null) {
       //Maybe we'll do some destruction logic here later
-      instance._state = state;
-      instance._state.Create();
+      if(transition == null) {
+        instance._state = state;
+        instance._state.Create();
+      } else {
+        instance._transitionMap[transition].Start(state);
+      }
+    }
+
+    public static void addTransition(string name, Transition transition) {
+      instance._transitionMap.Add(name, transition);
+      transitions.add(transition);
     }
   }
 }
