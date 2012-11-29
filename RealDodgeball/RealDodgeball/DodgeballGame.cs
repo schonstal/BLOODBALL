@@ -111,7 +111,7 @@ namespace Dodgeball {
       G.camera.width = renderTarget.Width;
       G.camera.height = renderTarget.Height;
 
-      G.update(gameTime);
+      G.Update(gameTime);
       G.transitions.Update();
     }
 

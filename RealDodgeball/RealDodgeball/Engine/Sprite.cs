@@ -103,8 +103,8 @@ namespace Dodgeball.Engine {
     public override void Draw() {
       if(visible) {
         if(screenPositioning == ScreenPositioning.Relative) {
-          screenPosition.X = (int)(G.camera.x + offset.X + x);
-          screenPosition.Y = (int)(-G.camera.y + offset.Y + y);
+          screenPosition.X = (int)(G.camera.x + G.camera.offset.X + offset.X + x);
+          screenPosition.Y = (int)(-G.camera.y + G.camera.offset.Y + offset.Y + y);
         } else {
           screenPosition.X = (int)(offset.X + x);
           screenPosition.Y = (int)(offset.Y + y);

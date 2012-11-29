@@ -21,6 +21,8 @@ namespace Dodgeball.Engine {
     public Input _input;
     public Group _transitions;
     public Dictionary<string, Transition> _transitionMap;
+    float _totalTime = 0;
+    List<Tuple<float, Action, Action>> _actions = new List<Tuple<float, Action, Action>>();
     public bool _visualDebug = false;
 
     private static G instance {
@@ -70,9 +72,20 @@ namespace Dodgeball.Engine {
       _camera = new Camera();
     }
 
-    public static void update(GameTime gameTime) {
+    public static void Update(GameTime gameTime) {
       instance._timeElapsed = gameTime.ElapsedGameTime.Milliseconds/1000f;
       instance._gameTime = gameTime;
+      instance._totalTime += G.elapsed;
+      instance._actions.ForEach((action) => {
+        if(instance._totalTime > action.Item1) {
+          if(action.Item3 != null) {
+            action.Item3();
+          }
+          instance._actions.Remove(action);
+        } else {
+          if(action.Item2 != null) action.Item2();
+        }
+      });
       instance._input.Update();
       instance._state.Update();
     }
@@ -91,5 +104,37 @@ namespace Dodgeball.Engine {
       instance._transitionMap.Add(name, transition);
       transitions.add(transition);
     }
+
+    public static void DoForSeconds(float seconds, Action action, Action onComplete = null) {
+      float endTime = instance._totalTime + seconds;
+      instance._actions.Add(new Tuple<float, Action, Action>(endTime, action, onComplete));
+    }
+
+    public static void DoInSeconds(float seconds, Action action) {
+      DoForSeconds(seconds, null, action);
+    }
+
+    //Have to put this here for xbox
+    public class Tuple<T1, T2> {
+      public T1 Item1 { get; set; }
+      public T2 Item2 { get; set; }
+
+      public Tuple(T1 item1, T2 item2) {
+        Item1 = item1;
+        Item2 = item2;
+      }
+    }
+
+    public class Tuple<T1, T2, T3> {
+      public T1 Item1 { get; set; }
+      public T2 Item2 { get; set; }
+      public T3 Item3 { get; set; }
+
+      public Tuple(T1 item1, T2 item2, T3 item3) {
+        Item1 = item1;
+        Item2 = item2;
+        Item3 = item3;
+      }
+    } 
   }
 }

@@ -12,6 +12,8 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Dodgeball.Engine {
   public class Camera : GameObject {
+    public Vector2 offset = new Vector2();
+
     SpriteBatch spriteBatch = null;
     BlendState currentBlendState = null;
 
