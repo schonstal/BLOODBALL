@@ -98,6 +98,7 @@
     <Compile Include="Game\Sprites\BallParticle.cs" />
     <Compile Include="Game\Sprites\BloodSpray.cs" />
     <Compile Include="Game\Sprites\FadeTransition.cs" />
+    <Compile Include="Game\Sprites\GateTransition.cs" />
     <Compile Include="Game\Sprites\PlayerGlow.cs" />
     <Compile Include="Game\Sprites\PlayerShadow.cs" />
     <Compile Include="Game\Sprites\Player.cs" />

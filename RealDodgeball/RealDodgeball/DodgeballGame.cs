@@ -72,7 +72,6 @@ namespace Dodgeball {
       Texture2D dot = new Texture2D(GraphicsDevice, 1, 1);
       dot.SetData(new Color[] { Color.White });
       Assets.addTexture("Dot", dot);
-      G.addTransition("fade", new FadeTransition());
 
       new List<string> { 
         "player",
@@ -90,11 +89,14 @@ namespace Dodgeball {
         "arenaVignette",
         "scoreBoardBackground",
         "roundMarker",
-        "roundMarkerBackground"
+        "roundMarkerBackground",
+        "transition"
       }.ForEach((s) => Assets.addTexture(s, Content.Load<Texture2D>(s)));
 
       Assets.addSong("GameMusic", Content.Load<Song>("GameMusic"));
 
+      G.addTransition("fade", new FadeTransition());
+      G.addTransition("gate", new GateTransition());
       G.switchState(new PlayState());
     }
 
@@ -104,9 +106,7 @@ namespace Dodgeball {
     protected override void Update(GameTime gameTime) {
 
       if(GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed) {
-        G.switchState(new PlayState(true), "fade");      //Actually put it in the right place...
-        G.camera.x = (GraphicsDevice.Viewport.Width / 2 - PlayState.ARENA_WIDTH) / 2;
-        G.camera.y = -200;
+        G.switchState(new PlayState(true), "gate");      //Actually put it in the right place...
       }
 
       // TODO: Add your update logic here
@@ -143,8 +143,18 @@ namespace Dodgeball {
 
       //render target to back buffer
       targetBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone);
-      targetBatch.Draw(renderTarget, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
-      targetBatch.Draw(transitionTarget, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+      targetBatch.Draw(renderTarget, new Rectangle(
+          (int)G.camera.offset.X,
+          (int)G.camera.offset.Y,
+          GraphicsDevice.Viewport.Width,
+          GraphicsDevice.Viewport.Height),
+        Color.White);
+      targetBatch.Draw(transitionTarget, new Rectangle(
+          (int)G.camera.offset.X,
+          (int)G.camera.offset.Y,
+          GraphicsDevice.Viewport.Width,
+          GraphicsDevice.Viewport.Height),
+        Color.White);
       targetBatch.End();
 
       base.Draw(gameTime);
