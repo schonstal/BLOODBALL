@@ -31,6 +31,7 @@ namespace Dodgeball.Game {
 
     bool started = false;
     bool timeSet = false;
+    bool frozen = true;
 
     public override void Create() {
       //G.visualDebug = true;
@@ -99,13 +100,18 @@ namespace Dodgeball.Game {
       if(G.camera.y > yDest - 1) {
         G.camera.y = yDest;
         hud.visible = true;
-        countTime();
+        if(MediaPlayer.State != MediaState.Playing) {
+          MediaPlayer.Play(Assets.getSong("GameMusic"));
+        }
       } else {
         G.camera.y = MathHelper.Lerp(G.camera.y,
           yDest,
           G.elapsed * 2f);
       }
 
+      if(!frozen) {
+        countTime();
+      }
       base.Update();
       started = true;
     }

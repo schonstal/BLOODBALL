@@ -86,6 +86,8 @@ namespace Dodgeball {
         "roundMarkerBackground"
       }.ForEach((s) => Assets.addTexture(s, Content.Load<Texture2D>(s)));
 
+      Assets.addSong("GameMusic", Content.Load<Song>("GameMusic"));
+
       G.switchState(new PlayState());
     }
 
