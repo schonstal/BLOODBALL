@@ -95,10 +95,9 @@ namespace Dodgeball {
     }
 
     protected override void Update(GameTime gameTime) {
-      G.update(gameTime);
 
       if(GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed) {
-        G.switchState(new PlayState());      //Actually put it in the right place...
+        G.switchState(new PlayState(true));      //Actually put it in the right place...
         G.camera.x = (GraphicsDevice.Viewport.Width / 2 - PlayState.ARENA_WIDTH) / 2;
         G.camera.y = -200;
       }
@@ -106,6 +105,7 @@ namespace Dodgeball {
       // TODO: Add your update logic here
 
       base.Update(gameTime);
+      G.update(gameTime);
     }
 
     protected override void Draw(GameTime gameTime) {
