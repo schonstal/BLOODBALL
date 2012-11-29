@@ -31,6 +31,7 @@ namespace Dodgeball.Game {
       openFrames = Enumerable.Range(24, 27).ToList();
 
       addAnimation("close", closeFrames, 40, false);
+      addAnimationCallback("close", onClose);
       addOnCompleteCallback("close", onCloseComplete);
       
       addAnimation("open", openFrames, 40, false);
@@ -44,7 +45,7 @@ namespace Dodgeball.Game {
         G.camera.offset.X = G.RNG.Next(-SHAKE_AMOUNT, SHAKE_AMOUNT);
         G.camera.offset.Y = G.RNG.Next(-SHAKE_AMOUNT, SHAKE_AMOUNT);
         Input.ForEachInput((playerIndex) => {
-          GamePad.SetVibration(playerIndex, SHAKE_RUMBLE, SHAKE_RUMBLE);
+          GamePad.SetVibration(playerIndex, SHAKE_RUMBLE, 0);//SHAKE_RUMBLE);
         });
       }, () => {
         G.camera.offset.X = 0;
@@ -58,6 +59,22 @@ namespace Dodgeball.Game {
         play("open");
         animation.reset();
       });
+    }
+
+    public void onClose(int frameIndex) {
+      if(frameIndex == 14) {
+        G.DoForSeconds(SHAKE_SECONDS/2, () => {
+          Input.ForEachInput((playerIndex) => {
+            GamePad.SetVibration(playerIndex, 0, SHAKE_RUMBLE);
+          });
+        }, () => {
+          G.camera.offset.X = 0;
+          G.camera.offset.Y = 0;
+          Input.ForEachInput((playerIndex) => {
+            GamePad.SetVibration(playerIndex, 0, 0);
+          });
+        });
+      }
     }
 
     public void onOpenComplete(int frameIndex) {

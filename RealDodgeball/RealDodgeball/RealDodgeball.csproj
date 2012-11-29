@@ -129,6 +129,7 @@
     <Compile Include="Engine\Util.cs" />
     <Compile Include="Engine\Input.cs" />
     <Compile Include="Game\Groups\BallTrail.cs" />
+    <Compile Include="Game\Groups\Card.cs" />
     <Compile Include="Game\Sprites\GateTransition.cs" />
     <Compile Include="Game\Sprites\FadeTransition.cs" />
     <Compile Include="Game\Groups\RoundMarker.cs" />
