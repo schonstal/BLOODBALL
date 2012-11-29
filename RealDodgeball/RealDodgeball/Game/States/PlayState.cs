@@ -27,22 +27,22 @@ namespace Dodgeball.Game {
 
     public override void Create() {
       //G.visualDebug = true;
-      Sprite arenaBackground = new Sprite(-G.camera.x, G.camera.y + ARENA_OFFSET_Y);
+      Sprite arenaBackground = new Sprite(-G.camera.x, -68 + ARENA_OFFSET_Y);
       arenaBackground.loadGraphic("arenaBackground", 640, 360);
       arenaBackground.z = -10;
       //arenaBackground.screenPositioning = ScreenPositioning.Absolute;
       add(arenaBackground);
 
-      Sprite arenaForeground = new Sprite(-G.camera.x, G.camera.y + ARENA_OFFSET_Y);
+      Sprite arenaForeground = new Sprite(-G.camera.x, -68 + ARENA_OFFSET_Y);
       arenaForeground.loadGraphic("arenaForeground", 640, 360);
       arenaForeground.z = 9999;
       //arenaForeground.screenPositioning = ScreenPositioning.Absolute;
       add(arenaForeground);
 
-      Sprite arenaVignette = new Sprite(-G.camera.x, G.camera.y + ARENA_OFFSET_Y);
+      Sprite arenaVignette = new Sprite(0, 0);
       arenaVignette.loadGraphic("arenaVignette", 640, 360);
       arenaVignette.z = 10000;
-      //arenaVignette.screenPositioning = ScreenPositioning.Absolute;
+      arenaVignette.screenPositioning = ScreenPositioning.Absolute;
       add(arenaVignette);
 
       Ball ball = new Ball(15, 45);
@@ -98,6 +98,15 @@ namespace Dodgeball.Game {
           startingGameTime.TotalSeconds);
       }
       if(GameTracker.RoundSeconds <= 0) GameTracker.RoundSeconds = 0;
+
+      G.camera.y = MathHelper.Lerp(G.camera.y,
+        PlayState.ARENA_OFFSET_Y - (
+          360
+          - PlayState.ARENA_HEIGHT
+          + HUD.SCOREBOARD_HEIGHT
+          - HUD.SCOREBOARD_OFFSET
+        ) / 2,
+        G.elapsed*1.5f);
 
       base.Update();
       started = true;
