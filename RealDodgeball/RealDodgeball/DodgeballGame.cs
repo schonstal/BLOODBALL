@@ -120,7 +120,6 @@ namespace Dodgeball {
     }
 
     protected override void Draw(GameTime gameTime) {
-      //Make the dimensions based on the screen
       GraphicsDevice.SetRenderTarget(renderTarget);
 
       //Draw game
@@ -129,19 +128,19 @@ namespace Dodgeball {
       G.state.Draw();
       spriteBatch.End();
 
-      //Make the dimensions based on the screen
       GraphicsDevice.SetRenderTarget(transitionTarget);
 
-      //Draw game
+      //Draw transitions
       GraphicsDevice.Clear(Color.Transparent);
       spriteBatch.Begin();
       G.transitions.Draw();
       spriteBatch.End();
 
-      //set rendering back to the back buffer
+      //Set rendering to back buffer
       GraphicsDevice.SetRenderTarget(null);
+      GraphicsDevice.Clear(Color.Black);
 
-      //render target to back buffer
+      //Render targets
       targetBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone);
       targetBatch.Draw(renderTarget, new Rectangle(
           (int)G.camera.offset.X,

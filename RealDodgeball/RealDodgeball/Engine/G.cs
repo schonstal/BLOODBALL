@@ -21,6 +21,7 @@ namespace Dodgeball.Engine {
     public Input _input;
     public Group _transitions;
     public Dictionary<string, Transition> _transitionMap;
+    public Random _rng;
     float _totalTime = 0;
     List<Tuple<float, Action, Action>> _actions = new List<Tuple<float, Action, Action>>();
     public bool _visualDebug = false;
@@ -31,6 +32,7 @@ namespace Dodgeball.Engine {
           _instance = new G();
           _instance._transitionMap = new Dictionary<string,Transition>();
           _instance._transitions = new Group();
+          _instance._rng = new Random();
         }
         return _instance;
       }
@@ -65,6 +67,10 @@ namespace Dodgeball.Engine {
     public static Group transitions {
       get { return instance._transitions; }
       set { instance._transitions = value; }
+    }
+
+    public static Random RNG {
+      get { return instance._rng; }
     }
 
     public G() {

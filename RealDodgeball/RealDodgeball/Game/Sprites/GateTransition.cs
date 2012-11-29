@@ -41,8 +41,8 @@ namespace Dodgeball.Game {
 
     public void onCloseComplete(int frameIndex) {
       G.DoForSeconds(SHAKE_SECONDS, () => {
-        G.camera.offset.X = (new Random()).Next(-SHAKE_AMOUNT, SHAKE_AMOUNT);
-        G.camera.offset.Y = (new Random()).Next(-SHAKE_AMOUNT, SHAKE_AMOUNT);
+        G.camera.offset.X = G.RNG.Next(-SHAKE_AMOUNT, SHAKE_AMOUNT);
+        G.camera.offset.Y = G.RNG.Next(-SHAKE_AMOUNT, SHAKE_AMOUNT);
         Input.ForEachInput((playerIndex) => {
           GamePad.SetVibration(playerIndex, SHAKE_RUMBLE, SHAKE_RUMBLE);
         });
