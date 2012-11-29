@@ -17,6 +17,7 @@ namespace Dodgeball {
     SpriteBatch spriteBatch;
     SpriteBatch targetBatch;
     RenderTarget2D renderTarget;
+    RenderTarget2D transitionTarget;
 
     public DodgeballGame() {
       graphics = new GraphicsDeviceManager(this);
@@ -55,8 +56,11 @@ namespace Dodgeball {
       spriteBatch = new SpriteBatch(GraphicsDevice);
       targetBatch = new SpriteBatch(GraphicsDevice);
       renderTarget = new RenderTarget2D(GraphicsDevice,
-        GraphicsDevice.Viewport.Width/2,
-        GraphicsDevice.Viewport.Height/2);
+        GraphicsDevice.Viewport.Width / 2,
+        GraphicsDevice.Viewport.Height / 2);
+      transitionTarget = new RenderTarget2D(GraphicsDevice,
+        GraphicsDevice.Viewport.Width / 4,
+        GraphicsDevice.Viewport.Height / 4);
       G.camera.Initialize(spriteBatch);
       //Actually put it in the right place...
       G.camera.x = (GraphicsDevice.Viewport.Width/2 - PlayState.ARENA_WIDTH)/2;
@@ -123,6 +127,14 @@ namespace Dodgeball {
       GraphicsDevice.Clear(Color.Black);
       spriteBatch.Begin();
       G.state.Draw();
+      spriteBatch.End();
+
+      //Make the dimensions based on the screen
+      GraphicsDevice.SetRenderTarget(transitionTarget);
+
+      //Draw game
+      GraphicsDevice.Clear(Color.Transparent);
+      spriteBatch.Begin();
       G.transitions.Draw();
       spriteBatch.End();
 
@@ -130,8 +142,9 @@ namespace Dodgeball {
       GraphicsDevice.SetRenderTarget(null);
 
       //render target to back buffer
-      targetBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone); 
+      targetBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone);
       targetBatch.Draw(renderTarget, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+      targetBatch.Draw(transitionTarget, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
       targetBatch.End();
 
       base.Draw(gameTime);
