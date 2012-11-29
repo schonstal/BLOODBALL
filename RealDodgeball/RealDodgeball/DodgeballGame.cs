@@ -90,7 +90,10 @@ namespace Dodgeball {
         "scoreBoardBackground",
         "roundMarker",
         "roundMarkerBackground",
-        "transition"
+        "transition",
+        "cardBackground",
+        "cards",
+        "roundNumber"
       }.ForEach((s) => Assets.addTexture(s, Content.Load<Texture2D>(s)));
 
       Assets.addSong("GameMusic", Content.Load<Song>("GameMusic"));
@@ -106,7 +109,7 @@ namespace Dodgeball {
     protected override void Update(GameTime gameTime) {
 
       if(GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed) {
-        G.switchState(new PlayState(true), "gate");      //Actually put it in the right place...
+        G.switchState(new PlayState(true));//, "gate");      //Actually put it in the right place...
       }
 
       // TODO: Add your update logic here

@@ -22,6 +22,8 @@ namespace Dodgeball.Game {
     Group players = new Group();
     HUD hud;
     TimeSpan startingGameTime;
+    Card card;
+
     float yDest = PlayState.ARENA_OFFSET_Y - (
         360
         - PlayState.ARENA_HEIGHT
@@ -86,6 +88,10 @@ namespace Dodgeball.Game {
       hud = new HUD(players);
       hud.visible = false;
       add(hud);
+
+      card = new Card();
+      card.Show("round", () => hud.visible = false);
+      add(card);
     }
 
     void onBallMove(GameObject ball) {

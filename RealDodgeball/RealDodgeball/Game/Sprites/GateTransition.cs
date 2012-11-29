@@ -15,7 +15,8 @@ namespace Dodgeball.Game {
   class GateTransition : Transition {
     public const float SHAKE_SECONDS = 0.3f;
     public const int SHAKE_AMOUNT = 8;
-    public const float SHAKE_RUMBLE = 0.7f;
+    public const float SMALL_SHAKE_RUMBLE = 0.5f;
+    public const float BIG_SHAKE_RUMBLE = 1f;
 
     public const float CLOSED_SECONDS = 1f;
 
@@ -45,7 +46,7 @@ namespace Dodgeball.Game {
         G.camera.offset.X = G.RNG.Next(-SHAKE_AMOUNT, SHAKE_AMOUNT);
         G.camera.offset.Y = G.RNG.Next(-SHAKE_AMOUNT, SHAKE_AMOUNT);
         Input.ForEachInput((playerIndex) => {
-          GamePad.SetVibration(playerIndex, SHAKE_RUMBLE, 0);//SHAKE_RUMBLE);
+          GamePad.SetVibration(playerIndex, BIG_SHAKE_RUMBLE, 0);//BIG_SHAKE_RUMBLE);
         });
       }, () => {
         G.camera.offset.X = 0;
@@ -65,7 +66,7 @@ namespace Dodgeball.Game {
       if(frameIndex == 14) {
         G.DoForSeconds(SHAKE_SECONDS/2, () => {
           Input.ForEachInput((playerIndex) => {
-            GamePad.SetVibration(playerIndex, 0, SHAKE_RUMBLE);
+            GamePad.SetVibration(playerIndex, 0, SMALL_SHAKE_RUMBLE);
           });
         }, () => {
           G.camera.offset.X = 0;
