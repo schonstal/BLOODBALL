@@ -22,8 +22,15 @@ namespace Dodgeball.Game {
     Group players = new Group();
     HUD hud;
     TimeSpan startingGameTime;
+    float yDest = PlayState.ARENA_OFFSET_Y - (
+        360
+        - PlayState.ARENA_HEIGHT
+        + HUD.SCOREBOARD_HEIGHT
+        - HUD.SCOREBOARD_OFFSET
+      ) / 2;
 
     bool started = false;
+    bool timeSet = false;
 
     public override void Create() {
       //G.visualDebug = true;
@@ -71,6 +78,7 @@ namespace Dodgeball.Game {
       players.Each((player) => add(player));
 
       hud = new HUD(players);
+      hud.visible = false;
       add(hud);
     }
 
@@ -88,28 +96,32 @@ namespace Dodgeball.Game {
     }
 
     public override void Update() {
-      if(startingGameTime == null) {
+      if(G.camera.y > yDest - 1) {
+        G.camera.y = yDest;
+        hud.visible = true;
+        countTime();
+      } else {
+        G.camera.y = MathHelper.Lerp(G.camera.y,
+          yDest,
+          G.elapsed * 2f);
+      }
+
+      base.Update();
+      started = true;
+    }
+
+    public void countTime() {
+      if(!timeSet) {
         startingGameTime = G.gameTime.TotalGameTime;
+        timeSet = true;
       }
       if(GameTracker.TotalSeconds <= 99) {
-        GameTracker.RoundSeconds = 
+        GameTracker.RoundSeconds =
           GameTracker.TotalSeconds - (float)(
           G.gameTime.TotalGameTime.TotalSeconds -
           startingGameTime.TotalSeconds);
       }
       if(GameTracker.RoundSeconds <= 0) GameTracker.RoundSeconds = 0;
-
-      G.camera.y = MathHelper.Lerp(G.camera.y,
-        PlayState.ARENA_OFFSET_Y - (
-          360
-          - PlayState.ARENA_HEIGHT
-          + HUD.SCOREBOARD_HEIGHT
-          - HUD.SCOREBOARD_OFFSET
-        ) / 2,
-        G.elapsed*2f);
-
-      base.Update();
-      started = true;
     }
 
     public override void Draw() {
