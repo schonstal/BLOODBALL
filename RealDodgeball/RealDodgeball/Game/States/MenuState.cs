@@ -14,12 +14,16 @@ using Dodgeball.Engine;
 namespace Dodgeball.Game {
   public class MenuState : GameState {
     Sprite titleScreen;
+    Text pressStart;
 
     public override void Create() {
       titleScreen = new Sprite();
       titleScreen.screenPositioning = ScreenPositioning.Absolute;
       titleScreen.loadGraphic("titleScreen", 640, 360);
       add(titleScreen);
+
+      pressStart = new Text("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG");
+      add(pressStart);
     }
 
     public override void Update() {

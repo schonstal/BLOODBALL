@@ -97,6 +97,7 @@ namespace Dodgeball {
       }.ForEach((s) => Assets.addTexture(s, Content.Load<Texture2D>(s)));
 
       Assets.addSong("GameMusic", Content.Load<Song>("GameMusic"));
+      Assets.addFont("BloodballMenu", Content.Load<SpriteFont>("BloodballMenu"));
 
       G.addTransition("fade", new FadeTransition());
       G.addTransition("gate", new GateTransition());

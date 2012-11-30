@@ -16,6 +16,7 @@ namespace Dodgeball.Engine {
     public Dictionary<String, Texture2D> sprites;
     public Dictionary<String, SoundEffect> sounds;
     public Dictionary<String, Song> songs;
+    public Dictionary<String, SpriteFont> fonts;
 
     public static Assets Instance {
       get {
@@ -24,6 +25,7 @@ namespace Dodgeball.Engine {
           instance.sprites = new Dictionary<string, Texture2D>();
           instance.sounds = new Dictionary<string, SoundEffect>();
           instance.songs = new Dictionary<string, Song>();
+          instance.fonts = new Dictionary<string, SpriteFont>();
         }
         return instance;
       }
@@ -51,6 +53,14 @@ namespace Dodgeball.Engine {
 
     public static Song getSong(String name) {
       return Instance.songs[name];
+    }
+
+    public static void addFont(String name, SpriteFont spriteFont) {
+      Instance.fonts.Add(name, spriteFont);
+    }
+
+    public static SpriteFont getFont(string name) {
+      return Instance.fonts[name];
     }
   }
 }

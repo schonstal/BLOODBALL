@@ -83,6 +83,7 @@
     <Compile Include="Engine\Assets.cs" />
     <Compile Include="Engine\Camera.cs" />
     <Compile Include="Engine\Group.cs" />
+    <Compile Include="Engine\Text.cs" />
     <Compile Include="Engine\Transition.cs" />
     <Compile Include="Engine\Tuple.cs" />
     <Compile Include="Engine\Util.cs" />
