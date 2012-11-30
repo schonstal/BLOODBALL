@@ -13,8 +13,12 @@ using Dodgeball.Engine;
 
 namespace Dodgeball.Game {
   public class MenuState : GameState {
+    public const float MIN_FLICKER_TIME = 0.03f;
+
     Sprite titleScreen;
     Text pressStart;
+
+    float flickerTimer = 0;
 
     public override void Create() {
       titleScreen = new Sprite();
@@ -22,7 +26,9 @@ namespace Dodgeball.Game {
       titleScreen.loadGraphic("titleScreen", 640, 360);
       add(titleScreen);
 
-      pressStart = new Text("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG");
+      pressStart = new Text("PUSH START BUTTON");
+      pressStart.y = 210;
+      pressStart.x = 259;
       add(pressStart);
     }
 
@@ -33,6 +39,11 @@ namespace Dodgeball.Game {
           G.switchState(new PlayState(), "gate");
         }
       });
+      flickerTimer += G.elapsed;
+      if(flickerTimer >= MIN_FLICKER_TIME) {
+        titleScreen.sheetOffset.Y = (int)G.RNG.Next(0, 100) < 95 ? 0 : 360;
+        flickerTimer -= MIN_FLICKER_TIME;
+      }
       base.Update();
     }
 
