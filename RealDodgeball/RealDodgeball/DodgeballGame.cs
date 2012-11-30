@@ -45,7 +45,7 @@ namespace Dodgeball {
       GameTracker.CurrentRound = 3;
       GameTracker.RoundSeconds = 99;
       GameTracker.RoundsWon[Team.Left] = 2;
-      GameTracker.RoundsWon[Team.Right] = 2;
+      GameTracker.RoundsWon[Team.Right] = 1;
       GameTracker.RoundsToWin = 3;
       GameTracker.TotalSeconds = 100;
 
