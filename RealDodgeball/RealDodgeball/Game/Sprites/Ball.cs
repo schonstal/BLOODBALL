@@ -166,7 +166,7 @@ namespace Dodgeball.Game {
     }
 
     public float panPosition(float panFactor=0.25f) {
-      return -(x - (PlayState.ARENA_WIDTH / 2)) / (PlayState.ARENA_WIDTH / 2) * panFactor;
+      return (x - (PlayState.ARENA_WIDTH / 2)) / (PlayState.ARENA_WIDTH / 2) * panFactor;
     }
   }
 }

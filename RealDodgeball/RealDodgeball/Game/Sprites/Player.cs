@@ -352,7 +352,7 @@ namespace Dodgeball.Game {
         flungAtCharge = charge;
         float relativeCharge = (flungAtCharge - minCharge) / (maxCharge - minCharge);
 
-        if(relativeCharge > 0.95) {
+        if(relativeCharge > 0.99) {
           ball.throwSound = Assets.getSound("chargedThrow").CreateInstance();
           ball.throwSound.Play();
           ball.throwSound.Pan = panPosition();
@@ -597,7 +597,7 @@ namespace Dodgeball.Game {
     }
 
     public float panPosition(float panFactor=0.25f) {
-      return -(x - (PlayState.ARENA_WIDTH / 2)) / (PlayState.ARENA_WIDTH / 2) * panFactor;
+      return (x - (PlayState.ARENA_WIDTH / 2)) / (PlayState.ARENA_WIDTH / 2) * panFactor;
     }
   }
 
