@@ -42,12 +42,12 @@ namespace Dodgeball {
       GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
 
       //DEBUG FUCKNUGGETS
-      GameTracker.CurrentRound = 0;
+      GameTracker.CurrentRound = 3;
       GameTracker.RoundSeconds = 99;
       GameTracker.RoundsWon[Team.Left] = 2;
       GameTracker.RoundsWon[Team.Right] = 2;
       GameTracker.RoundsToWin = 3;
-      GameTracker.TotalSeconds = 99;
+      GameTracker.TotalSeconds = 100;
 
       base.Initialize();
     }

@@ -47,6 +47,9 @@ namespace Dodgeball.Game {
     public const float PARRY_STUN_SECONDS = 0.1f;
     public const float PARRY_DELAY_SECONDS = 0.5f;
 
+    public const int START_BOX_LEFT = 30;
+    public const int START_BOX_RIGHT = 402;
+
     String[] SPECIAL_ANIMATIONS = new String[] {
       "throw", "idle", "throwReturn", "hurt", "hurtFall", "hurtRecover", "parry", "parryReturn"
     };
@@ -133,11 +136,11 @@ namespace Dodgeball.Game {
       switch (position) {
         case CourtPosition.TopLeft:
           x = 15;
-          y = 45;
+          y = 65;
           break;
         case CourtPosition.TopRight:
           x = 414;
-          y = 45;
+          y = 65;
           break;
         case CourtPosition.BottomLeft:
           x = 15;
@@ -235,12 +238,15 @@ namespace Dodgeball.Game {
 
       blood = new BloodSpatter(this);
       G.state.add(blood);
+      play("idle");
     }
 
     public override void Update() {
-      updateAnimation();
-      updatePhysics();
-      updateHeading();
+      if(((PlayState)G.state).state != State.Panning) {
+        updateAnimation();
+        updatePhysics();
+        updateHeading();
+      }
 
       parryTimer += G.elapsed;
 
@@ -307,10 +313,18 @@ namespace Dodgeball.Game {
     public override void postUpdate() {
       if(onLeft) {
         if(x < 5) x = 5;
-        if(x > PlayState.ARENA_WIDTH / 2 - width) x = PlayState.ARENA_WIDTH / 2 - width;
+        if(((PlayState)G.state).state == State.GetReady) {
+          if(x > START_BOX_LEFT) x = START_BOX_LEFT;
+        } else if(x > PlayState.ARENA_WIDTH / 2 - width) {
+          x = PlayState.ARENA_WIDTH / 2 - width;
+        }
       } else {
         if(x > PlayState.ARENA_WIDTH - width - 3) x = PlayState.ARENA_WIDTH - width - 3;
-        if(x < PlayState.ARENA_WIDTH / 2) x = PlayState.ARENA_WIDTH / 2;
+        if(((PlayState)G.state).state == State.GetReady) {
+          if(x < START_BOX_RIGHT) x = START_BOX_RIGHT;
+        } else if(x < PlayState.ARENA_WIDTH / 2) {
+          x = PlayState.ARENA_WIDTH / 2;
+        }
       }
       if(y < 0) y = 0;
       if(y > PlayState.ARENA_HEIGHT - height) y = PlayState.ARENA_HEIGHT - height;
