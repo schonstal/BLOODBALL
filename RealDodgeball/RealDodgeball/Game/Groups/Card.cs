@@ -120,6 +120,7 @@ namespace Dodgeball.Game {
 
       background.play(currentCard.large ? "openLarge" : "open");
       background.animation.reset();
+      text.offset.Y = currentCard.large ? -1 : 0;
     }
   }
 

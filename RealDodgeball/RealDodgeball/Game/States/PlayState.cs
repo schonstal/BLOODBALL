@@ -15,7 +15,7 @@ namespace Dodgeball.Game {
   public class PlayState : GameState {
     public const int ARENA_WIDTH = 448;
     public const int ARENA_HEIGHT = 252;
-    public const float START_DELAY = 0.5f;
+    public const float START_DELAY = 0.25f;
 
     public const int ARENA_OFFSET_Y = 5;
 
@@ -111,7 +111,9 @@ namespace Dodgeball.Game {
       if(G.camera.y > yDest - 1 || restarted) {
         if(state == State.Panning) {
           G.camera.y = yDest;
-          card.Show("round",
+          card.Show(
+            (GameTracker.RoundsWon[Team.Left] == GameTracker.RoundsToWin - 1 &&
+            GameTracker.RoundsWon[Team.Right] == GameTracker.RoundsToWin - 1) ? "final round" : "round",
             () => DoInSeconds(START_DELAY, () => card.Show("start", () => state = State.Playing)));
           hud.visible = true;
           state = State.GetReady;
