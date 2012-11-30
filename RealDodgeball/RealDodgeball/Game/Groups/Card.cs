@@ -14,7 +14,7 @@ using Dodgeball.Engine;
 namespace Dodgeball.Game {
   class Card : Group {
     public const float HOLD_SECONDS = 0.75f;
-    public const int FRAMERATE = 20;
+    public const int FRAMERATE = 30;
 
     Sprite background;
     Sprite text;
@@ -100,7 +100,7 @@ namespace Dodgeball.Game {
       text.animation.reset();
       roundNumber.play("appear");
       roundNumber.animation.reset();
-      background.play("hold");
+      background.play(currentCard.large ? "holdLarge" : "hold");
       G.DoInSeconds(HOLD_SECONDS, () => {
         text.play("fade");
         text.animation.reset();
