@@ -42,10 +42,10 @@ namespace Dodgeball {
       GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
 
       //DEBUG FUCKNUGGETS
-      GameTracker.CurrentRound = 3;
+      GameTracker.CurrentRound = 0;
       GameTracker.RoundSeconds = 99;
-      GameTracker.RoundsWon[Team.Left] = 2;
-      GameTracker.RoundsWon[Team.Right] = 1;
+      GameTracker.RoundsWon[Team.Left] = 0;
+      GameTracker.RoundsWon[Team.Right] = 0;
       GameTracker.RoundsToWin = 3;
       GameTracker.TotalSeconds = 100;
 
@@ -63,8 +63,7 @@ namespace Dodgeball {
         GraphicsDevice.Viewport.Height / 4);
       G.camera.Initialize(spriteBatch);
       //Actually put it in the right place...
-      G.camera.x = (GraphicsDevice.Viewport.Width/2 - PlayState.ARENA_WIDTH)/2;
-      G.camera.y = -200;
+      G.camera.x = (GraphicsDevice.Viewport.Width / 2 - PlayState.ARENA_WIDTH) / 2;
       G.camera.width = renderTarget.Width;
       G.camera.height = renderTarget.Height;
 
@@ -93,14 +92,15 @@ namespace Dodgeball {
         "transition",
         "cardBackground",
         "cards",
-        "roundNumber"
+        "roundNumber",
+        "titleScreen"
       }.ForEach((s) => Assets.addTexture(s, Content.Load<Texture2D>(s)));
 
       Assets.addSong("GameMusic", Content.Load<Song>("GameMusic"));
 
       G.addTransition("fade", new FadeTransition());
       G.addTransition("gate", new GateTransition());
-      G.switchState(new PlayState());
+      G.switchState(new MenuState());
     }
 
     protected override void UnloadContent() {
