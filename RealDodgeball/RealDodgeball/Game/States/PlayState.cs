@@ -144,7 +144,7 @@ namespace Dodgeball.Game {
             if(teamPlayers[team].Members.All((player) => ((Player)player).HP <= 0)) {
               G.timeScale = 0.2f;
               state = State.KO;
-              G.DoInSeconds(2f, () => {
+              G.DoInSeconds(1.25f, () => {
                 Team otherTeam = team == Team.Left ? Team.Right : Team.Left;
                 bool otherTeamDead = teamPlayers[otherTeam].Members.All(
                   (player) => ((Player)player).HP <= 0);
