@@ -96,6 +96,25 @@ namespace Dodgeball {
         "titleScreen"
       }.ForEach((s) => Assets.addTexture(s, Content.Load<Texture2D>(s)));
 
+      new List<string> {
+        "bounce",
+        "catch",
+        "chargedThrow",
+        "confirm",
+        "hit1",
+        "hit2",
+        "KO",
+        "parry",
+        "pickup",
+        "select",
+        "startButton",
+        "steelGate",
+        "superKO",
+        "throw1",
+        "throw2",
+        "wireGate"
+      }.ForEach((s) => Assets.addSound(s, Content.Load<SoundEffect>(s)));
+
       Assets.addSong("GameMusic", Content.Load<Song>("GameMusic"));
       Assets.addFont("BloodballMenu", Content.Load<SpriteFont>("BloodballMenu"));
 

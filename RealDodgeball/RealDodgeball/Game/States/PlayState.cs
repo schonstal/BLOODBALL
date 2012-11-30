@@ -20,10 +20,10 @@ namespace Dodgeball.Game {
     public const int ARENA_OFFSET_Y = 5;
 
     public State state = State.Panning;
+    public Dictionary<Team, Group> teamPlayers = new Dictionary<Team, Group>();
 
     Group balls = new Group();
     Group players = new Group();
-    Dictionary<Team, Group> teamPlayers = new Dictionary<Team, Group>();
     List<Team> teams = new List<Team> { Team.Left, Team.Right }; //Xbox BS (enums not enumerable)
 
     HUD hud;
@@ -135,7 +135,9 @@ namespace Dodgeball.Game {
           hud.visible = true;
           state = State.GetReady;
           if(MediaPlayer.State != MediaState.Playing) {
-            //MediaPlayer.Play(Assets.getSong("GameMusic"));
+            MediaPlayer.Play(Assets.getSong("GameMusic"));
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Volume = 0.7f;
           }
         } else if(state == State.GetReady) {
         } else if(state == State.Playing) {

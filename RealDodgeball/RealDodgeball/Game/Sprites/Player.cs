@@ -350,6 +350,20 @@ namespace Dodgeball.Game {
     void FlingBall() {
       if(ball != null && !Dead && !parrying) {
         flungAtCharge = charge;
+        float relativeCharge = (flungAtCharge - minCharge) / (maxCharge - minCharge);
+
+        if(relativeCharge > 0.95) {
+          ball.throwSound = Assets.getSound("chargedThrow").CreateInstance();
+          ball.throwSound.Play();
+          ball.throwSound.Pan = panPosition();
+          ball.throwSound.Volume = 0.7f;
+        } else {
+          ball.throwSound = Assets.getSound("throw1").CreateInstance();
+          ball.throwSound.Play();
+          ball.throwSound.Pan = panPosition();
+          ball.throwSound.Pitch = -0.3f + relativeCharge;
+          ball.throwSound.Volume = 0.75f + (relativeCharge / 4f);
+        }
 
         Vector2 flingDirection = Vector2.Normalize(retical.Direction);
         ball.Fling(flingDirection.X, flingDirection.Y, charge);
@@ -494,7 +508,7 @@ namespace Dodgeball.Game {
           !throwing && !hurt && !Dead && ball.collectable && canPickupBall) {
         takeBall(ball);
       } else if(ball.dangerous && !Dead) {
-        hitRumble(ball);
+        if(charge > DROP_CHARGE && ball.owner.team != team) hitRumble(ball);
         if(ActiveParry && ball.owner.team != team) {
           if(this.ball == null) {
             catchBall(ball);
@@ -517,6 +531,12 @@ namespace Dodgeball.Game {
     }
 
     void takeBall(Ball ball) {
+      if(!parrying) {
+        //SoundEffectInstance sound = Assets.getSound("pickup").CreateInstance();
+        //sound.Pitch = 1f + (G.RNG.Next(-99, -20) * 0.01f);
+        //sound.Play();
+        Assets.getSound("pickup").Play(0.6f, G.RNG.Next(-25, 25)/100f, 0);
+      }
       ball.dangerous = false;
       ball.owned = true;
       ball.owner = this;
@@ -527,6 +547,7 @@ namespace Dodgeball.Game {
     void hitByBall(Ball ball) {
       if(ball.owner != null && ball.owner.team != team) {
         hitPoints -= (ball.velocity.Length()) / DAMAGE_DENOM;
+        playHitSound();
         hurt = true;
         throwing = false;
         parrying = false;
@@ -535,6 +556,18 @@ namespace Dodgeball.Game {
         play("hurt");
         blood.spray();
         dropBall();
+      }
+    }
+
+    void playHitSound() {
+      SoundEffect sound;
+      if(((PlayState)G.state).state == State.Playing &&
+        ((PlayState)G.state).teamPlayers[team].Members.All((p) => ((Player)p).hitPoints < 0)) {
+        Assets.getSound("superKO").Play();
+      } else if(hitPoints < 0) {
+        Assets.getSound("KO").Play();
+      } else {
+        Assets.getSound(ball == null ? "hit1" : "hit2").Play(1, 0, panPosition());
       }
     }
 
@@ -561,6 +594,10 @@ namespace Dodgeball.Game {
         playerGlow.addAnimation(name, frames, fps, looped);
       }
       base.addAnimation(name, frames, fps, looped);
+    }
+
+    public float panPosition(float panFactor=0.25f) {
+      return -(x - (PlayState.ARENA_WIDTH / 2)) / (PlayState.ARENA_WIDTH / 2) * panFactor;
     }
   }
 

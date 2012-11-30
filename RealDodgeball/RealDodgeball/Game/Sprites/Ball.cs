@@ -33,6 +33,8 @@ namespace Dodgeball.Game {
     public BallTrail trail;
     public bool collectable = true;
 
+    public SoundEffectInstance throwSound;
+
     float bounceVelocity = 0;
     float bounceRate = BOUNCE_AMOUNT;
 
@@ -72,16 +74,15 @@ namespace Dodgeball.Game {
           bounceVelocity = bounceRate;
           bounceRate *= BOUNCE_DECAY;
           collectable = true;
+          if(owner != null) playBounceSound(0.15f);
           //if(!dangerous) linearDrag = 0.02f;
         }
       }
     }
 
     public override void Update() {
-      if(dangerous) {
-        //color = Color.Red;
-      } else {
-        //color = Color.White;
+      if(throwSound != null) {
+        throwSound.Pan = panPosition();
       }
       base.Update();
     }
@@ -94,10 +95,12 @@ namespace Dodgeball.Game {
       if(y < 0) {
         y = 0;
         velocity.Y = -velocity.Y;
+        playBounceSound();
       }
       if(y > PlayState.ARENA_HEIGHT - height) {
         y = PlayState.ARENA_HEIGHT - height;
         velocity.Y = -velocity.Y;
+        playBounceSound();
       }
       if(x > PlayState.ARENA_WIDTH - width) {
         x = PlayState.ARENA_WIDTH - width;
@@ -139,7 +142,7 @@ namespace Dodgeball.Game {
     public void onCollide(Player player, bool playerWasDead=false) {
       if(dangerous && !playerWasDead && owner != null && player.team != owner.team) {
         bounceVelocity = -PLAYER_VERTICAL_BOUNCE;
-        hitWall();
+        hitWall(false);
       }
     }
 
@@ -147,12 +150,23 @@ namespace Dodgeball.Game {
       dangerous = dangerous && velocity.Length() > DANGER_SPEED;
     }
 
-    void hitWall() {
+    void hitWall(bool playSound=true) {
+      if(playSound) playBounceSound();
       collectable = false;
       velocity.X = -velocity.X;
       maxSpeed = WALL_SPEED;
       linearDrag = WALL_DRAG;
       dangerous = false;
+    }
+
+    void playBounceSound(float volume=0.5f) {
+      Assets.getSound("bounce").Play(
+        volume, G.RNG.Next(-20,20)/100,
+        panPosition());
+    }
+
+    public float panPosition(float panFactor=0.25f) {
+      return -(x - (PlayState.ARENA_WIDTH / 2)) / (PlayState.ARENA_WIDTH / 2) * panFactor;
     }
   }
 }
