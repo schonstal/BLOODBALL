@@ -20,6 +20,7 @@ namespace Dodgeball.Game {
     Sprite text;
     Sprite roundNumber;
     Action onComplete;
+    Action onReady;
     Dictionary<string, CardInfo> cards =  new Dictionary<string,CardInfo>();
     CardInfo currentCard;
 
@@ -109,11 +110,13 @@ namespace Dodgeball.Game {
         background.play("close");
         background.animation.reset();
       });
+      if(onReady != null) onReady();
     }
 
-    public void Show(string cardName, Action onComplete) {
+    public void Show(string cardName, Action onComplete=null, Action onReady=null) {
       visible = true;
       this.onComplete = onComplete;
+      this.onReady = onReady;
       currentCard = cards[cardName];
       roundNumber.sheetOffset.Y = GameTracker.CurrentRound * roundNumber.GraphicHeight;
       text.sheetOffset.Y = currentCard.offsetY * text.GraphicHeight;

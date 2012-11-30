@@ -16,8 +16,10 @@ namespace Dodgeball.Game {
     public const int ARENA_WIDTH = 448;
     public const int ARENA_HEIGHT = 252;
     public const float START_DELAY = 0.25f;
-
+  
     public const int ARENA_OFFSET_Y = 5;
+
+    public State state = State.Panning;
 
     Group balls = new Group();
     Group players = new Group();
@@ -34,7 +36,6 @@ namespace Dodgeball.Game {
 
     bool started = false;
     bool timeSet = false;
-    State state = State.Panning;
     bool restarted = false;
 
     public PlayState(bool restart=false) : base() {
@@ -61,16 +62,17 @@ namespace Dodgeball.Game {
       arenaVignette.screenPositioning = ScreenPositioning.Absolute;
       add(arenaVignette);
 
-      Ball ball = new Ball(15, 45);
+      Ball ball = new Ball();
+      ball = new Ball(ARENA_WIDTH/2 - 30, ARENA_HEIGHT/2 - 30);
       add(ball);
       balls.add(ball);
-      ball = new Ball(414, 45);
+      ball = new Ball(ARENA_WIDTH/2 + 20, ARENA_HEIGHT/2 - 30);
       add(ball);
       balls.add(ball);
-      ball = new Ball(15, 180);
+      ball = new Ball(ARENA_WIDTH/2 - 30, ARENA_HEIGHT/2 + 15);
       add(ball);
       balls.add(ball);
-      ball = new Ball(414, 180);
+      ball = new Ball(ARENA_WIDTH/2 + 20, ARENA_HEIGHT/2 + 15);
       add(ball);
       balls.add(ball);
 
@@ -114,7 +116,7 @@ namespace Dodgeball.Game {
           card.Show(
             (GameTracker.RoundsWon[Team.Left] == GameTracker.RoundsToWin - 1 &&
             GameTracker.RoundsWon[Team.Right] == GameTracker.RoundsToWin - 1) ? "final round" : "round",
-            () => DoInSeconds(START_DELAY, () => card.Show("start", () => state = State.Playing)));
+            () => DoInSeconds(START_DELAY, () => card.Show("start", null, () => state = State.Playing)));
           hud.visible = true;
           state = State.GetReady;
           if(MediaPlayer.State != MediaState.Playing) {
