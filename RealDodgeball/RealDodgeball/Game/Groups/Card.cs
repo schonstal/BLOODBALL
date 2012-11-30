@@ -52,7 +52,7 @@ namespace Dodgeball.Game {
       text.addAnimation("appear", new List<int> { 0, 1 }, FRAMERATE);
       text.addAnimation("flash", new List<int> { 2, 1 }, FRAMERATE, true);
       text.addAnimation("hold", new List<int> { 1 }, FRAMERATE);
-      text.addAnimation("fade", new List<int> { 1, 0 }, FRAMERATE);
+      text.addAnimation("fade", new List<int> { 0 }, FRAMERATE);
       text.addOnCompleteCallback("appear", textAppeared);
       text.addOnCompleteCallback("fade", textComplete);
 
@@ -60,7 +60,7 @@ namespace Dodgeball.Game {
       roundNumber.addAnimation("appear", new List<int> { 0, 1 }, FRAMERATE);
       roundNumber.addAnimation("flash", new List<int> { 2, 1 }, FRAMERATE, true);
       roundNumber.addAnimation("hold", new List<int> { 1 }, FRAMERATE);
-      roundNumber.addAnimation("fade", new List<int> { 1, 0 }, FRAMERATE);
+      roundNumber.addAnimation("fade", new List<int> { 0 }, FRAMERATE);
       roundNumber.visible = false;
 
       cards.Add("round", new CardInfo(false, false, true, 0));
@@ -90,19 +90,24 @@ namespace Dodgeball.Game {
 
     void onClose(int frameIndex) {
       visible = false;
-      onComplete();
+      if(onComplete != null) onComplete();
     }
 
     void onOpen(int frameIndex) {
       text.visible = true;
       roundNumber.visible = currentCard.displayRoundNumber;
       text.play("appear");
+      text.animation.reset();
       roundNumber.play("appear");
+      roundNumber.animation.reset();
       background.play("hold");
       G.DoInSeconds(HOLD_SECONDS, () => {
         text.play("fade");
+        text.animation.reset();
         roundNumber.play("fade");
+        roundNumber.animation.reset();
         background.play("close");
+        background.animation.reset();
       });
     }
 
@@ -111,8 +116,10 @@ namespace Dodgeball.Game {
       this.onComplete = onComplete;
       currentCard = cards[cardName];
       roundNumber.sheetOffset.Y = GameTracker.CurrentRound * roundNumber.GraphicHeight;
+      text.sheetOffset.Y = currentCard.offsetY * text.GraphicHeight;
 
       background.play(currentCard.large ? "openLarge" : "open");
+      background.animation.reset();
     }
   }
 

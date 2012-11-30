@@ -15,6 +15,7 @@ namespace Dodgeball.Game {
   public class PlayState : GameState {
     public const int ARENA_WIDTH = 448;
     public const int ARENA_HEIGHT = 252;
+    public const float START_DELAY = 0.5f;
 
     public const int ARENA_OFFSET_Y = 5;
 
@@ -33,7 +34,7 @@ namespace Dodgeball.Game {
 
     bool started = false;
     bool timeSet = false;
-    bool frozen = true;
+    State state = State.Panning;
     bool restarted = false;
 
     public PlayState(bool restart=false) : base() {
@@ -90,7 +91,6 @@ namespace Dodgeball.Game {
       add(hud);
 
       card = new Card();
-      card.Show("round", () => hud.visible = false);
       add(card);
     }
 
@@ -109,10 +109,18 @@ namespace Dodgeball.Game {
 
     public override void Update() {
       if(G.camera.y > yDest - 1 || restarted) {
-        G.camera.y = yDest;
-        hud.visible = true;
-        if(MediaPlayer.State != MediaState.Playing) {
-          MediaPlayer.Play(Assets.getSong("GameMusic"));
+        if(state == State.Panning) {
+          G.camera.y = yDest;
+          card.Show("round",
+            () => DoInSeconds(START_DELAY, () => card.Show("start", () => state = State.Playing)));
+          hud.visible = true;
+          state = State.GetReady;
+          if(MediaPlayer.State != MediaState.Playing) {
+            //MediaPlayer.Play(Assets.getSong("GameMusic"));
+          }
+        } else if(state == State.GetReady) {
+        } else if(state == State.Playing) {
+          countTime();
         }
       } else {
         G.camera.y = MathHelper.Lerp(G.camera.y,
@@ -120,9 +128,6 @@ namespace Dodgeball.Game {
           G.elapsed * 2f);
       }
 
-      if(!frozen) {
-        countTime();
-      }
       base.Update();
       started = true;
     }
@@ -145,5 +150,11 @@ namespace Dodgeball.Game {
       members = members.OrderBy((member) => member.z).ToList();
       base.Draw();
     }
+  }
+
+  public enum State {
+    Panning,
+    GetReady,
+    Playing
   }
 }
