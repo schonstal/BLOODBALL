@@ -25,8 +25,8 @@ namespace Dodgeball.Game {
 
     public Card() : base() {
       background = new Sprite(0, 84);
-      text = new Sprite(0, 79);
-      roundNumber = new Sprite(290, 79);
+      text = new Sprite(0, 89);
+      roundNumber = new Sprite(290, 89);
 
       add(background);
       add(text);
@@ -72,12 +72,15 @@ namespace Dodgeball.Game {
 
       visible = false;
       text.visible = false;
+      text.x = (G.camera.width - text.graphicWidth) / 2;
+      roundNumber.x = text.x + 290;
 
       z = HUD.HUGE_Z;
     }
 
     void textAppeared(int frameIndex) {
       text.play(currentCard.flashes ? "flash" : "hold");
+      roundNumber.play("hold");
     }
 
     void textComplete(int frameIndex) {
@@ -94,6 +97,8 @@ namespace Dodgeball.Game {
       text.visible = true;
       roundNumber.visible = currentCard.displayRoundNumber;
       text.play("appear");
+      roundNumber.play("appear");
+      background.play("hold");
       G.DoInSeconds(HOLD_SECONDS, () => {
         text.play("fade");
         roundNumber.play("fade");
