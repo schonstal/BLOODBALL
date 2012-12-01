@@ -14,6 +14,7 @@ using Dodgeball.Engine;
 namespace Dodgeball.Game {
   public class WinState : GameState {
     Sprite winScreen;
+    Sprite arenaVignette;
 
     public override void Create() {
       Team winningTeam = Team.Left;
@@ -31,6 +32,12 @@ namespace Dodgeball.Game {
       winScreen.loadGraphic("winScreen", 640, 360);
       winScreen.sheetOffset.Y = ((int)winningTeam - 1) * 360;
       add(winScreen);
+
+      arenaVignette = new Sprite(0, 0);
+      arenaVignette.loadGraphic("arenaVignette", 640, 360);
+      arenaVignette.z = 10000;
+      arenaVignette.screenPositioning = ScreenPositioning.Absolute;
+      add(arenaVignette);
 
       //Reset stuff in case the players want to play again
       GameTracker.CurrentRound = 0;
