@@ -42,6 +42,7 @@ namespace Dodgeball.Game {
     }
 
     public void onCloseComplete(int frameIndex) {
+      Assets.getSound("steelGate").Play();
       G.DoForSeconds(SHAKE_SECONDS, () => {
         G.camera.offset.X = G.RNG.Next(-SHAKE_AMOUNT, SHAKE_AMOUNT);
         G.camera.offset.Y = G.RNG.Next(-SHAKE_AMOUNT, SHAKE_AMOUNT);
@@ -64,6 +65,7 @@ namespace Dodgeball.Game {
 
     public void onClose(int frameIndex) {
       if(frameIndex == 14) {
+        Assets.getSound("wireGate").Play();
         G.DoForSeconds(SHAKE_SECONDS/2, () => {
           Input.ForEachInput((playerIndex) => {
             GamePad.SetVibration(playerIndex, 0, SMALL_SHAKE_RUMBLE);

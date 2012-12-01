@@ -17,6 +17,8 @@ namespace Dodgeball.Game {
     public const float THRESHOLD = 0.8f;
     public const float RETURN_THRESHOLD = 0.7f;
 
+    bool justActivated = false;
+
     int selectedIndex = 0;
 
     List<MenuText> menuItems = new List<MenuText>();
@@ -28,6 +30,7 @@ namespace Dodgeball.Game {
     List<string> direcions = new List<string> { "left", "right", "up", "down" };
 
     public Menu(float X, float Y) : base() {
+      G.playMusic("titleMusic");
       x = X;
       y = Y;
       direcions.ForEach((s) => {
@@ -55,9 +58,28 @@ namespace Dodgeball.Game {
       base.Update();
     }
 
+    public override void postUpdate() {
+      justActivated = false;
+      base.postUpdate();
+    }
+
     public void addMenuText(MenuText menuText) {
       menuItems.Add(menuText);
+      menuText.x = x;
+      menuText.y = y + ((menuItems.Count-1) * MENU_SPACING);
+      menuText.selected = false;
       add(menuText);
+    }
+
+    public void activate() {
+      justActivated = true;
+      active = true;
+      visible = true;
+    }
+
+    public void deactivate() {
+      active = false;
+      visible = false;
     }
 
     void onLeft() {
@@ -79,12 +101,20 @@ namespace Dodgeball.Game {
     }
 
     void onSelect() {
+      if(menuItems[selectedIndex] != null) {
+        if(menuItems[selectedIndex].onPress != null) {
+          menuItems[selectedIndex].onPress();
+          Assets.getSound("startButton").Play();
+        }
+      }
     }
 
     void onBack() {
     }
 
     void handleInput(PlayerIndex player) {
+      if(justActivated) return;
+
       direcions.ForEach((s) => lastPushActive[s] = pushActive[s]);
       float X = G.input.ThumbSticks(player).Left.X;
       float Y = G.input.ThumbSticks(player).Left.Y;
@@ -106,6 +136,10 @@ namespace Dodgeball.Game {
           pushCallbacks[s]();
         }
       });
+
+      if(G.input.JustPressed(G.keyMaster, Buttons.A) || G.input.JustPressed(G.keyMaster, Buttons.Start)) {
+        onSelect();
+      }
     }
   }
 }

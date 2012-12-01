@@ -20,9 +20,10 @@ namespace Dodgeball.Engine {
     }
 
     public override void Update() {
-      members.ForEach((o) => o.preUpdate());
-      members.ForEach((o) => o.Update());
-      members.ForEach((o) => o.postUpdate());
+      if(!active) return;
+      members.ForEach((o) => { if(o.active) o.preUpdate(); });
+      members.ForEach((o) => { if(o.active) o.Update(); });
+      members.ForEach((o) => { if(o.active) o.postUpdate(); });
     }
 
     public override void Draw() {

@@ -40,6 +40,7 @@ namespace Dodgeball {
     protected override void Initialize() {
       //TODO: BUTTER YO SHIT
       GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
+      G.exit = Exit;
 
       //DEBUG FUCKNUGGETS
       GameTracker.CurrentRound = 0;
@@ -115,7 +116,11 @@ namespace Dodgeball {
         "wireGate"
       }.ForEach((s) => Assets.addSound(s, Content.Load<SoundEffect>(s)));
 
-      Assets.addSong("GameMusic", Content.Load<Song>("GameMusic"));
+      new List<string> {
+        "GameMusic",
+        "titleMusic",
+        "resultsMusic"
+      }.ForEach((s) => Assets.addSong(s, Content.Load<Song>(s)));
       Assets.addFont("BloodballMenu", Content.Load<SpriteFont>("BloodballMenu"));
 
       G.addTransition("fade", new FadeTransition());

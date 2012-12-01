@@ -24,6 +24,9 @@ namespace Dodgeball.Engine {
     public Random _rng;
     public float _timeScale = 1;
     public PlayerIndex _keyMaster;
+    public string _currentSong;
+    public Action _exit;
+
     float _totalTime = 0;
     List<Tuple<float, Action, Action>> _actions = new List<Tuple<float, Action, Action>>();
     public bool _visualDebug = false;
@@ -85,6 +88,11 @@ namespace Dodgeball.Engine {
       set { instance._keyMaster = value; }
     }
 
+    public static Action exit {
+      get { return instance._exit; }
+      set { instance._exit = value; }
+    }
+
     public G() {
       _input = new Input();
       _camera = new Camera();
@@ -123,10 +131,13 @@ namespace Dodgeball.Engine {
       transitions.add(transition);
     }
 
-    public static void playMusic(string song) {
-      MediaPlayer.Play(Assets.getSong(song));
-      MediaPlayer.IsRepeating = true;
-      MediaPlayer.Volume = 0.7f;
+    public static void playMusic(string song, bool restart=false) {
+      if(restart || instance._currentSong != song) {
+        MediaPlayer.Play(Assets.getSong(song));
+        MediaPlayer.IsRepeating = true;
+        MediaPlayer.Volume = 0.7f;
+      }
+      instance._currentSong = song;
     }
 
     public static void DoForSeconds(float seconds, Action action, Action onComplete = null) {

@@ -14,6 +14,7 @@ using Dodgeball.Engine;
 namespace Dodgeball.Game {
   public class MenuState : GameState {
     public const float MIN_FLICKER_TIME = 0.03f;
+    public const float MENU_X = 186;
 
     Sprite titleScreen;
     Text pressStart;
@@ -21,6 +22,7 @@ namespace Dodgeball.Game {
 
     float flickerTimer = 0;
     bool ready = false;
+    bool flicker = true;
 
     public override void Create() {
       titleScreen = new Sprite();
@@ -28,14 +30,21 @@ namespace Dodgeball.Game {
       titleScreen.loadGraphic("titleScreen", 640, 360);
       add(titleScreen);
 
-      mainMenu = new Menu(186, 204);
-      mainMenu.addMenuText(new MenuText("START GAME"));
+      mainMenu = new Menu(MENU_X, 204);
+      mainMenu.addMenuText(new MenuText("START GAME", () => {
+        flicker = false;
+        G.DoForSeconds(0.5f, () => {
+          MediaPlayer.Volume -= G.elapsed;
+        }, () => {
+          G.switchState(new PlayState(), "gate");
+          mainMenu.active = false;
+        });
+      }));
       mainMenu.addMenuText(new MenuText("CONTROLS"));
       mainMenu.addMenuText(new MenuText("OPTIONS"));
       mainMenu.addMenuText(new MenuText("CREDITS"));
-      mainMenu.addMenuText(new MenuText("EXIT"));
-      mainMenu.visible = false;
-      mainMenu.active = false;
+      mainMenu.addMenuText(new MenuText("EXIT", () => G.exit()));
+      mainMenu.deactivate();
       add(mainMenu);
 
       DoInSeconds(2, () => {
@@ -48,24 +57,28 @@ namespace Dodgeball.Game {
     }
 
     public override void Update() {
-      if(ready && pressStart.visible) {
-        Input.ForEachInput((index) => {
-          if(G.input.JustPressed(index, Buttons.Start)) {
-            G.camera.y = -400;
-            G.keyMaster = index;
-            pressStart.visible = false;
-            mainMenu.visible = true;
-            mainMenu.active = true;
-            Assets.getSound("startButton").Play();
-            //G.switchState(new PlayState(), "gate");
-          }
-        });
+      if(ready) {
+        if(pressStart.visible) {
+          Input.ForEachInput((index) => {
+            if(G.input.JustPressed(index, Buttons.Start)) {
+              G.camera.y = -400;
+              G.keyMaster = index;
+              pressStart.visible = false;
+              mainMenu.activate();
+              Assets.getSound("startButton").Play();
+            }
+          });
+        }
       }
 
-      flickerTimer += G.elapsed;
-      if(flickerTimer >= MIN_FLICKER_TIME) {
-        titleScreen.sheetOffset.Y = (int)G.RNG.Next(0, 100) < 95 ? 0 : 360;
-        flickerTimer -= MIN_FLICKER_TIME;
+      if(flicker) {
+        flickerTimer += G.elapsed;
+        if(flickerTimer >= MIN_FLICKER_TIME) {
+          titleScreen.sheetOffset.Y = (int)G.RNG.Next(0, 100) < 95 ? 0 : 360;
+          flickerTimer -= MIN_FLICKER_TIME;
+        }
+      } else {
+        titleScreen.sheetOffset.Y = 360;
       }
       base.Update();
     }

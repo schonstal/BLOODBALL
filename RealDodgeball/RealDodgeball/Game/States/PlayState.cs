@@ -46,6 +46,7 @@ namespace Dodgeball.Game {
     }
 
     public override void Create() {
+      G.playMusic("GameMusic");
       //G.visualDebug = true;
       Sprite arenaBackground = new Sprite(-G.camera.x, -68 + ARENA_OFFSET_Y);
       arenaBackground.loadGraphic("arenaBackground", 640, 360);
@@ -134,9 +135,6 @@ namespace Dodgeball.Game {
             () => DoInSeconds(START_DELAY, () => card.Show("start", null, () => state = State.Playing)));
           hud.visible = true;
           state = State.GetReady;
-          if(MediaPlayer.State != MediaState.Playing) {
-            G.playMusic("GameMusic");
-          }
         } else if(state == State.GetReady) {
         } else if(state == State.Playing) {
           countTime();
