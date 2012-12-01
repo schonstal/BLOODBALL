@@ -161,7 +161,16 @@ namespace Dodgeball.Game {
                   card.Show("ko", () => {
                     GameTracker.CurrentRound++;
                     GameTracker.RoundsWon[team == Team.Left ? Team.Right : Team.Left]++;
-                    G.switchState(new PlayState(), "fade");
+                    if(GameTracker.RoundsWon[Team.Left] == GameTracker.RoundsToWin ||
+                        GameTracker.RoundsWon[Team.Right] == GameTracker.RoundsToWin) {
+                      G.switchState(new WinState(), "gate");
+
+                      DoForSeconds(0.5f, () => {
+                        MediaPlayer.Volume -= G.elapsed;
+                      });
+                    } else {
+                      G.switchState(new PlayState(), "fade");
+                    }
                   });
                 }
               });

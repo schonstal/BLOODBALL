@@ -19,6 +19,7 @@ namespace Dodgeball.Game {
     public int _roundsToWin;
     public int _currentRound;
     public Dictionary<Team, int> _roundsWon = new Dictionary<Team, int>();
+    public Dictionary<Team, int> _matchesWon = new Dictionary<Team, int>();
 
     private static GameTracker instance {
       get {
@@ -52,6 +53,11 @@ namespace Dodgeball.Game {
     public static Dictionary<Team, int> RoundsWon {
       get { return instance._roundsWon; }
       set { instance._roundsWon = value; }
+    }
+
+    public static Dictionary<Team, int> MatchesWon {
+      get { return instance._matchesWon; }
+      set { instance._matchesWon = value; }
     }
   }
 }

@@ -113,6 +113,7 @@
     <Compile Include="Engine\GameObject.cs" />
     <Compile Include="Engine\GameState.cs" />
     <Compile Include="Engine\Sprite.cs" />
+    <Compile Include="Game\States\WinState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="DodgeballGame.cs" />
