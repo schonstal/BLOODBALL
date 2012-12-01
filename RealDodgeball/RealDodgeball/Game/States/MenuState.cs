@@ -52,6 +52,11 @@ namespace Dodgeball.Game {
         pressStart = new Text("PUSH START BUTTON");
         pressStart.y = 210;
         pressStart.x = 259;
+        pressStartShadow = new Text(pressStart.text);
+        pressStartShadow.y = pressStart.y + 1;
+        pressStartShadow.x = pressStart.x;
+        pressStartShadow.color = Color.Black;
+        add(pressStartShadow);
         add(pressStart);
         ready = true;
       });
@@ -65,6 +70,7 @@ namespace Dodgeball.Game {
               G.camera.y = -400;
               G.keyMaster = index;
               pressStart.visible = false;
+              pressStartShadow.visible = false;
               mainMenu.activate();
               Assets.getSound("startButton").Play();
             }
