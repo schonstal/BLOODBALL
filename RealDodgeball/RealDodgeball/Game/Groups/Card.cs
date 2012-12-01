@@ -24,6 +24,9 @@ namespace Dodgeball.Game {
     Dictionary<string, CardInfo> cards =  new Dictionary<string,CardInfo>();
     CardInfo currentCard;
 
+    //0 == forever
+    float holdSeconds = HOLD_SECONDS;
+
     public Card() : base() {
       background = new Sprite(0, 84);
       text = new Sprite(0, 89);
@@ -105,21 +108,24 @@ namespace Dodgeball.Game {
       roundNumber.play("appear");
       roundNumber.animation.reset();
       background.play(currentCard.large ? "holdLarge" : "hold");
-      G.DoInSeconds(HOLD_SECONDS, () => {
-        text.play("fade");
-        text.animation.reset();
-        roundNumber.play("fade");
-        roundNumber.animation.reset();
-        background.play("close");
-        background.animation.reset();
-      });
+      G.DoInSeconds(holdSeconds, Close);
       if(onReady != null) onReady();
     }
 
-    public void Show(string cardName, Action onComplete=null, Action onReady=null) {
+    public void Close() {
+      text.play("fade");
+      text.animation.reset();
+      roundNumber.play("fade");
+      roundNumber.animation.reset();
+      background.play("close");
+      background.animation.reset();
+    }
+
+    public void Show(string cardName, Action onComplete=null, Action onReady=null, float holdSeconds=HOLD_SECONDS) {
       visible = true;
       this.onComplete = onComplete;
       this.onReady = onReady;
+      this.holdSeconds = holdSeconds;
       currentCard = cards[cardName];
       roundNumber.sheetOffset.Y = GameTracker.CurrentRound * roundNumber.GraphicHeight;
       text.sheetOffset.Y = currentCard.offsetY * text.GraphicHeight;

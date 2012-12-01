@@ -168,7 +168,7 @@ namespace Dodgeball.Game {
                           DoForSeconds(0.5f, () => {
                             MediaPlayer.Volume -= G.elapsed;
                           });
-                        });
+                        }, null, 1.5f);
                       });
                     } else {
                       G.switchState(new PlayState(), "fade");
