@@ -376,10 +376,12 @@ namespace Dodgeball.Game {
         animation.reset();
         animation.FPS = MIN_THROW_FPS + ((charge / maxCharge) *
             (MAX_THROW_FPS - MIN_THROW_FPS));
-        G.state.DoForSeconds(0.2f,
-          () => GamePad.SetVibration(playerIndex,
-            (flungAtCharge - minCharge) / (maxCharge - minCharge), 0),
-          () => GamePad.SetVibration(playerIndex, 0, 0));
+        if(charge > DROP_CHARGE) {
+          G.DoForSeconds(0.2f,
+            () => GamePad.SetVibration(playerIndex,
+              (flungAtCharge - minCharge) / (maxCharge - minCharge), 0),
+            () => GamePad.SetVibration(playerIndex, 0, 0));
+        }
       }
     }
 
@@ -510,7 +512,7 @@ namespace Dodgeball.Game {
           !throwing && !hurt && !Dead && ball.collectable && canPickupBall) {
         takeBall(ball);
       } else if(ball.dangerous && !Dead) {
-        if(charge > DROP_CHARGE && ball.owner.team != team) hitRumble(ball);
+        if(ball.owner.team != team) hitRumble(ball);
         if(ActiveParry && ball.owner.team != team) {
           if(this.ball == null) {
             catchBall(ball);
@@ -580,7 +582,7 @@ namespace Dodgeball.Game {
       float big = MathHelper.Lerp(MIN_HIT_POWER, MAX_HIT_POWER, relativeSpeed);
       float little = MathHelper.Lerp(MIN_HIT_POWER, MAX_HIT_POWER, relativeSpeed);
 
-      G.state.DoForSeconds(seconds,
+      G.DoForSeconds(seconds,
         () => GamePad.SetVibration(playerIndex, big, little),
         () => GamePad.SetVibration(playerIndex, 0, 0));
     }
