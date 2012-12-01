@@ -49,7 +49,7 @@ namespace Dodgeball.Game {
       background.addOnCompleteCallback("close", onClose);
       background.addOnCompleteCallback("closeLarge", onClose);
 
-      text.loadGraphic("cards", 380, 46);
+      text.loadGraphic("cards", 550, 46);
       text.addAnimation("appear", new List<int> { 0, 1 }, FRAMERATE);
       text.addAnimation("flash", new List<int> { 2, 1 }, FRAMERATE, true);
       text.addAnimation("hold", new List<int> { 1 }, FRAMERATE);
@@ -70,11 +70,14 @@ namespace Dodgeball.Game {
       cards.Add("ko", new CardInfo(false, true, false, 3));
       cards.Add("double ko", new CardInfo(false, true, false, 4));
       cards.Add("time up", new CardInfo(true, false, false, 5));
+      cards.Add("magenta wins", new CardInfo(true, true, false, 6));
+      cards.Add("cyan wins", new CardInfo(true, true, false, 7));
+      cards.Add("paused", new CardInfo(true, false, false, 8));
 
       visible = false;
       text.visible = false;
       text.x = (G.camera.width - text.graphicWidth) / 2;
-      roundNumber.x = text.x + 290;
+      roundNumber.x = text.x + 375;
 
       z = HUD.HUGE_Z;
     }

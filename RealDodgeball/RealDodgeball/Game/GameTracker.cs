@@ -59,5 +59,13 @@ namespace Dodgeball.Game {
       get { return instance._matchesWon; }
       set { instance._matchesWon = value; }
     }
+
+    public static bool TeamWon(Team team) {
+      return RoundsWon[team] == RoundsToWin;
+    }
+
+    public static bool GamePoint(Team team) {
+      return RoundsWon[team] == RoundsToWin - 1;
+    }
   }
 }
