@@ -154,19 +154,10 @@ namespace Dodgeball.Game {
           state = State.GetReady;
         } else if(state == State.GetReady) {
         } else if(state == State.Playing) {
-          Input.ForEachInput((index) => {
-            if(G.input.JustPressed(index, Buttons.Start)) {
-              if(pausable) {
-                G.keyMaster = index;
-                pauseGroup.Pause();
-                paused = true;
-              }
-            }
-          });
-
           countTime();
           teams.ForEach((team) => {
             if(teamPlayers[team].Members.All((player) => ((Player)player).HP <= 0)) {
+              pausable = false;
               G.timeScale = 0.2f;
               state = State.KO;
               G.DoInSeconds(1.25f, () => {
@@ -203,6 +194,16 @@ namespace Dodgeball.Game {
                   });
                 }
               });
+            }
+          });
+
+          Input.ForEachInput((index) => {
+            if(G.input.JustPressed(index, Buttons.Start)) {
+              if(pausable) {
+                G.keyMaster = index;
+                pauseGroup.Pause();
+                paused = true;
+              }
             }
           });
         } else if(state == State.KO) {
