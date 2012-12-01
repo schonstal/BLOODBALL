@@ -33,6 +33,7 @@ namespace Dodgeball.Game {
 
       mainMenu = new Menu(MENU_X, 204);
       mainMenu.addMenuText(new MenuText("START GAME", () => {
+        Assets.getSound("superKO").Play();
         flicker = false;
         mainMenu.deactivate();
         G.DoForSeconds(0.5f, () => {

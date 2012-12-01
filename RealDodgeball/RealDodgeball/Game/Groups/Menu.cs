@@ -104,7 +104,6 @@ namespace Dodgeball.Game {
       if(menuItems[selectedIndex] != null) {
         if(menuItems[selectedIndex].onPress != null) {
           menuItems[selectedIndex].onPress();
-          Assets.getSound("startButton").Play();
         }
       }
     }
