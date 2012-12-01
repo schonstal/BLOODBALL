@@ -108,7 +108,9 @@ namespace Dodgeball.Game {
       roundNumber.play("appear");
       roundNumber.animation.reset();
       background.play(currentCard.large ? "holdLarge" : "hold");
-      G.DoInSeconds(holdSeconds, Close);
+      if(holdSeconds > 0) {
+        G.DoInSeconds(holdSeconds, Close);
+      }
       if(onReady != null) onReady();
     }
 

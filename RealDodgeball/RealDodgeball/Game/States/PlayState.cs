@@ -112,7 +112,7 @@ namespace Dodgeball.Game {
       card = new Card();
       add(card);
 
-      pauseGroup = new PauseGroup(card);
+      pauseGroup = new PauseGroup(card, onUnPause);
       add(pauseGroup);
 
       GameTracker.RoundSeconds = GameTracker.TotalSeconds;
@@ -129,6 +129,10 @@ namespace Dodgeball.Game {
           }
         });
       }
+    }
+
+    void onUnPause() {
+      paused = false;
     }
 
     public override void Update() {
@@ -152,10 +156,11 @@ namespace Dodgeball.Game {
         } else if(state == State.Playing) {
           Input.ForEachInput((index) => {
             if(G.input.JustPressed(index, Buttons.Start)) {
-              Assets.getSound("startButton").Play();
-              pauseGroup.Pause();
-              card.Show("paused");
-              paused = pausable;
+              if(pausable) {
+                G.keyMaster = index;
+                pauseGroup.Pause();
+                paused = true;
+              }
             }
           });
 
