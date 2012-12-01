@@ -57,8 +57,8 @@ namespace Dodgeball.Game {
         tally.x = winningTeam == Team.Left ? 346 : 152;
         tally.color = winningTeam == Team.Left ?
           //new Color(0x92, 0xca, 0xd9) :
-          new Color(0x8c, 0xbe, 0xcd) :
-          new Color(0xb9, 0x8b, 0xce);
+          new Color(0xc6, 0x79, 0xcd) :
+          new Color(0xba, 0x8a, 0xcd);
         add(tally);
       }
 
@@ -73,8 +73,8 @@ namespace Dodgeball.Game {
         tally.y = 108 + (38 * i);
         tally.x = winningTeam == Team.Left ? 432 : 238;
         tally.color = winningTeam == Team.Left ?
-          new Color(0xc6, 0x79, 0xcd) :
-          new Color(0x70, 0xc7, 0xce);
+          new Color(0x8c, 0xbe, 0xcd) :
+          new Color(0x72, 0xc6, 0xcd);
         add(tally);
       }
     }
