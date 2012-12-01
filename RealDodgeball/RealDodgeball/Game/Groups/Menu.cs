@@ -136,6 +136,11 @@ namespace Dodgeball.Game {
         }
       });
 
+      if(G.input.JustPressed(G.keyMaster, Buttons.DPadDown)) onDown();
+      if(G.input.JustPressed(G.keyMaster, Buttons.DPadUp)) onUp();
+      if(G.input.JustPressed(G.keyMaster, Buttons.DPadLeft)) onLeft();
+      if(G.input.JustPressed(G.keyMaster, Buttons.DPadRight)) onRight();
+
       if(G.input.JustPressed(G.keyMaster, Buttons.A) || G.input.JustPressed(G.keyMaster, Buttons.Start)) {
         onSelect();
       }

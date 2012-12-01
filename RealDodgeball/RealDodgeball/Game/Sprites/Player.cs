@@ -33,7 +33,7 @@ namespace Dodgeball.Game {
     public const float DAMAGE_DENOM = 50f;
     public const float HEAL_DENOM = 100f;
 
-    public const float MAX_HITPOINTS = 100.0f;
+    public const float MAX_HITPOINTS = 1;//00.0f;
     public const float HIT_DRAG = 0.1f;
     public const float HIT_STOP_SPEED = 5f;
     public const float MIN_HIT_SECONDS = 0.2f;

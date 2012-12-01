@@ -45,8 +45,10 @@ namespace Dodgeball {
       //DEBUG FUCKNUGGETS
       GameTracker.CurrentRound = 0;
       GameTracker.RoundSeconds = 99;
-      GameTracker.RoundsWon[Team.Left] = 0;
-      GameTracker.RoundsWon[Team.Right] = 0;
+      GameTracker.RoundsWon[Team.Left] = 2;
+      GameTracker.RoundsWon[Team.Right] = 2;
+      GameTracker.MatchesWon[Team.Left] = 0;
+      GameTracker.MatchesWon[Team.Right] = 0;
       GameTracker.RoundsToWin = 3;
       GameTracker.TotalSeconds = 100;
 
@@ -125,7 +127,7 @@ namespace Dodgeball {
 
       G.addTransition("fade", new FadeTransition());
       G.addTransition("gate", new GateTransition());
-      G.switchState(new MenuState());
+      G.switchState(new PlayState());
     }
 
     protected override void UnloadContent() {
