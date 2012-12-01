@@ -155,15 +155,7 @@ namespace Dodgeball.Game {
                       GameTracker.RoundsWon[Team.Left]++;
                       GameTracker.RoundsWon[Team.Right]++;
                     }
-                    if(GameTracker.RoundsWon[Team.Left] == GameTracker.RoundsToWin ||
-                        GameTracker.RoundsWon[Team.Right] == GameTracker.RoundsToWin) {
-                      G.switchState(new WinState(), "gate");
-                      DoForSeconds(0.5f, () => {
-                        MediaPlayer.Volume -= G.elapsed*2;
-                      });
-                    } else {
-                      G.switchState(new PlayState(), "fade");
-                    }
+                    G.switchState(new PlayState(), "fade");
                   });
                 } else {
                   card.Show("ko", () => {
@@ -172,6 +164,7 @@ namespace Dodgeball.Game {
                     if(GameTracker.RoundsWon[Team.Left] == GameTracker.RoundsToWin ||
                         GameTracker.RoundsWon[Team.Right] == GameTracker.RoundsToWin) {
                       G.switchState(new WinState(), "gate");
+
                       DoForSeconds(0.5f, () => {
                         MediaPlayer.Volume -= G.elapsed;
                       });

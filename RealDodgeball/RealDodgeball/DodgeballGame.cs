@@ -96,7 +96,8 @@ namespace Dodgeball {
         "cardBackground",
         "cards",
         "roundNumber",
-        "titleScreen"
+        "titleScreen",
+        "winScreen"
       }.ForEach((s) => Assets.addTexture(s, Content.Load<Texture2D>(s)));
 
       new List<string> {
@@ -134,11 +135,6 @@ namespace Dodgeball {
     }
 
     protected override void Update(GameTime gameTime) {
-
-      if(GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed) {
-        G.switchState(new PlayState(true));//, "gate");      //Actually put it in the right place...
-      }
-
       // TODO: Add your update logic here
 
       base.Update(gameTime);
