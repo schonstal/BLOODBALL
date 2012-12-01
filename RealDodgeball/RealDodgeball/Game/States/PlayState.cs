@@ -135,9 +135,7 @@ namespace Dodgeball.Game {
           hud.visible = true;
           state = State.GetReady;
           if(MediaPlayer.State != MediaState.Playing) {
-            MediaPlayer.Play(Assets.getSong("GameMusic"));
-            MediaPlayer.IsRepeating = true;
-            MediaPlayer.Volume = 0.7f;
+            G.playMusic("GameMusic");
           }
         } else if(state == State.GetReady) {
         } else if(state == State.Playing) {

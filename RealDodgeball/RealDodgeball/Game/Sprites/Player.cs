@@ -50,6 +50,8 @@ namespace Dodgeball.Game {
     public const int START_BOX_LEFT = 30;
     public const int START_BOX_RIGHT = 402;
 
+    public const float CHARGED_THROW_VOLUME = 0.7f;
+
     String[] SPECIAL_ANIMATIONS = new String[] {
       "throw", "idle", "throwReturn", "hurt", "hurtFall", "hurtRecover", "parry", "parryReturn"
     };
@@ -356,7 +358,7 @@ namespace Dodgeball.Game {
           ball.throwSound = Assets.getSound("chargedThrow").CreateInstance();
           ball.throwSound.Play();
           ball.throwSound.Pan = panPosition();
-          ball.throwSound.Volume = 0.7f;
+          ball.throwSound.Volume = CHARGED_THROW_VOLUME;
         } else {
           ball.throwSound = Assets.getSound("throw1").CreateInstance();
           ball.throwSound.Play();

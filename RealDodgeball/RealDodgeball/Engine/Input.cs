@@ -53,6 +53,11 @@ namespace Dodgeball.Engine {
       }
     }
 
+    //CURRENTLY ONLY WORKS WITH DEFAULT DEADZONE
+    public GamePadThumbSticks PreviousThumbSticks(PlayerIndex index) {
+      return previousState[index].ThumbSticks;
+    }
+
     public static void ForEachInput(Action<PlayerIndex> action) {
       for(PlayerIndex index = PlayerIndex.One; index <= PlayerIndex.Four; index++) {
         action(index);

@@ -23,6 +23,7 @@ namespace Dodgeball.Engine {
     public Dictionary<string, Transition> _transitionMap;
     public Random _rng;
     public float _timeScale = 1;
+    public PlayerIndex _keyMaster;
     float _totalTime = 0;
     List<Tuple<float, Action, Action>> _actions = new List<Tuple<float, Action, Action>>();
     public bool _visualDebug = false;
@@ -79,6 +80,11 @@ namespace Dodgeball.Engine {
       set { instance._timeScale = value; }
     }
 
+    public static PlayerIndex keyMaster {
+      get { return instance._keyMaster; }
+      set { instance._keyMaster = value; }
+    }
+
     public G() {
       _input = new Input();
       _camera = new Camera();
@@ -115,6 +121,12 @@ namespace Dodgeball.Engine {
     public static void addTransition(string name, Transition transition) {
       instance._transitionMap.Add(name, transition);
       transitions.add(transition);
+    }
+
+    public static void playMusic(string song) {
+      MediaPlayer.Play(Assets.getSong(song));
+      MediaPlayer.IsRepeating = true;
+      MediaPlayer.Volume = 0.7f;
     }
 
     public static void DoForSeconds(float seconds, Action action, Action onComplete = null) {
