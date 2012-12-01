@@ -43,6 +43,40 @@ namespace Dodgeball.Game {
       GameTracker.CurrentRound = 0;
       GameTracker.RoundsWon[Team.Left] = 0;
       GameTracker.RoundsWon[Team.Right] = 0;
+
+      int tallies = (int)Math.Ceiling(GameTracker.MatchesWon[Team.Left]/5f);
+      Sprite tally;
+      for(int i = 0; i < tallies; i++) {
+        tally = new Sprite();
+        tally.loadGraphic("tallies", 48, 30);
+        tally.screenPositioning = ScreenPositioning.Absolute;
+        tally.sheetOffset.Y = i == tallies - 1 && GameTracker.MatchesWon[Team.Left] % 5 != 0 ? 
+          (GameTracker.MatchesWon[Team.Left]%5 - 1) * tally.height :
+          120;
+        tally.y = 108 + (38 * i);
+        tally.x = winningTeam == Team.Left ? 346 : 152;
+        tally.color = winningTeam == Team.Left ?
+          //new Color(0x92, 0xca, 0xd9) :
+          new Color(0xd3, 0x81, 0xd7) :
+          new Color(0xc8, 0x91, 0xd8);
+        add(tally);
+      }
+
+      tallies = (int)Math.Ceiling(GameTracker.MatchesWon[Team.Right] / 5f);
+      for(int i = 0; i < tallies; i++) {
+        tally = new Sprite();
+        tally.loadGraphic("tallies", 48, 30);
+        tally.screenPositioning = ScreenPositioning.Absolute;
+        tally.sheetOffset.Y = i == tallies - 1 && GameTracker.MatchesWon[Team.Right] % 5 != 0 ?
+          ((GameTracker.MatchesWon[Team.Right] % 5) - 1) * tally.height :
+          120;
+        tally.y = 108 + (38 * i);
+        tally.x = winningTeam == Team.Left ? 432 : 238;
+        tally.color = winningTeam == Team.Left ?
+          new Color(0x92, 0xca, 0xd9) :
+          new Color(0x78, 0xd1, 0xda);
+        add(tally);
+      }
     }
 
     public override void Update() {
