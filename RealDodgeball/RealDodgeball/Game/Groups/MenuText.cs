@@ -37,8 +37,6 @@ namespace Dodgeball.Game {
       itemText = new Text(text);
       itemText.color = itemColor;
 
-      itemText.alpha = 0.2f;
-
       add(itemText);
       add(hilightText);
     }

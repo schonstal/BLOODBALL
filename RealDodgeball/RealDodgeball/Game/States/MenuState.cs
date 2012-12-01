@@ -18,6 +18,7 @@ namespace Dodgeball.Game {
 
     Sprite titleScreen;
     Text pressStart;
+    Text pressStartShadow;
     Menu mainMenu;
 
     float flickerTimer = 0;
@@ -33,11 +34,11 @@ namespace Dodgeball.Game {
       mainMenu = new Menu(MENU_X, 204);
       mainMenu.addMenuText(new MenuText("START GAME", () => {
         flicker = false;
+        mainMenu.deactivate();
         G.DoForSeconds(0.5f, () => {
           MediaPlayer.Volume -= G.elapsed;
         }, () => {
           G.switchState(new PlayState(), "gate");
-          mainMenu.active = false;
         });
       }));
       mainMenu.addMenuText(new MenuText("CONTROLS"));
