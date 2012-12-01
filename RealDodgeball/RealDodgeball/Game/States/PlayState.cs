@@ -29,6 +29,7 @@ namespace Dodgeball.Game {
     HUD hud;
     TimeSpan startingGameTime;
     Card card;
+    PauseGroup pauseGroup;
 
     float yDest = PlayState.ARENA_OFFSET_Y - (
         360
@@ -40,6 +41,8 @@ namespace Dodgeball.Game {
     bool started = false;
     bool timeSet = false;
     bool restarted = false;
+    bool paused = false;
+    bool pausable = false;
 
     public PlayState(bool restart=false) : base() {
       restarted = restart;
@@ -109,6 +112,9 @@ namespace Dodgeball.Game {
       card = new Card();
       add(card);
 
+      pauseGroup = new PauseGroup(card);
+      add(pauseGroup);
+
       GameTracker.RoundSeconds = GameTracker.TotalSeconds;
     }
 
@@ -126,17 +132,33 @@ namespace Dodgeball.Game {
     }
 
     public override void Update() {
+      if(paused) {
+        pauseGroup.Update();
+        return;
+      }
       if(G.camera.y > yDest - 1 || restarted) {
         if(state == State.Panning) {
           G.camera.y = yDest;
           card.Show(
             (GameTracker.RoundsWon[Team.Left] == GameTracker.RoundsToWin - 1 &&
             GameTracker.RoundsWon[Team.Right] == GameTracker.RoundsToWin - 1) ? "final round" : "round",
-            () => DoInSeconds(START_DELAY, () => card.Show("start", null, () => state = State.Playing)));
+            () => DoInSeconds(START_DELAY, () => card.Show("start",
+                () => pausable = true,
+                () => state = State.Playing)
+              ));
           hud.visible = true;
           state = State.GetReady;
         } else if(state == State.GetReady) {
         } else if(state == State.Playing) {
+          Input.ForEachInput((index) => {
+            if(G.input.JustPressed(index, Buttons.Start)) {
+              Assets.getSound("startButton").Play();
+              pauseGroup.Pause();
+              card.Show("paused");
+              paused = pausable;
+            }
+          });
+
           countTime();
           teams.ForEach((team) => {
             if(teamPlayers[team].Members.All((player) => ((Player)player).HP <= 0)) {

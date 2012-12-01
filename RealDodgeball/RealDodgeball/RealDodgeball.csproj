@@ -131,10 +131,12 @@
     <Compile Include="Engine\Input.cs" />
     <Compile Include="Game\Groups\BallTrail.cs" />
     <Compile Include="Game\Groups\Card.cs" />
+    <Compile Include="Game\Groups\PauseGroup.cs" />
     <Compile Include="Game\Groups\Menu.cs" />
     <Compile Include="Game\Groups\MenuText.cs" />
-    <Compile Include="Game\Sprites\GateTransition.cs" />
     <Compile Include="Game\Sprites\FadeTransition.cs" />
+    <Compile Include="Game\Sprites\GateTransition.cs" />
+    <Compile Include="Game\Sprites\PauseOverlay.cs" />
     <Compile Include="Game\Groups\RoundMarker.cs" />
     <Compile Include="Game\Groups\Timer.cs" />
     <Compile Include="Game\Groups\HealthBar.cs" />

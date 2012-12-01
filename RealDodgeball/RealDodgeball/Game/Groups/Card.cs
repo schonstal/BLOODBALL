@@ -82,7 +82,7 @@ namespace Dodgeball.Game {
       text.x = (G.camera.width - text.graphicWidth) / 2;
       roundNumber.x = text.x + 375;
 
-      z = HUD.HUGE_Z;
+      z = HUD.HUGE_Z + 2;
     }
 
     void textAppeared(int frameIndex) {

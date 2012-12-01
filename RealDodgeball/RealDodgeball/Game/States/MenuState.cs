@@ -26,6 +26,7 @@ namespace Dodgeball.Game {
     bool flicker = true;
 
     public override void Create() {
+      G.playMusic("titleMusic");
       titleScreen = new Sprite();
       titleScreen.screenPositioning = ScreenPositioning.Absolute;
       titleScreen.loadGraphic("titleScreen", 640, 360);

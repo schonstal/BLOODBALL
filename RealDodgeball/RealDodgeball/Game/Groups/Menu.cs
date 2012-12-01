@@ -30,7 +30,6 @@ namespace Dodgeball.Game {
     List<string> direcions = new List<string> { "left", "right", "up", "down" };
 
     public Menu(float X, float Y) : base() {
-      G.playMusic("titleMusic");
       x = X;
       y = Y;
       direcions.ForEach((s) => {
