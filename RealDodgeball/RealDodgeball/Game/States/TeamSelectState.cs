@@ -13,20 +13,22 @@ using Dodgeball.Engine;
 
 namespace Dodgeball.Game {
   public class TeamSelectState : GameState {
-    public const int MIDDLE_Y_SPACING = 50;
-    public const int MIDDLE_Y_OFFSET = 80;
+    public const int MIDDLE_Y_SPACING = 38;
+    public const int MIDDLE_Y_OFFSET = 110;
 
-    public const int SIDE_Y_SPACING = 150;
-    public const int SIDE_Y_OFFSET = 80;
+    public const int SIDE_Y_SPACING = 38;
+    public const int SIDE_Y_OFFSET = 148;
 
-    public const int LEFT_X = 100;
-    public const int RIGHT_X = 500;
+    public const int LEFT_X = 250;
+    public const int RIGHT_X = 358;
 
     public const float THRESHOLD = 0.8f;
     public const float RETURN_THRESHOLD = 0.7f;
 
     Sprite teamSelectScreen;
     Sprite pressStart;
+
+    bool canSwitch = true;
 
     Dictionary<PlayerIndex, Sprite> playerSprites = new Dictionary<PlayerIndex, Sprite>();
 
@@ -41,9 +43,18 @@ namespace Dodgeball.Game {
       teamSelectScreen.loadGraphic("teamSelect", 640, 360);
       add(teamSelectScreen);
 
+      pressStart = new Sprite();
+      pressStart.screenPositioning = ScreenPositioning.Absolute;
+      pressStart.loadGraphic("begin", 50, 13);
+      pressStart.y = 314;
+      pressStart.visible = false;
+      pressStart.x = (G.camera.width - pressStart.width) / 2;
+      add(pressStart);
+
       Input.ForEachInput((i) => {
         playerSprites.Add(i, new Sprite(G.camera.width/2 - 16, MIDDLE_Y_OFFSET + MIDDLE_Y_SPACING*(int)i));
-        playerSprites[i].loadGraphic("Dot", 32, 32);
+        playerSprites[i].loadGraphic("teamSelectIcon", 32, 32);
+        playerSprites[i].sheetOffset.X = 32 * (int)i;
         playerSprites[i].screenPositioning = ScreenPositioning.Absolute;
         add(playerSprites[i]);
         pushActive.Add(i, new Dictionary<string, bool>());
@@ -103,6 +114,23 @@ namespace Dodgeball.Game {
       for(int i = 0; i < GameTracker.RightPlayers.Count; i++) {
         playerSprites[GameTracker.RightPlayers[i]].x = RIGHT_X;
         playerSprites[GameTracker.RightPlayers[i]].y = SIDE_Y_OFFSET + i * SIDE_Y_SPACING;
+      }
+
+      if(GameTracker.LeftPlayers.Count == 2 && GameTracker.RightPlayers.Count == 2) {
+        if(canSwitch) {
+          Input.ForEachInput((i) => {
+            if(G.input.JustPressed(i, Buttons.Start)) {
+              canSwitch = false;
+              Assets.getSound("superKO").Play();
+              G.DoForSeconds(0.5f, () => {
+                MediaPlayer.Volume -= G.elapsed;
+              }, () => {
+                G.switchState(new PlayState(), "gate");
+              });
+            }
+          });
+        }
+        pressStart.visible = true;
       }
 
       base.Update();
