@@ -154,7 +154,8 @@ namespace Dodgeball.Game {
         UnPause();
       }
       if(layerIn && (G.input.JustPressed(G.keyMaster, Buttons.B) ||
-          G.input.JustPressed(G.keyMaster, Buttons.Back))) {
+          G.input.JustPressed(G.keyMaster, Buttons.Back)) ||
+          (controls.visible && G.input.JustPressed(G.keyMaster, Buttons.A))) {
         goBack();
       }
       base.Update();
