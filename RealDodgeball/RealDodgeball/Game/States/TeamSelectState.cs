@@ -27,6 +27,7 @@ namespace Dodgeball.Game {
 
     Sprite teamSelectScreen;
     Sprite pressStart;
+    Sprite pressBack;
 
     bool canSwitch = true;
 
@@ -45,11 +46,19 @@ namespace Dodgeball.Game {
 
       pressStart = new Sprite();
       pressStart.screenPositioning = ScreenPositioning.Absolute;
-      pressStart.loadGraphic("begin", 50, 13);
+      pressStart.loadGraphic("begin", 49, 13);
       pressStart.y = 314;
+      pressStart.x = 327;
       pressStart.visible = false;
-      pressStart.x = (G.camera.width - pressStart.width) / 2;
       add(pressStart);
+
+      pressBack = new Sprite();
+      pressBack.screenPositioning = ScreenPositioning.Absolute;
+      pressBack.loadGraphic("begin", 50, 13);
+      pressBack.sheetOffset.Y = 13;
+      pressBack.y = 314;
+      pressBack.x = 263;
+      add(pressBack);
 
       Input.ForEachInput((i) => {
         playerSprites.Add(i, new Sprite(G.camera.width/2 - 16, MIDDLE_Y_OFFSET + MIDDLE_Y_SPACING*(int)i));
@@ -108,6 +117,11 @@ namespace Dodgeball.Game {
         if(!GameTracker.LeftPlayers.Contains(i) && !GameTracker.RightPlayers.Contains(i)) {
           playerSprites[i].y = MIDDLE_Y_OFFSET + MIDDLE_Y_SPACING * (int)i;
           playerSprites[i].x = G.camera.width / 2 - 16;
+        }
+
+        if(canSwitch && G.input.JustPressed(i, Buttons.Back)) {
+          canSwitch = false;
+          G.switchState(new MenuState(), "gate");
         }
       });
       
