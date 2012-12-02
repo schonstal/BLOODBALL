@@ -71,10 +71,12 @@ namespace Dodgeball.Game {
     }
 
     public static List<PlayerIndex> LeftPlayers {
+      set { instance._leftPlayers = value; }
       get { return instance._leftPlayers; }
     }
 
     public static List<PlayerIndex> RightPlayers {
+      set { instance._rightPlayers = value; }
       get { return instance._rightPlayers; }
     }
   }

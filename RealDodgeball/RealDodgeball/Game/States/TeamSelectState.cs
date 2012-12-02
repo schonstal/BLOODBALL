@@ -37,7 +37,7 @@ namespace Dodgeball.Game {
     List<string> direcions = new List<string> { "left", "right" };
 
     public override void Create() {
-      G.playMusic("resultsMusic");
+      //G.playMusic("resultsMusic");
       teamSelectScreen = new Sprite();
       teamSelectScreen.screenPositioning = ScreenPositioning.Absolute;
       teamSelectScreen.loadGraphic("teamSelect", 640, 360);

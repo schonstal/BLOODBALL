@@ -53,7 +53,7 @@ namespace Dodgeball.Game {
         flicker = false;
         mainMenu.deactivate();
         G.DoForSeconds(0.5f, () => {
-          MediaPlayer.Volume -= G.elapsed;
+          //MediaPlayer.Volume -= G.elapsed;
         }, () => {
           G.switchState(new TeamSelectState(), "gate");
         });
@@ -113,6 +113,8 @@ namespace Dodgeball.Game {
       GameTracker.MatchesWon[Team.Right] = 0;
       GameTracker.RoundsWon[Team.Left] = 0;
       GameTracker.RoundsWon[Team.Right] = 0;
+      GameTracker.LeftPlayers = new List<PlayerIndex>();
+      GameTracker.RightPlayers = new List<PlayerIndex>();
     }
 
     public override void Update() {
