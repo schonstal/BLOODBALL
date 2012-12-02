@@ -51,8 +51,8 @@ namespace Dodgeball.Game {
     public override void Create() {
       G.playMusic("GameMusic");
       //G.visualDebug = true;
-      Sprite arenaBackground = new Sprite(-G.camera.x, -68 + ARENA_OFFSET_Y);
-      arenaBackground.loadGraphic("arenaBackground", 640, 360);
+      Sprite arenaBackground = new Sprite(-G.camera.x, -68 + ARENA_OFFSET_Y - 280);
+      arenaBackground.loadGraphic("arenaBackground", 640, 640);
       arenaBackground.z = -10;
       //arenaBackground.screenPositioning = ScreenPositioning.Absolute;
       add(arenaBackground);

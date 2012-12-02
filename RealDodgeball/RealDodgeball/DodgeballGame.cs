@@ -129,7 +129,7 @@ namespace Dodgeball {
 
       G.addTransition("fade", new FadeTransition());
       G.addTransition("gate", new GateTransition());
-      G.switchState(new TeamSelectState());
+      G.switchState(new MenuState());
     }
 
     protected override void UnloadContent() {

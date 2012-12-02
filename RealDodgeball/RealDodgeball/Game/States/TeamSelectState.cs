@@ -55,6 +55,7 @@ namespace Dodgeball.Game {
         playerSprites.Add(i, new Sprite(G.camera.width/2 - 16, MIDDLE_Y_OFFSET + MIDDLE_Y_SPACING*(int)i));
         playerSprites[i].loadGraphic("teamSelectIcon", 32, 32);
         playerSprites[i].sheetOffset.X = 32 * (int)i;
+        playerSprites[i].color = new Color(0xbd, 0xd8, 0xe5);
         playerSprites[i].screenPositioning = ScreenPositioning.Absolute;
         add(playerSprites[i]);
         pushActive.Add(i, new Dictionary<string, bool>());
@@ -84,9 +85,11 @@ namespace Dodgeball.Game {
           if(GameTracker.RightPlayers.Contains(i)) {
             Assets.getSound("select").Play(0.6f, -0.2f, 0);
             GameTracker.RightPlayers.Remove(i);
+            playerSprites[i].color = new Color(0xbd, 0xd8, 0xe5);
           } else if(!GameTracker.LeftPlayers.Contains(i) && GameTracker.LeftPlayers.Count < 2) {
             Assets.getSound("select").Play(0.6f, 0, 0);
             GameTracker.LeftPlayers.Add(i);
+            playerSprites[i].color = new Color(0xf8, 0x9f, 0xff);
           }
         }
 
@@ -94,9 +97,11 @@ namespace Dodgeball.Game {
           if(GameTracker.LeftPlayers.Contains(i)) {
             Assets.getSound("select").Play(0.6f, -0.2f, 0);
             GameTracker.LeftPlayers.Remove(i);
+            playerSprites[i].color = new Color(0xbd, 0xd8, 0xe5);
           } else if(!GameTracker.RightPlayers.Contains(i) && GameTracker.RightPlayers.Count < 2) {
             Assets.getSound("select").Play(0.6f, 0, 0);
             GameTracker.RightPlayers.Add(i);
+            playerSprites[i].color = new Color(0x93, 0xf4, 0xff);
           }
         }
 
