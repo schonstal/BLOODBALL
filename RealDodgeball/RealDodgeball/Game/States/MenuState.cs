@@ -72,6 +72,8 @@ namespace Dodgeball.Game {
 
       GameTracker.MatchesWon[Team.Left] = 0;
       GameTracker.MatchesWon[Team.Right] = 0;
+      GameTracker.RoundsWon[Team.Left] = 0;
+      GameTracker.RoundsWon[Team.Right] = 0;
     }
 
     public override void Update() {
