@@ -71,6 +71,8 @@ namespace Dodgeball.Game {
     }
 
     public void UnPause() {
+      pauseMenu.reset();
+      restartMenu.reset();
       pauseMenu.deactivate();
       restartMenu.deactivate();
       card.onComplete = resume;
@@ -78,6 +80,7 @@ namespace Dodgeball.Game {
       card.Close();
       pauseOverlay.End();
       open = false;
+      layerIn = false;
       controls.visible = false;
     }
 
