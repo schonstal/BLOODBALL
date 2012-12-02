@@ -15,6 +15,7 @@ namespace Dodgeball.Game {
   class PauseGroup : Group {
     PauseOverlay pauseOverlay;
     Menu pauseMenu;
+    Menu restartMenu;
     Card card;
     Action unPauseCallback;
 
@@ -29,13 +30,29 @@ namespace Dodgeball.Game {
       this.card = card;
       add(card);
 
-      pauseMenu = new Menu(180, 148);
+      pauseMenu = new Menu(195, 148);
       pauseMenu.addMenuText(new MenuText("RESUME", UnPause));
-      pauseMenu.addMenuText(new MenuText("CONTROLS"));
-      pauseMenu.addMenuText(new MenuText("RESTART"));
-      pauseMenu.addMenuText(new MenuText("QUIT"));
+      pauseMenu.addMenuText(new MenuText("CONTROLS", displayControls));
+      pauseMenu.addMenuText(new MenuText("RESTART", restart));
+      pauseMenu.addMenuText(new MenuText("QUIT", quit));
       pauseMenu.deactivate();
       add(pauseMenu);
+
+      restartMenu = new Menu(195, 148);
+      restartMenu.addMenuText(new MenuText("YES", () => {
+        restartMenu.deactivate();
+        card.Close();
+      }));
+      restartMenu.addMenuText(new MenuText("NO", () => {
+        Assets.getSound("confirm").Play();
+        restartMenu.deactivate();
+        card.onComplete = () => {
+          card.Show("paused", resume, pauseMenu.activate, 0);
+        };
+        card.Close();
+      }));
+      restartMenu.deactivate();
+      add(restartMenu);
     }
 
     public void Pause() {
@@ -53,6 +70,34 @@ namespace Dodgeball.Game {
 
     void resume() {
       if(unPauseCallback != null) unPauseCallback();
+    }
+
+    void restart() {
+      Assets.getSound("startButton").Play();
+      pauseMenu.deactivate();
+      card.onComplete = () => {
+        card.Show("restart?",
+          () => G.switchState(new PlayState(), "fade"),
+          restartMenu.activate, 0);
+      };
+      card.Close();
+    }
+
+    void quit() {
+      Assets.getSound("startButton").Play();
+      pauseMenu.deactivate();
+      card.onComplete = () => {
+        card.Show("quit?", () => {
+            G.DoForSeconds(0.5f, () => {
+              MediaPlayer.Volume -= G.elapsed*2;
+            });
+            G.switchState(new MenuState(), "gate");
+          }, restartMenu.activate, 0);
+      };
+      card.Close();
+    }
+
+    void displayControls() {
     }
   }
 }

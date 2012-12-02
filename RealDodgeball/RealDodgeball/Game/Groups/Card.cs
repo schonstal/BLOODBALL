@@ -19,8 +19,8 @@ namespace Dodgeball.Game {
     Sprite background;
     Sprite text;
     Sprite roundNumber;
-    Action onComplete;
-    Action onReady;
+    public Action onComplete;
+    public Action onReady;
     Dictionary<string, CardInfo> cards =  new Dictionary<string,CardInfo>();
     CardInfo currentCard;
 
@@ -76,6 +76,8 @@ namespace Dodgeball.Game {
       cards.Add("magenta wins", new CardInfo(true, true, false, 6));
       cards.Add("cyan wins", new CardInfo(true, true, false, 7));
       cards.Add("paused", new CardInfo(true, false, false, 8));
+      cards.Add("restart?", new CardInfo(false, false, false, 9));
+      cards.Add("quit?", new CardInfo(true, false, false, 10));
 
       visible = false;
       text.visible = false;
