@@ -36,7 +36,7 @@ namespace Dodgeball.Game {
 
       controls = new Sprite(190, 148);
       controls.loadGraphic("controls", 251, 125);
-      controls.color = Color.White;
+      controls.color = new Color(0x2b, 0xab, 0x67);
       controls.visible = false;
       controls.screenPositioning = ScreenPositioning.Absolute;
       add(controls);
