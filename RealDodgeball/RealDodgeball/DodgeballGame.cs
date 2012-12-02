@@ -98,7 +98,8 @@ namespace Dodgeball {
         "roundNumber",
         "titleScreen",
         "winScreen",
-        "tallies"
+        "tallies",
+        "controls"
       }.ForEach((s) => Assets.addTexture(s, Content.Load<Texture2D>(s)));
 
       new List<string> {

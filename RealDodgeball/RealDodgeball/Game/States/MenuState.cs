@@ -17,6 +17,7 @@ namespace Dodgeball.Game {
     public const float MENU_X = 186;
 
     Sprite titleScreen;
+    Sprite controls;
     Text pressStart;
     Text pressStartShadow;
     Menu mainMenu;
@@ -49,6 +50,12 @@ namespace Dodgeball.Game {
       mainMenu.addMenuText(new MenuText("EXIT", () => G.exit()));
       mainMenu.deactivate();
       add(mainMenu);
+
+      controls = new Sprite(190, 182);
+      controls.loadGraphic("controls", 251, 125);
+      controls.visible = false;
+      controls.screenPositioning = ScreenPositioning.Absolute;
+      add(controls);
 
       DoInSeconds(2, () => {
         pressStart = new Text("PUSH START BUTTON");

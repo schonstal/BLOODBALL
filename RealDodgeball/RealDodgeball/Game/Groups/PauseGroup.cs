@@ -34,9 +34,9 @@ namespace Dodgeball.Game {
       this.card = card;
       add(card);
 
-      controls = new Sprite(195, 148);
-      controls.loadGraphic("Dot", 250, 150);
-      controls.color = Color.Magenta;
+      controls = new Sprite(190, 148);
+      controls.loadGraphic("controls", 251, 125);
+      controls.color = Color.White;
       controls.visible = false;
       controls.screenPositioning = ScreenPositioning.Absolute;
       add(controls);
@@ -56,7 +56,7 @@ namespace Dodgeball.Game {
         restartMenu.deactivate();
         card.Close();
       }));
-      restartMenu.addMenuText(new MenuText("NO",goBack));
+      restartMenu.addMenuText(new MenuText("NO", goBack));
       restartMenu.deactivate();
       add(restartMenu);
     }
