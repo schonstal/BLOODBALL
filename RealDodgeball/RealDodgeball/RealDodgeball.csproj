@@ -150,6 +150,7 @@
     <Compile Include="Game\Sprites\PlayerShadow.cs" />
     <Compile Include="Game\Sprites\Player.cs" />
     <Compile Include="Game\States\BoilerState.cs" />
+    <Compile Include="Game\States\TeamSelectState.cs" />
     <Compile Include="Game\States\WinState.cs" />
     <Compile Include="Game\States\MenuState.cs" />
     <Compile Include="Game\States\PlayState.cs" />

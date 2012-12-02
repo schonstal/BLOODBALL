@@ -16,6 +16,8 @@ namespace Dodgeball.Game {
     Sprite winScreen;
     Sprite arenaVignette;
 
+    bool canSwitch = true;
+
     public override void Create() {
       Team winningTeam = Team.Left;
       new List<Team> { Team.Left, Team.Right }.ForEach((team) => {
@@ -26,7 +28,7 @@ namespace Dodgeball.Game {
       });
 
       G.playMusic("resultsMusic");
-      MediaPlayer.Volume = 1f;
+      //MediaPlayer.Volume = 1f;
       winScreen = new Sprite();
       winScreen.screenPositioning = ScreenPositioning.Absolute;
       winScreen.loadGraphic("winScreen", 640, 360);
@@ -80,14 +82,18 @@ namespace Dodgeball.Game {
     }
 
     public override void Update() {
-      Input.ForEachInput((index) => {
-        if(G.input.JustPressed(index, Buttons.Start)) {
-          G.camera.y = -400;
-          fancySwitchState(new PlayState());
-        } else if(G.input.JustPressed(index, Buttons.Back)) {
-          fancySwitchState(new MenuState());
-        }
-      });
+      if(canSwitch) {
+        Input.ForEachInput((index) => {
+          if(G.input.JustPressed(index, Buttons.Start)) {
+            G.camera.y = -400;
+            fancySwitchState(new PlayState());
+            canSwitch = false;
+          } else if(G.input.JustPressed(index, Buttons.Back)) {
+            fancySwitchState(new MenuState());
+            canSwitch = false;
+          }
+        });
+      }
       base.Update();
     }
 

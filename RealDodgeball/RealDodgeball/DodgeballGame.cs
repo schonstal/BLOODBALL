@@ -95,7 +95,8 @@ namespace Dodgeball {
         "titleScreen",
         "winScreen",
         "tallies",
-        "controls"
+        "controls",
+        "teamSelect"
       }.ForEach((s) => Assets.addTexture(s, Content.Load<Texture2D>(s)));
 
       new List<string> {
@@ -126,7 +127,7 @@ namespace Dodgeball {
 
       G.addTransition("fade", new FadeTransition());
       G.addTransition("gate", new GateTransition());
-      G.switchState(new MenuState());
+      G.switchState(new TeamSelectState());
     }
 
     protected override void UnloadContent() {

@@ -92,14 +92,14 @@ namespace Dodgeball.Game {
 
       //probably want to let people pick their team later
       teamPlayers[Team.Left].add(
-        new Player(PlayerIndex.Two, Team.Left, new Vector2(0, 0), CourtPosition.TopLeft));
+        new Player(GameTracker.LeftPlayers[0], Team.Left, new Vector2(0, 0), CourtPosition.TopLeft));
       teamPlayers[Team.Left].add(
-        new Player(PlayerIndex.Three, Team.Left, new Vector2(0, 1), CourtPosition.BottomLeft));
+        new Player(GameTracker.LeftPlayers[1], Team.Left, new Vector2(0, 1), CourtPosition.BottomLeft));
 
       teamPlayers[Team.Right].add(
-        new Player(PlayerIndex.One, Team.Right, new Vector2(1, 0), CourtPosition.TopRight));
+        new Player(GameTracker.RightPlayers[0], Team.Right, new Vector2(1, 0), CourtPosition.TopRight));
       teamPlayers[Team.Right].add(
-        new Player(PlayerIndex.Four, Team.Right, new Vector2(1, 1), CourtPosition.BottomRight));
+        new Player(GameTracker.RightPlayers[1], Team.Right, new Vector2(1, 1), CourtPosition.BottomRight));
 
       teamPlayers[Team.Left].Each((player) => players.add(player));
       teamPlayers[Team.Right].Each((player) => players.add(player));

@@ -20,6 +20,8 @@ namespace Dodgeball.Game {
     public int _currentRound;
     public Dictionary<Team, int> _roundsWon = new Dictionary<Team, int>();
     public Dictionary<Team, int> _matchesWon = new Dictionary<Team, int>();
+    public List<PlayerIndex> _leftPlayers = new List<PlayerIndex>();
+    public List<PlayerIndex> _rightPlayers = new List<PlayerIndex>();
 
     private static GameTracker instance {
       get {
@@ -66,6 +68,14 @@ namespace Dodgeball.Game {
 
     public static bool GamePoint(Team team) {
       return RoundsWon[team] == RoundsToWin - 1;
+    }
+
+    public static List<PlayerIndex> LeftPlayers {
+      get { return instance._leftPlayers; }
+    }
+
+    public static List<PlayerIndex> RightPlayers {
+      get { return instance._rightPlayers; }
     }
   }
 }

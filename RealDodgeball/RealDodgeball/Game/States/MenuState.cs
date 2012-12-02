@@ -55,7 +55,7 @@ namespace Dodgeball.Game {
         G.DoForSeconds(0.5f, () => {
           MediaPlayer.Volume -= G.elapsed;
         }, () => {
-          G.switchState(new PlayState(), "gate");
+          G.switchState(new TeamSelectState(), "gate");
         });
       }));
       mainMenu.addMenuText(new MenuText("CONTROLS", displayControls));
