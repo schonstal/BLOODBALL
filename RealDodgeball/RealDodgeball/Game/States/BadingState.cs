@@ -22,7 +22,7 @@ namespace Dodgeball.Game {
       logo.loadGraphic("loadingScreen", 640, 360);
       add(logo);
 
-      Assets.getSound("bading").Play();
+      Assets.getSound("bading").Play(0.6f, 0, 0);
       G.DoInSeconds(1.5f, () => {
         G.switchState(new MenuState(), "gate");
       });
