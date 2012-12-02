@@ -34,7 +34,7 @@ namespace Dodgeball {
       //720p for debugging (and xbox?)
       graphics.PreferredBackBufferHeight = 720;
       graphics.PreferredBackBufferWidth = 1280;
-
+      G.toggleFullscreen = graphics.ToggleFullScreen;
     }
 
     protected override void Initialize() {
@@ -49,7 +49,7 @@ namespace Dodgeball {
       GameTracker.RoundsWon[Team.Right] = 0;
       GameTracker.MatchesWon[Team.Left] = 0;
       GameTracker.MatchesWon[Team.Right] = 0;
-      GameTracker.RoundsToWin = 3;
+      GameTracker.RoundsToWin = 2;
       GameTracker.TotalSeconds = 100;
 
       base.Initialize();
@@ -58,15 +58,11 @@ namespace Dodgeball {
     protected override void LoadContent() {
       spriteBatch = new SpriteBatch(GraphicsDevice);
       targetBatch = new SpriteBatch(GraphicsDevice);
-      renderTarget = new RenderTarget2D(GraphicsDevice,
-        GraphicsDevice.Viewport.Width / 2,
-        GraphicsDevice.Viewport.Height / 2);
-      transitionTarget = new RenderTarget2D(GraphicsDevice,
-        GraphicsDevice.Viewport.Width / 4,
-        GraphicsDevice.Viewport.Height / 4);
+      renderTarget = new RenderTarget2D(GraphicsDevice, 640, 360);
+      transitionTarget = new RenderTarget2D(GraphicsDevice, 320, 180);
       G.camera.Initialize(spriteBatch);
       //Actually put it in the right place...
-      G.camera.x = (GraphicsDevice.Viewport.Width / 2 - PlayState.ARENA_WIDTH) / 2;
+      G.camera.x = (640 - PlayState.ARENA_WIDTH) / 2;
       G.camera.width = renderTarget.Width;
       G.camera.height = renderTarget.Height;
 

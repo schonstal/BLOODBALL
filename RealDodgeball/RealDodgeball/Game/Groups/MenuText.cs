@@ -16,11 +16,11 @@ namespace Dodgeball.Game {
     public bool selected = false;
     public Action onPress = null;
     public Action<int> onChange = null;
+    public string bodyText = "";
+    public string valueText = "";
 
     Vector2 offset = new Vector2();
 
-    string bodyText = "";
-    string valueText = "";
     Color itemColor = new Color(0x77, 0x80, 0x85);
 
     Text hilightText;

@@ -20,7 +20,13 @@ namespace Dodgeball.Game {
     Sprite controls;
     Text pressStart;
     Text pressStartShadow;
+    Group credits;
+
+    MenuText roundOption;
+    List<int> rounds = new List<int> { 1, 3, 5, 7, 9 };
+
     Menu mainMenu;
+    Menu optionsMenu;
 
     float flickerTimer = 0;
     bool ready = false;
@@ -34,6 +40,13 @@ namespace Dodgeball.Game {
       titleScreen.loadGraphic("titleScreen", 640, 360);
       add(titleScreen);
 
+      roundOption = new MenuText("ROUNDS:", () => {
+        Assets.getSound("select").Play(0.6f, 0, 0);
+        GameTracker.RoundsToWin = (GameTracker.RoundsToWin % 5) + 1;
+        roundOption.valueText = rounds[GameTracker.RoundsToWin - 1].ToString();
+      });
+      roundOption.valueText = rounds[GameTracker.RoundsToWin - 1].ToString();
+
       mainMenu = new Menu(MENU_X, 204);
       mainMenu.addMenuText(new MenuText("START GAME", () => {
         Assets.getSound("superKO").Play();
@@ -46,11 +59,36 @@ namespace Dodgeball.Game {
         });
       }));
       mainMenu.addMenuText(new MenuText("CONTROLS", displayControls));
-      mainMenu.addMenuText(new MenuText("OPTIONS"));
-      mainMenu.addMenuText(new MenuText("CREDITS"));
+      mainMenu.addMenuText(roundOption);
+      //mainMenu.addMenuText(new MenuText("OPTIONS", displayOptions));
+      mainMenu.addMenuText(new MenuText("CREDITS", displayCredits));
       mainMenu.addMenuText(new MenuText("EXIT", () => G.exit()));
       mainMenu.deactivate();
       add(mainMenu);
+
+      optionsMenu = new Menu(MENU_X, 204);
+      //optionsMenu.addMenuText(new MenuText("ROUNDS:"));
+      //optionsMenu.addMenuText(new MenuText("ZOOM:"));
+      //optionsMenu.addMenuText(new MenuText("FULLSCREEN:", G.toggleFullscreen));
+      optionsMenu.deactivate();
+      add(optionsMenu);
+
+      credits = new Group();
+      Text credit;
+      credit = new Text("CODE", MENU_X, 204);
+      credit.color = new Color(0x77, 0x80, 0x85);
+      credits.add(credit);
+      credits.add(new Text("JOSH SCHONSTAL", MENU_X, 220));
+      credit = new Text("ART", MENU_X, 236);
+      credit.color = new Color(0x77, 0x80, 0x85);
+      credits.add(credit);
+      credits.add(new Text("IAN BROCK", MENU_X, 252));
+      credit = new Text("SOUND", MENU_X, 268);
+      credit.color = new Color(0x77, 0x80, 0x85);
+      credits.add(credit);
+      credits.add(new Text("GUERIN MCMURRY", MENU_X, 284));
+      credits.visible = false;
+      add(credits);
 
       controls = new Sprite(190, 182);
       controls.loadGraphic("controls", 251, 125);
@@ -105,7 +143,7 @@ namespace Dodgeball.Game {
 
       if(layerIn && (G.input.JustPressed(G.keyMaster, Buttons.B) ||
           G.input.JustPressed(G.keyMaster, Buttons.Back)) ||
-          (controls.visible && G.input.JustPressed(G.keyMaster, Buttons.A))) {
+          ((controls.visible || credits.visible) && G.input.JustPressed(G.keyMaster, Buttons.A))) {
         goBack();
       }
       base.Update();
@@ -114,6 +152,16 @@ namespace Dodgeball.Game {
     void displayControls() {
       goDeep();
       controls.visible = true;
+    }
+
+    void displayCredits() {
+      goDeep();
+      credits.visible = true;
+    }
+
+    void displayOptions() {
+      goDeep();
+      optionsMenu.activate();
     }
 
     void goDeep() {
@@ -125,6 +173,8 @@ namespace Dodgeball.Game {
     void goBack() {
       Assets.getSound("confirm").Play();
       controls.visible = false;
+      credits.visible = false;
+      optionsMenu.deactivate();
       layerIn = false;
       mainMenu.activate();
     }

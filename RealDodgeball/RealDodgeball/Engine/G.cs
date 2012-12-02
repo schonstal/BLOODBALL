@@ -26,6 +26,7 @@ namespace Dodgeball.Engine {
     public PlayerIndex _keyMaster;
     public string _currentSong;
     public Action _exit;
+    public Action _fullscreen;
 
     float _totalTime = 0;
     List<Tuple<float, Action, Action>> _actions = new List<Tuple<float, Action, Action>>();
@@ -91,6 +92,11 @@ namespace Dodgeball.Engine {
     public static Action exit {
       get { return instance._exit; }
       set { instance._exit = value; }
+    }
+
+    public static Action toggleFullscreen {
+      get { return instance._fullscreen; }
+      set { instance._fullscreen = value; }
     }
 
     public G() {
