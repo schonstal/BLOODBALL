@@ -25,6 +25,7 @@ namespace Dodgeball.Game {
     float flickerTimer = 0;
     bool ready = false;
     bool flicker = true;
+    bool layerIn = false;
 
     public override void Create() {
       G.playMusic("titleMusic");
@@ -44,7 +45,7 @@ namespace Dodgeball.Game {
           G.switchState(new PlayState(), "gate");
         });
       }));
-      mainMenu.addMenuText(new MenuText("CONTROLS"));
+      mainMenu.addMenuText(new MenuText("CONTROLS", displayControls));
       mainMenu.addMenuText(new MenuText("OPTIONS"));
       mainMenu.addMenuText(new MenuText("CREDITS"));
       mainMenu.addMenuText(new MenuText("EXIT", () => G.exit()));
@@ -101,11 +102,31 @@ namespace Dodgeball.Game {
       } else {
         titleScreen.sheetOffset.Y = 360;
       }
+
+      if(layerIn && (G.input.JustPressed(G.keyMaster, Buttons.B) ||
+          G.input.JustPressed(G.keyMaster, Buttons.Back)) ||
+          (controls.visible && G.input.JustPressed(G.keyMaster, Buttons.A))) {
+        goBack();
+      }
       base.Update();
     }
 
-    public override void Draw() {
-      base.Draw();
+    void displayControls() {
+      goDeep();
+      controls.visible = true;
+    }
+
+    void goDeep() {
+      layerIn = true;
+      Assets.getSound("startButton").Play();
+      mainMenu.deactivate();
+    }
+
+    void goBack() {
+      Assets.getSound("confirm").Play();
+      controls.visible = false;
+      layerIn = false;
+      mainMenu.activate();
     }
   }
 }
