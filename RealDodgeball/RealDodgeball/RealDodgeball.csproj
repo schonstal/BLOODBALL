@@ -19,7 +19,7 @@
     <ApplicationIcon>Game.ico</ApplicationIcon>
     <Thumbnail>GameThumbnail.png</Thumbnail>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>publish\tigsource\</PublishUrl>
+    <PublishUrl>publish\bloodball-final\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -31,7 +31,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ProductName>Bloodball</ProductName>
     <PublisherName>Incredible Ape</PublisherName>
-    <ApplicationRevision>4</ApplicationRevision>
+    <ApplicationRevision>5</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -152,6 +152,7 @@
     <Compile Include="Game\Sprites\PlayerShadow.cs" />
     <Compile Include="Game\Sprites\Player.cs" />
     <Compile Include="Game\States\BoilerState.cs" />
+    <Compile Include="Game\States\BadingState.cs" />
     <Compile Include="Game\States\TeamSelectState.cs" />
     <Compile Include="Game\States\WinState.cs" />
     <Compile Include="Game\States\MenuState.cs" />

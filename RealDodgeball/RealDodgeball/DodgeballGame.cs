@@ -99,7 +99,8 @@ namespace Dodgeball {
         "controls",
         "teamSelect",
         "begin",
-        "teamSelectIcon"
+        "teamSelectIcon",
+        "loadingScreen"
       }.ForEach((s) => Assets.addTexture(s, Content.Load<Texture2D>(s)));
 
       new List<string> {
@@ -118,7 +119,8 @@ namespace Dodgeball {
         "superKO",
         "throw1",
         "throw2",
-        "wireGate"
+        "wireGate",
+        "bading"
       }.ForEach((s) => Assets.addSound(s, Content.Load<SoundEffect>(s)));
 
       new List<string> {
@@ -130,7 +132,7 @@ namespace Dodgeball {
 
       G.addTransition("fade", new FadeTransition());
       G.addTransition("gate", new GateTransition());
-      G.switchState(new MenuState());
+      G.switchState(new BadingState());
     }
 
     protected override void UnloadContent() {
