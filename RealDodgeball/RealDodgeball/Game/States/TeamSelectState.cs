@@ -26,6 +26,7 @@ namespace Dodgeball.Game {
     public const float RETURN_THRESHOLD = 0.7f;
 
     Sprite teamSelectScreen;
+    Sprite pressStart;
 
     Dictionary<PlayerIndex, Sprite> playerSprites = new Dictionary<PlayerIndex, Sprite>();
 

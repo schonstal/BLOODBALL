@@ -96,7 +96,9 @@ namespace Dodgeball {
         "winScreen",
         "tallies",
         "controls",
-        "teamSelect"
+        "teamSelect",
+        "begin",
+        "teamSelectIcon"
       }.ForEach((s) => Assets.addTexture(s, Content.Load<Texture2D>(s)));
 
       new List<string> {
