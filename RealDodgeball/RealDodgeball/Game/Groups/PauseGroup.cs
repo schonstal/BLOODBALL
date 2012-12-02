@@ -18,6 +18,10 @@ namespace Dodgeball.Game {
     Menu restartMenu;
     Card card;
     Action unPauseCallback;
+    Sprite controls;
+
+    bool layerIn = false;
+    bool open = false;
 
     public PauseGroup(Card card, Action unPauseCallback) : base() {
       z = HUD.HUGE_Z + 1;
@@ -30,6 +34,13 @@ namespace Dodgeball.Game {
       this.card = card;
       add(card);
 
+      controls = new Sprite(195, 148);
+      controls.loadGraphic("Dot", 250, 150);
+      controls.color = Color.Magenta;
+      controls.visible = false;
+      controls.screenPositioning = ScreenPositioning.Absolute;
+      add(controls);
+
       pauseMenu = new Menu(195, 148);
       pauseMenu.addMenuText(new MenuText("RESUME", UnPause));
       pauseMenu.addMenuText(new MenuText("CONTROLS", displayControls));
@@ -40,32 +51,34 @@ namespace Dodgeball.Game {
 
       restartMenu = new Menu(195, 148);
       restartMenu.addMenuText(new MenuText("YES", () => {
+        //Assets.getSound("superKO").Play();
+        Assets.getSound("startButton").Play();
         restartMenu.deactivate();
         card.Close();
       }));
-      restartMenu.addMenuText(new MenuText("NO", () => {
-        Assets.getSound("confirm").Play();
-        restartMenu.deactivate();
-        card.onComplete = () => {
-          card.Show("paused", resume, pauseMenu.activate, 0);
-        };
-        card.Close();
-      }));
+      restartMenu.addMenuText(new MenuText("NO",goBack));
       restartMenu.deactivate();
       add(restartMenu);
     }
 
     public void Pause() {
       Assets.getSound("startButton").Play();
-      card.Show("paused", resume, pauseMenu.activate, 0);
+      card.Show("paused", resume, () => {
+        pauseMenu.activate();
+        open = true;
+      }, 0);
       pauseOverlay.Start();
     }
 
     public void UnPause() {
       pauseMenu.deactivate();
+      restartMenu.deactivate();
+      card.onComplete = resume;
       Assets.getSound("confirm").Play();
       card.Close();
       pauseOverlay.End();
+      open = false;
+      controls.visible = false;
     }
 
     void resume() {
@@ -73,31 +86,75 @@ namespace Dodgeball.Game {
     }
 
     void restart() {
-      Assets.getSound("startButton").Play();
-      pauseMenu.deactivate();
+      goDeep();
       card.onComplete = () => {
         card.Show("restart?",
           () => G.switchState(new PlayState(), "fade"),
-          restartMenu.activate, 0);
+          () => {
+            restartMenu.activate();
+            restartMenu.reset();
+          }, 0);
       };
       card.Close();
     }
 
     void quit() {
-      Assets.getSound("startButton").Play();
-      pauseMenu.deactivate();
+      goDeep();
       card.onComplete = () => {
         card.Show("quit?", () => {
-            G.DoForSeconds(0.5f, () => {
-              MediaPlayer.Volume -= G.elapsed*2;
-            });
-            G.switchState(new MenuState(), "gate");
-          }, restartMenu.activate, 0);
+          G.DoForSeconds(0.5f, () => {
+            MediaPlayer.Volume -= G.elapsed * 2;
+          });
+          G.switchState(new MenuState(), "gate");
+        }, () => {
+          restartMenu.activate();
+          restartMenu.reset();
+        }, 0);
       };
       card.Close();
     }
 
     void displayControls() {
+      goDeep();
+      card.onComplete = () => {
+        card.Show("controls", () => {
+          G.DoForSeconds(0.5f, () => {
+            MediaPlayer.Volume -= G.elapsed * 2;
+          });
+          G.switchState(new MenuState(), "gate");
+        }, () => {
+          controls.visible = true;
+        }, 0);
+      };
+      card.Close();
+    }
+
+    void goDeep() {
+      layerIn = true;
+      Assets.getSound("startButton").Play();
+      pauseMenu.deactivate();
+    }
+
+    void goBack() {
+      Assets.getSound("confirm").Play();
+      restartMenu.deactivate();
+      controls.visible = false;
+      card.onComplete = () => {
+        card.Show("paused", resume, pauseMenu.activate, 0);
+      };
+      card.Close();
+      layerIn = false;
+    }
+
+    public override void Update() {
+      if(open && G.input.JustPressed(G.keyMaster, Buttons.Start)) {
+        UnPause();
+      }
+      if(layerIn && (G.input.JustPressed(G.keyMaster, Buttons.B) ||
+          G.input.JustPressed(G.keyMaster, Buttons.Back))) {
+        goBack();
+      }
+      base.Update();
     }
   }
 }

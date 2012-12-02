@@ -78,6 +78,7 @@ namespace Dodgeball.Game {
       cards.Add("paused", new CardInfo(true, false, false, 8));
       cards.Add("restart?", new CardInfo(false, false, false, 9));
       cards.Add("quit?", new CardInfo(true, false, false, 10));
+      cards.Add("controls", new CardInfo(false, false, false, 0));
 
       visible = false;
       text.visible = false;

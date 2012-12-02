@@ -81,6 +81,10 @@ namespace Dodgeball.Game {
       visible = false;
     }
 
+    public void reset() {
+      selectedIndex = 0;
+    }
+
     void onLeft() {
     }
 
