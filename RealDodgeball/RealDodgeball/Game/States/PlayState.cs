@@ -143,14 +143,16 @@ namespace Dodgeball.Game {
       if(G.camera.y > yDest - 1 || restarted) {
         if(state == State.Panning) {
           G.camera.y = yDest;
-          card.Show(
-            (GameTracker.RoundsWon[Team.Left] == GameTracker.RoundsToWin - 1 &&
-            GameTracker.RoundsWon[Team.Right] == GameTracker.RoundsToWin - 1) ? "final round" : "round",
-            () => DoInSeconds(START_DELAY, () => card.Show("start",
-                () => pausable = true,
-                () => state = State.Playing)
-              ));
           hud.visible = true;
+          G.DoInSeconds(0.3f, () => {
+            card.Show(
+              (GameTracker.RoundsWon[Team.Left] == GameTracker.RoundsToWin - 1 &&
+              GameTracker.RoundsWon[Team.Right] == GameTracker.RoundsToWin - 1) ? "final round" : "round",
+              () => DoInSeconds(START_DELAY, () => card.Show("start",
+                  () => pausable = true,
+                  () => state = State.Playing)
+                ));
+          });
           state = State.GetReady;
         } else if(state == State.GetReady) {
         } else if(state == State.Playing) {
