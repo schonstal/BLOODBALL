@@ -35,6 +35,7 @@ namespace Dodgeball {
       graphics.PreferredBackBufferHeight = 720;
       graphics.PreferredBackBufferWidth = 1280;
       G.toggleFullscreen = graphics.ToggleFullScreen;
+      Window.Title = "BLOODBALL";
     }
 
     protected override void Initialize() {
