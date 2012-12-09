@@ -40,7 +40,7 @@ namespace Dodgeball.Game {
       scoreBoard.loadGraphic("scoreBoard", SCOREBOARD_WIDTH, SCOREBOARD_HEIGHT);
       scoreBoard.x = (PlayState.ARENA_WIDTH - SCOREBOARD_WIDTH) / 2;
       scoreBoard.y = -SCOREBOARD_HEIGHT - SCOREBOARD_OFFSET;
-      scoreBoard.color = new Color(0x2b, 0xab, 0x67);
+      scoreBoard.color = new Color(0x3a, 0xc3, 0x83);
       add(scoreBoard);
 
       players.Each<Player>((player) => {

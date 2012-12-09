@@ -62,7 +62,7 @@ namespace Dodgeball.Game {
 
       hurtHealth = new Sprite(x, y);
       hurtHealth.loadGraphic("healthBar", BAR_WIDTH, BAR_HEIGHT);
-      hurtHealth.color = new Color(0xb5, 0x00, 0x05);
+      hurtHealth.color = new Color(0xcb, 0x00, 0x07);
       healthBars.add(hurtHealth);
 
       realHealth = new Sprite(x, y);
@@ -109,7 +109,7 @@ namespace Dodgeball.Game {
       if(healHealth.graphicWidth == BAR_WIDTH) {
         healHealth.color = scoreBoard.color;
       } else {
-        healHealth.color = new Color(0xbe, 0xb9, 0x10);
+        healHealth.color = new Color(0xd2, 0xce, 0x16);
       }
       base.postUpdate();
     }
